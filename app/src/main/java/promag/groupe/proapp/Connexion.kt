@@ -21,7 +21,8 @@ class Connexion : AppCompatActivity() {
     private lateinit var loginPlaceholder: LinearLayout
     private lateinit var login: LinearLayout
     private lateinit var phonePlacehoder: EditText
-    private lateinit var phone: EditText
+    private lateinit var username: EditText
+    private lateinit var password: EditText
     private lateinit var connexionButton: Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +34,8 @@ class Connexion : AppCompatActivity() {
         loginPlaceholder = findViewById(R.id.login_layout)
         login = findViewById(R.id.inscription_layout)
         phonePlacehoder = findViewById(R.id.phone_edit_text)
-        phone = findViewById(R.id.sign_phone_edit)
+        username = findViewById(R.id.username)
+        password = findViewById(R.id.password)
         connexionButton = findViewById(R.id.sign_continue_btn)
 
         handleEvents()
@@ -100,29 +102,33 @@ class Connexion : AppCompatActivity() {
         }
 
         connexionButton.setOnClickListener {
-            validatePhoneNumber()
+            //todo if there is some validations, for inputs, chars limits ..
+            val username = username.text.toString()
+            val password = password.text.toString()
             confirmation()
         }
     }
 
+    private fun authentication(username : String, password: String): Uti{
 
-    private fun validatePhoneNumber() {
-        val telephone: String = phone.text.toString()
     }
 
-    private fun confirmation() {
-        AppAlertDialog.showYesNoDialog(
-            this,
-            "Vérification",
-            "Voulez vous confirmer la connection avec le numéro: ${phone.text} ?",
-            {
 
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-                finish()
-
-            },
-            null
-        )
-    }
+//
+//
+//    private fun confirmation() {
+//        AppAlertDialog.showYesNoDialog(
+//            this,
+//            "Vérification",
+//            "Voulez vous confirmer la connection avec le numéro: ${phone.text} ?",
+//            {
+//
+//                val intent = Intent(this, MainActivity::class.java)
+//                startActivity(intent)
+//                finish()
+//
+//            },
+//            null
+//        )
+//    }
 }
