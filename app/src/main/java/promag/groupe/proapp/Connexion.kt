@@ -115,9 +115,9 @@ class Connexion : AppCompatActivity() {
 
         connexionButton.setOnClickListener {
             //todo if there is some validations, for inputs, chars limits ..
-            val username = username.text.toString()
-            val password = password.text.toString()
-            authentication(username, password)
+            val username = username.text.toString().trim()
+            val password = password.text.toString().trim()
+            authentication(username=username, password=password)
         }
     }
 
@@ -126,6 +126,7 @@ class Connexion : AppCompatActivity() {
     private fun authentication(username: String, password: String) {
         //create the Auth object to send as body
         val auth = Auth(username = username, password = password)
+        Log.e("MyAuth: ", "Username: ${auth.username}, Password: ${auth.password}")
         val result = quotesApi.authentication(auth) ?: return
 
 
@@ -134,7 +135,7 @@ class Connexion : AppCompatActivity() {
         result.enqueue(object : Callback<User?> {
             override fun onResponse(call: Call<User?>, response: Response<User?>) {
                 if (response.errorBody() != null || response.body()!!.id == 0) {
-                    displayConnexionFailure()
+                    displayConnexionFailure("BODY ERROR| " + response.errorBody())
                     return
                 }
                 AppToast(this@Connexion, "Sauvgarde with success", true)
@@ -145,15 +146,16 @@ class Connexion : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<User?>, t: Throwable) {
-                Log.e("Exception: ", t.toString())
-                displayConnexionFailure()
+                displayConnexionFailure("ON FAILURE| " + t.toString())
             }
 
         })
 
     }
 
-    fun displayConnexionFailure() {
+    fun displayConnexionFailure(message: String) {
+        Log.e("MyAuth Exception: ", message)
+
         AppAlertDialog.showAlertDialog(
             this@Connexion,
             title = "Problem",

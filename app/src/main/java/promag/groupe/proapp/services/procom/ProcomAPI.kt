@@ -32,5 +32,6 @@ interface ProcomAPI {
 
 
     @POST("auth/username/")
-    fun authentication(@Body auth: Auth): Call<User?>?
+    fun authentication(@Body auth: Auth?): Call<User?>?
+
 }

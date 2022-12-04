@@ -11,7 +11,7 @@ class User(
     var token: String?
 )
 
-class Auth(
+data class Auth(
     var username: String = "",
     var password: String = ""
 )
