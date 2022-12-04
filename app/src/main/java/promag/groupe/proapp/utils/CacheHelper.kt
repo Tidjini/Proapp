@@ -29,9 +29,9 @@ object CacheHelper {
             }
         }
 
-
+    
     var SharedPreferences.clearValues
-        get() = run { }
+        get() = { }
         set(value) {
             editMe {
                 it.clear()

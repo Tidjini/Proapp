@@ -28,7 +28,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class Connexion : AppCompatActivity() {
+class Connexion : BaseActivity() {
 
 
     private lateinit var loginPlaceholder: LinearLayout
@@ -38,14 +38,12 @@ class Connexion : AppCompatActivity() {
     private lateinit var password: EditText
     private lateinit var connexionButton: Button
 
-    private lateinit var application: BaseApplication
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_connexion)
 
-        application = applicationContext as BaseApplication
         intialize()
     }
 
@@ -137,8 +135,7 @@ class Connexion : AppCompatActivity() {
     private fun authentication(username: String, password: String) {
         //create the Auth object to send as body
         val auth = Auth(username = username, password = password)
-        Log.e("MyAuth: ", "Username: ${auth.username}, Password: ${auth.password}")
-        val result = quotesApi.authentication(auth) ?: return
+        val result = quotesApi.authUsername(auth) ?: return
 
 
 
@@ -156,8 +153,8 @@ class Connexion : AppCompatActivity() {
                     return
                 }
 
-                application.user = user
-                application.userPreferences.userToken = user.token
+                mApplication.user = user
+                mApplication.userPreferences.userToken = user.token
                 gotoMain()
                 //todo set with shared preferences
                 //todo continue to main activity

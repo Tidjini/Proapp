@@ -27,17 +27,18 @@ import promag.groupe.proapp.infrabitume.Encaissement
 import promag.groupe.proapp.infrabitume.FactureActivity
 import promag.groupe.proapp.infrabitume.LivraisonActivity
 import promag.groupe.proapp.models.Message
+import promag.groupe.proapp.utils.CacheHelper.clearValues
+import promag.groupe.proapp.utils.CacheHelper.userToken
 import promag.groupe.proapp.views.AppAlertDialog
 import promag.groupe.proapp.views.AppToast
 import java.net.URISyntaxException
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
 
     private lateinit var container: GridLayout
     private lateinit var mNotificationManager: NotificationManager
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,13 +51,9 @@ class MainActivity : AppCompatActivity() {
 //        }
 
 
-
-
 //        mSendSocket!!.connect()
 
     }
-
-
 
 
     override fun onResume() {
@@ -76,9 +73,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
-
-
     fun onInfraStockClicked(view: View) {
 
         val intent = Intent(this, LivraisonActivity::class.java)
@@ -90,6 +84,7 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, Encaissement::class.java)
         startActivity(intent)
     }
+
     fun onFactureClicked(view: View) {
         val intent = Intent(this, FactureActivity::class.java)
         startActivity(intent)
@@ -107,7 +102,10 @@ class MainActivity : AppCompatActivity() {
             this,
             "Information",
             "Voulez vous vraiment quitter l'application ?",
-            { finish() },
+            {
+                mApplication.userPreferences.userToken = null
+                finish()
+            },
             null
         )
     }

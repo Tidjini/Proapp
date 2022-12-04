@@ -1,8 +1,6 @@
 package promag.groupe.proapp
 
-import android.annotation.SuppressLint
 import android.app.*
-import android.content.BroadcastReceiver
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
@@ -22,15 +20,22 @@ import promag.groupe.proapp.infrabitume.LivraisonActivity
 import promag.groupe.proapp.models.Message
 import promag.groupe.proapp.models.User
 import promag.groupe.proapp.services.NotificationApi
+import promag.groupe.proapp.services.procom.ProcomAPI
+import promag.groupe.proapp.services.procom.ProcomService
 import promag.groupe.proapp.utils.CacheHelper
+import promag.groupe.proapp.utils.CacheHelper.userToken
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.net.URISyntaxException
 import kotlin.properties.Delegates
 
 class BaseApplication : Application() {
 
+    //globals
     lateinit var user: User
     lateinit var userPreferences: SharedPreferences
-
+    lateinit var quotesApi: ProcomAPI
 
     private var mSocket: Socket? = null
     var observed = false
@@ -48,6 +53,12 @@ class BaseApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        //globals
+        userPreferences = CacheHelper.customPreference(applicationContext, USER_PREFERENCE)
+        quotesApi = ProcomService.getInstance().create(ProcomAPI::class.java)
+
+
+
         NotificationApi.build(listener = { args ->
             val data = args[0]
             newestArticleUrl = data.toString()
@@ -56,7 +67,7 @@ class BaseApplication : Application() {
         newestArticleObservers.add { newOne ->
             Log.d("socket _observer", newOne)
         }
-        userPreferences = CacheHelper.customPreference(applicationContext, USER_PREFERENCE)
+
 
         try {
             mSocket = IO.socket("https://eassalnotif.herokuapp.com/")
@@ -71,6 +82,9 @@ class BaseApplication : Application() {
 
             Log.d("app_socket", e.toString())
         }
+
+
+
 //        val br: BroadcastReceiver = promag.groupe.proapp.recievers.NotificationApi()
     }
 
@@ -194,4 +208,8 @@ class BaseApplication : Application() {
     }
 
 
+
+
 }
+
+
