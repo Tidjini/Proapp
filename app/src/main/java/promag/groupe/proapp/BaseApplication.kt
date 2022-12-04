@@ -155,7 +155,7 @@ class BaseApplication : Application() {
         } else if (data.context == "ENCAISSEMENT") {
             stackBuilder.addNextIntent(Intent(this, Encaissement::class.java))
 
-        } else{
+        } else {
             stackBuilder.addNextIntent(Intent(this, FactureActivity::class.java))
         }
 
