@@ -1,6 +1,8 @@
 package promag.groupe.proapp
 
+import android.app.Application
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -13,10 +15,13 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import promag.groupe.proapp.infrabitume.FactureActivity
 import promag.groupe.proapp.models.Auth
 import promag.groupe.proapp.models.User
 import promag.groupe.proapp.services.procom.ProcomAPI
 import promag.groupe.proapp.services.procom.ProcomService
+import promag.groupe.proapp.utils.CacheHelper
+import promag.groupe.proapp.utils.CacheHelper.userToken
 import promag.groupe.proapp.views.AppAlertDialog
 import promag.groupe.proapp.views.AppToast
 import retrofit2.Call
@@ -32,9 +37,15 @@ class Connexion : AppCompatActivity() {
     private lateinit var username: EditText
     private lateinit var password: EditText
     private lateinit var connexionButton: Button
+
+    private lateinit var application: BaseApplication
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_connexion)
+
+        application = applicationContext as BaseApplication
         intialize()
     }
 
@@ -117,7 +128,7 @@ class Connexion : AppCompatActivity() {
             //todo if there is some validations, for inputs, chars limits ..
             val username = username.text.toString().trim()
             val password = password.text.toString().trim()
-            authentication(username=username, password=password)
+            authentication(username = username, password = password)
         }
     }
 
@@ -138,8 +149,16 @@ class Connexion : AppCompatActivity() {
                     displayConnexionFailure("BODY ERROR| " + response.errorBody())
                     return
                 }
-                AppToast(this@Connexion, "Sauvgarde with success", true)
-                //todo save to user Application
+                val user: User? = response.body()
+
+                if (user == null) {
+                    displayConnexionFailure("BODY ERROR| " + response.errorBody())
+                    return
+                }
+
+                application.user = user
+                application.userPreferences.userToken = user.token
+                gotoMain()
                 //todo set with shared preferences
                 //todo continue to main activity
 
@@ -164,6 +183,11 @@ class Connexion : AppCompatActivity() {
 
     }
 
+    fun gotoMain() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        this.finish()
+    }
 //
 //
 //    private fun confirmation() {

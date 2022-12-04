@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.*
 import android.content.BroadcastReceiver
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.media.RingtoneManager
 import android.net.Uri
@@ -21,18 +22,18 @@ import promag.groupe.proapp.infrabitume.LivraisonActivity
 import promag.groupe.proapp.models.Message
 import promag.groupe.proapp.models.User
 import promag.groupe.proapp.services.NotificationApi
+import promag.groupe.proapp.utils.CacheHelper
 import java.net.URISyntaxException
 import kotlin.properties.Delegates
 
 class BaseApplication : Application() {
 
-    lateinit var user : User
+    lateinit var user: User
+    lateinit var userPreferences: SharedPreferences
 
 
     private var mSocket: Socket? = null
     var observed = false
-
-
 
 
     public var max: Int by Delegates.observable(0) { _, _, _ ->
@@ -55,7 +56,7 @@ class BaseApplication : Application() {
         newestArticleObservers.add { newOne ->
             Log.d("socket _observer", newOne)
         }
-
+        userPreferences = CacheHelper.customPreference(applicationContext, USER_PREFERENCE)
 
         try {
             mSocket = IO.socket("https://eassalnotif.herokuapp.com/")
