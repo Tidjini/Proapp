@@ -1,11 +1,10 @@
 package promag.groupe.proapp
 
 import android.content.Context
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.view.animation.AnimationUtils
@@ -13,7 +12,16 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
+import androidx.appcompat.app.AppCompatActivity
+import promag.groupe.proapp.models.Auth
+import promag.groupe.proapp.models.User
+import promag.groupe.proapp.services.procom.ProcomAPI
+import promag.groupe.proapp.services.procom.ProcomService
 import promag.groupe.proapp.views.AppAlertDialog
+import promag.groupe.proapp.views.AppToast
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class Connexion : AppCompatActivity() {
 
@@ -31,6 +39,10 @@ class Connexion : AppCompatActivity() {
     }
 
     private fun intialize() {
+
+        quotesApi = ProcomService.getInstance().create(ProcomAPI::class.java)
+
+
         loginPlaceholder = findViewById(R.id.login_layout)
         login = findViewById(R.id.inscription_layout)
         phonePlacehoder = findViewById(R.id.phone_edit_text)
@@ -85,10 +97,10 @@ class Connexion : AppCompatActivity() {
     private fun displayKeyboard() {
         handler.postDelayed({
             window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
-            phone.requestFocus()
+            username.requestFocus()
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.showSoftInput(
-                phone, InputMethodManager.SHOW_IMPLICIT
+                username, InputMethodManager.SHOW_IMPLICIT
             )
         }, 950)
     }
@@ -105,14 +117,50 @@ class Connexion : AppCompatActivity() {
             //todo if there is some validations, for inputs, chars limits ..
             val username = username.text.toString()
             val password = password.text.toString()
-            confirmation()
+            authentication(username, password)
         }
     }
 
-    private fun authentication(username : String, password: String): Uti{
+    private lateinit var quotesApi: ProcomAPI
+
+    private fun authentication(username: String, password: String) {
+        //create the Auth object to send as body
+        val auth = Auth(username = username, password = password)
+        val result = quotesApi.authentication(auth) ?: return
+
+
+
+
+        result.enqueue(object : Callback<User?> {
+            override fun onResponse(call: Call<User?>, response: Response<User?>) {
+                if (response.errorBody() != null || response.body()!!.id == 0) {
+                    displayConnexionFailure()
+                    return
+                }
+                AppToast(this@Connexion, "Sauvgarde with success", true)
+                //todo save to user Application
+                //todo set with shared preferences
+                //todo continue to main activity
+
+            }
+
+            override fun onFailure(call: Call<User?>, t: Throwable) {
+                Log.e("Exception: ", t.toString())
+                displayConnexionFailure()
+            }
+
+        })
 
     }
 
+    fun displayConnexionFailure() {
+        AppAlertDialog.showAlertDialog(
+            this@Connexion,
+            title = "Problem",
+            message = "Problem de connexion, verifier votre username and password"
+        )
+
+    }
 
 //
 //

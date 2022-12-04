@@ -1,9 +1,7 @@
 package promag.groupe.proapp.services.procom
 
 import okhttp3.ResponseBody
-import promag.groupe.proapp.models.Encaissement
-import promag.groupe.proapp.models.Facture
-import promag.groupe.proapp.models.Product
+import promag.groupe.proapp.models.*
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
@@ -31,4 +29,8 @@ interface ProcomAPI {
 
     @DELETE("charges/{id}/")
     fun deleteFacture(@Path("id") id: Int): Call<Any?>?
+
+
+    @POST("auth/username/")
+    fun authentication(@Body auth: Auth): Call<User?>?
 }

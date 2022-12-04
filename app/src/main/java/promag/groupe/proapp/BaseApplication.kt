@@ -19,14 +19,21 @@ import promag.groupe.proapp.infrabitume.Encaissement
 import promag.groupe.proapp.infrabitume.FactureActivity
 import promag.groupe.proapp.infrabitume.LivraisonActivity
 import promag.groupe.proapp.models.Message
+import promag.groupe.proapp.models.User
 import promag.groupe.proapp.services.NotificationApi
 import java.net.URISyntaxException
 import kotlin.properties.Delegates
 
 class BaseApplication : Application() {
 
+    lateinit var user : User
+
+
     private var mSocket: Socket? = null
     var observed = false
+
+
+
 
     public var max: Int by Delegates.observable(0) { _, _, _ ->
         observed = true
