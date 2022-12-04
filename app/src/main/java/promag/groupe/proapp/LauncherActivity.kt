@@ -57,11 +57,7 @@ class LauncherActivity : AppCompatActivity() {
                 if (response.errorBody() != null || response.body()!!.id == 0) {
                     return
                 }
-                val user: User? = response.body()
-
-                if (user == null) {
-                    return
-                }
+                val user: User = response.body() ?: return
 
                 app.user = user
                 app.userPreferences.userToken = user.token

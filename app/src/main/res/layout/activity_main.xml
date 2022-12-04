@@ -309,7 +309,7 @@
                     android:layout_columnWeight="1"
                     android:layout_marginTop="28dp"
                     android:gravity="center"
-                    android:onClick="onOthersClicked"
+                    android:onClick="onMessageClicked"
                     android:orientation="vertical">
 
 

@@ -171,15 +171,15 @@ class BaseApplication : Application() {
             .setAutoCancel(true)
             .setColor(ContextCompat.getColor(this, R.color.colorPrimary))
         val stackBuilder: TaskStackBuilder = TaskStackBuilder.create(this)
-        if (data.context == "PRODUCT") {
-            stackBuilder.addNextIntent(Intent(this, LivraisonActivity::class.java))
-
-        } else if (data.context == "ENCAISSEMENT") {
-            stackBuilder.addNextIntent(Intent(this, Encaissement::class.java))
-
-        } else {
-            stackBuilder.addNextIntent(Intent(this, FactureActivity::class.java))
-        }
+//        if (data.context == "PRODUCT") {
+//            stackBuilder.addNextIntent(Intent(this, LivraisonActivity::class.java))
+//
+//        } else if (data.context == "ENCAISSEMENT") {
+//            stackBuilder.addNextIntent(Intent(this, Encaissement::class.java))
+//
+//        } else {
+//            stackBuilder.addNextIntent(Intent(this, FactureActivity::class.java))
+//        }
 
 
         val resultPendingIntent: PendingIntent =

@@ -37,4 +37,8 @@ interface ProcomAPI {
     @GET("auth/token/")
     fun authToken(@Header("Authorization") token: String): Call<User?>?
 
+
+    @GET("discussions/")
+    suspend fun getDiscussions(@Header("Authorization") token: String) : Response<PageResponse<Discussion>>?
+
 }

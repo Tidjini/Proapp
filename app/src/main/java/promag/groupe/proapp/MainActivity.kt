@@ -1,37 +1,20 @@
 package promag.groupe.proapp
 
-import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
-import android.app.TaskStackBuilder
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
-import android.media.RingtoneManager
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.View
 import android.widget.GridLayout
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
-import androidx.core.content.ContextCompat
-import com.google.gson.Gson
-import io.socket.client.IO
-import io.socket.client.Socket
-import io.socket.emitter.Emitter
+import promag.groupe.proapp.global.DiscussionActivity
 import promag.groupe.proapp.infrabitume.Encaissement
 import promag.groupe.proapp.infrabitume.FactureActivity
 import promag.groupe.proapp.infrabitume.LivraisonActivity
-import promag.groupe.proapp.models.Message
-import promag.groupe.proapp.utils.CacheHelper.clearValues
 import promag.groupe.proapp.utils.CacheHelper.userToken
 import promag.groupe.proapp.views.AppAlertDialog
 import promag.groupe.proapp.views.AppToast
-import java.net.URISyntaxException
 
 
 class MainActivity : BaseActivity() {
@@ -82,6 +65,11 @@ class MainActivity : BaseActivity() {
 
     fun onInfraEncaissementClicked(view: View) {
         val intent = Intent(this, Encaissement::class.java)
+        startActivity(intent)
+    }
+
+    fun onMessageClicked(view: View) {
+        val intent = Intent(this, DiscussionActivity::class.java)
         startActivity(intent)
     }
 
