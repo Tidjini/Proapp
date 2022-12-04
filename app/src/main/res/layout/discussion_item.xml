@@ -71,9 +71,10 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginStart="4dp"
-            android:gravity="end"
-            android:orientation="vertical">
+            android:layout_marginStart="2dp"
+            android:gravity="end|bottom"
+            android:orientation="vertical"
+            >
 
             <View
                 android:layout_width="8dp"
@@ -87,7 +88,7 @@
                 android:layout_marginTop="14dp"
                 android:text="@{discussion.fromTime}"
                 android:textColor="@color/independence50"
-                android:textSize="9sp"
+                android:textSize="8sp"
                 android:textStyle="bold" />
 
 
