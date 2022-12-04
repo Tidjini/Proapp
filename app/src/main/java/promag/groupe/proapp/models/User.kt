@@ -8,6 +8,7 @@ class User(
     var nom: String = "",
     var prenom: String = "",
     var photo: String?,
+    var name: String = "",
     var token: String?
 )
 
