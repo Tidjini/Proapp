@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+
+        <variable
+            name="encaissement"
+            type="promag.groupe.proapp.models.Encaissement" />
+    </data>
+    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/infra_stock_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="14dp"
+        android:layout_marginVertical="4dp"
+        app:cardCornerRadius="14dp"
+        app:elevation="14dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#2b2d42"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:paddingHorizontal="14dp"
+            android:paddingBottom="4dp">
+
+            <LinearLayout
+                android:id="@+id/today_sepr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/enc_image"
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:src="@drawable/calendar" />
+
+
+                <TextView
+                    style="@style/TextViewStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="14dp"
+                    android:text="Aujourd'hui"
+                    android:textColor="@color/white"
+                    android:textSize="13sp"
+                    android:textStyle="normal" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/item_separater"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/today_sepr"
+                android:layout_marginTop="14dp"
+                android:background="#EFF0F3" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+
+                >
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/TextViewStyle"
+                        android:id="@+id/today_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{encaissement.valuePrice}"
+                        android:textColor="@color/white"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        style="@style/TextViewStyle"
+                        android:id="@+id/today_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Encaissement -- / -- / --"
+                        android:textColor="@color/antiFlashWhite"
+                        android:textSize="11sp"
+                        android:textStyle="normal"
+                        android:visibility="gone"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight=".5"
+                    android:orientation="vertical">
+
+
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_gravity="end"
+                        android:id="@+id/today_growth"/>
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <TextView
+                style="@style/TextViewStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:gravity="center"
+                android:text="@{encaissement.growth}"
+                android:textColor="@{encaissement.color}"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

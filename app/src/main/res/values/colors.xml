@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorAccent">#162328</color>
+    <color name="colorPrimaryDark">#162328</color>
+    <color name="colorPrimary">#20BF55</color>
+    <color name="colorPrimary60">#AA20BF55</color>
+    <color name="colorPrimaryLighter">#1020BF55</color>
+    <color name="colorPrimary22">#4420BF55</color>
+
+    <color name="gray">#DEE2E6</color>
+    <color name="light_gray">#F1F1F1</color>
+
+
+    <color name="antiFlashWhite">#EFF0F3</color>
+    <color name="gunMetal">#293139</color>
+    <color name="tangerine">#FCA311</color>
+    <color name="yellow">#FFDA1A</color>
+    <color name="success">#27AE60</color>
+    <color name="success66">#9927AE60</color>
+    <color name="progress">#F2994A</color>
+    <color name="canceled">#EB5757</color>
+    <color name="accepted">#2D9CDB</color>
+    <color name="independence">#4A5562</color>
+    <color name="platinum">#E5E5E5</color>
+    <color name="independence_transparent">#114A5562</color>
+    <color name="black">#1E1E1E</color>
+    <color name="black_transparent">#901E1E1E</color>
+    <color name="black_dark_transparent">#CC1E1E1E</color>
+    <color name="primaryText">#262626</color>
+    <color name="white">#ffffff</color>
+    <color name="flatWhite">#FBFBFB</color>
+    <color name="transparent">#00ffffff</color>
+    <color name="black_light_transparent">#10F1F1F1</color>
+
+</resources>

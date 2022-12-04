@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Groupe Amry</string>
+
+    <string name="app_name_short">Groupe Amry.</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_map">Map</string>
+    <string name="copyright_it_shabaka_2020">copyright promag.groupe 2022</string>
+    <string name="_0551_23_45_67">0559 94 23 72</string>
+    <string name="entrez_votre_numero_de_t_l_phone">Entrez votre numero de téléphone.</string>
+    <string name="elan_logo_long">Groupe Amry logo long</string>
+    <string name="elan">Groupe Amry</string>
+    <string name="elan_is_the_best_delivery_application">Protask is the best application</string>
+    <string name="bakc_transition">back_transition</string>
+    <string name="connection_gonne_desc">Check your connection or verify your network, and retry the process</string>
+    <string name="you_re_offline">You\'re offline</string>
+    <string name="retry">Recommencez</string>
+    <string name="phone_invalide">Votre numéro de téléphone est invaide</string>
+    <string name="code_invalide">Votre code de confirmation est invalide</string>
+    <string name="profile_type">Selectionner votre type de profile</string>
+    <string name="zero_current_commande">il n\'existe aucune commande courante dans votre list</string>
+    <string name="refresh">Refresh</string>
+    <string name="zero_current_commande_title">Votre liste est vide</string>
+</resources>

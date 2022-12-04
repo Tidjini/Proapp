@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="empty_list"
+            type="Boolean" />
+        <variable
+            name="loading"
+            type="Boolean" />
+
+    </data>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#EFF0F3"
+        tools:context=".infrabitume.Encaissement">
+
+        <include
+            android:id="@+id/encaissemt_header"
+            layout="@layout/app_header" />
+
+        <LinearLayout
+            android:id="@+id/navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/encaissemt_header"
+            android:layout_marginVertical="8dp">
+
+            <ImageView
+                android:id="@+id/refresh"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="18dp"
+                android:gravity="center"
+                android:src="@drawable/bitume_tresore"
+                android:textColor="@color/white"
+                app:elevation="4dp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginHorizontal="14dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Encaissement: Infrabitume"
+                    android:textAllCaps="true"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Dernière MÀJ: 14/11/2022 15:30 "
+                    android:textColor="@color/independence"
+                    android:textSize="9sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"/>
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:indeterminateDrawable="@drawable/progress_circular"
+            app:isGone="@{!loading}" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Votre liste des encaissements est Vide\nverifier votre service."
+            app:isGone="@{!empty_list}"
+            />
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@id/navigation">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+
+
+                >
+
+                <include layout="@layout/today_encaissement" android:id="@+id/today_card" />
+
+                <include layout="@layout/week_encaissement" android:id="@+id/week_card"/>
+
+                <include layout="@layout/month_encaissement" android:id="@+id/month_card" />
+
+            </LinearLayout>
+        </ScrollView>
+
+
+    </RelativeLayout>
+
+</layout>

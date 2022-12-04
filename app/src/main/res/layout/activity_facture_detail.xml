@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="empty_list"
+            type="Boolean" />
+
+        <variable
+            name="loading"
+            type="Boolean" />
+        <variable
+            name="isNew"
+            type="Boolean" />
+
+        <variable
+            name="facture"
+            type="promag.groupe.proapp.models.Facture" />
+
+    </data>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#EFF0F3"
+        tools:context=".infrabitume.FactureDetailActivity">
+
+        <include
+            android:id="@+id/facture_details_header"
+            layout="@layout/app_header" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/facture_details_header"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="24dp"
+            android:gravity="center"
+            android:id="@+id/facture_details_subheader">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="@{facture.fNumber}"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+            <Button
+                android:id="@+id/confirm"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+
+                android:layout_gravity="center"
+                android:backgroundTint="@color/colorPrimary"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:text="Confirmer"
+                android:textColor="@color/white"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:onClick="onConfime"
+                app:isGone="@{isNew}"
+                />
+
+        </LinearLayout>
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:indeterminateDrawable="@drawable/progress_circular"
+            app:isGone="@{!loading}" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Votre liste des instances est Vide\nverifier votre service."
+            app:isGone="@{!empty_list}" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@id/facture_details_subheader"
+            android:background="@color/white"
+            android:id="@+id/edit_area"
+            android:layout_marginBottom="72dp"
+
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginHorizontal="14dp"
+                android:layout_marginTop="14dp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Numéro"
+
+                    />
+                <EditText
+                    android:id="@+id/number_edt"
+                    style="@style/EditTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:hint="N° 001"
+                    android:paddingHorizontal="16dp"
+                    android:singleLine="true" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginHorizontal="14dp"
+                android:layout_marginTop="4dp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Remarque"
+
+                    />
+                <EditText
+                    android:id="@+id/remarque_edt"
+                    style="@style/EditTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:hint="remarque"
+                    android:paddingHorizontal="16dp"
+                    android:singleLine="true"
+                    android:inputType="textMultiLine"
+                    android:lines="8"
+                    android:minLines="5"
+                    android:gravity="top|start"
+                    android:scrollbars="vertical"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginHorizontal="14dp"
+                android:layout_marginTop="4dp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Montant"
+
+                    />
+                <EditText
+                    android:id="@+id/montant_edt"
+                    style="@style/EditTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:hint="0.00 DA"
+                    android:paddingHorizontal="16dp"
+                    android:singleLine="true"
+                    android:inputType="textMultiLine"
+                    android:gravity="top|start"
+                    android:scrollbars="vertical"/>
+            </LinearLayout>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="14dp"
+            >
+            <Button
+                android:id="@+id/delete"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+
+                android:backgroundTint="@color/canceled"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:text="supprimer"
+                android:textColor="@color/white"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="8dp"
+                android:onClick="onDelete"
+                app:isGone="@{isNew}"
+                />
+
+            <Button
+                android:id="@+id/save_facture"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/colorAccent"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:text="Sauvgarder"
+                android:textColor="@color/white"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:onClick="onSave"/>
+        </LinearLayout>
+
+
+
+    </RelativeLayout>
+</layout>
