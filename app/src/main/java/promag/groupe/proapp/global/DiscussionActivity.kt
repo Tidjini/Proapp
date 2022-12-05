@@ -11,6 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import promag.groupe.proapp.BaseActivity
+import promag.groupe.proapp.DISCUSSION_EXTRA
 import promag.groupe.proapp.adapters.DiscussionAdapter
 import promag.groupe.proapp.databinding.ActivityDiscussionBinding
 
@@ -91,11 +92,13 @@ class DiscussionActivity : BaseActivity(), DiscussionAdapter.Listener {
 
     override fun onItemClicked(position: Int) {
 //        viewBinder.productImageContainer.visibility = View.VISIBLE
-//        val product = adapter!!.getProduct(position)
+        val discussion = adapter!!.getDiscussion(position)
 //
 //        Picasso.get().load(product!!.picture).into(viewBinder.productImage);
 
         val i = Intent(this, MessagesActivity::class.java)
+        i.putExtra(DISCUSSION_EXTRA, discussion)
+
         startActivity(i)
     }
 

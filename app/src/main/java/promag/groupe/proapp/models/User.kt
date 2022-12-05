@@ -1,5 +1,7 @@
 package promag.groupe.proapp.models
 
+import java.io.Serializable
+
 
 //todo remember to switch all to English
 class User(
@@ -10,7 +12,7 @@ class User(
     var photo: String? = null,
     var name: String = "",
     var token: String? = null
-){
+) : Serializable {
 
     val caption: String
         get() {

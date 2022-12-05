@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout>
 
     <data>
 
@@ -9,15 +8,14 @@
             type="promag.groupe.proapp.models.Discussion" />
     </data>
 
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/discussion_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
-        android:background="@color/transparent"
-        android:gravity="center"
         android:layout_margin="14dp"
-        >
+        android:background="@color/transparent"
+        android:gravity="center">
 
         <RelativeLayout
             android:layout_width="48dp"
@@ -36,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="@{discussion.otherCaption}"
+                android:text="@{discussion.other.caption}"
                 android:textColor="@color/independence"
                 android:textStyle="bold" />
         </RelativeLayout>
@@ -51,7 +49,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{discussion.otherUsername}"
+                android:text="@{discussion.other.name}"
                 android:textColor="@color/black"
                 android:textSize="12sp"
                 android:textStyle="bold" />
@@ -73,8 +71,7 @@
             android:layout_height="match_parent"
             android:layout_marginStart="2dp"
             android:gravity="end|bottom"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <View
                 android:layout_width="8dp"

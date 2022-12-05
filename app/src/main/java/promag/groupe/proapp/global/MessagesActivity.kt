@@ -17,15 +17,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import promag.groupe.proapp.DISCUSSION_EXTRA
 import promag.groupe.proapp.global.message.MessageFooter
 import promag.groupe.proapp.global.message.MessageHeader
 import promag.groupe.proapp.global.ui.theme.ProappTheme
 import promag.groupe.proapp.global.ui.theme.Success80
+import promag.groupe.proapp.models.Discussion
 import promag.groupe.proapp.models.Message
 import promag.groupe.proapp.models.MessageProvider
 import promag.groupe.proapp.models.User
 
 class MessagesActivity : ComponentActivity() {
+
+    var discussion: Discussion? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -34,44 +38,53 @@ class MessagesActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background
                 ) {
-                    MyApp()
+                    MyApp(discussion)
                 }
             }
         }
     }
+
+
+    override fun onResume() {
+        super.onResume()
+        discussion = intent.getSerializableExtra(DISCUSSION_EXTRA) as Discussion?
+//        if (discussion == null) {
+//            super.onBackPressed()
+//        }
+
+
+    }
 }
 
 @Composable
-fun MyApp() {
+fun MyApp(discussion: Discussion?) {
     Scaffold(
 
 
         content = {
 
-            BarkHomeContent()
+            BarkHomeContent(discussion)
         })
 }
 
 
 @Composable
-fun BarkHomeContent() {
+fun BarkHomeContent(discussion: Discussion?) {
 
-    //todo get discussion
-    //todo get user from discussion
+    //DONE get discussion
+    //DONE get user from discussion
     //todo get messages list
     //todo send message
 
-
-
-
-
-
+    val user = discussion?.other ?: User(username = "John", name = "John Doe")
 
 
 
     val messages = remember { MessageProvider.messges }
+
+
     Column(Modifier.fillMaxSize()) {
-        MessageHeader(user = User(username = "tidjini", name = "Messaoudi Tidjini"))
+        MessageHeader(user = user)
 
 
         Divider()
