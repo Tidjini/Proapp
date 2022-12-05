@@ -4,12 +4,8 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import com.google.gson.annotations.SerializedName
-import promag.groupe.proapp.ISO_DATE_TIME_FORMAT
 import promag.groupe.proapp.utils.difference
-import java.text.DateFormat
 import java.text.ParseException
-import java.text.SimpleDateFormat
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -102,8 +98,34 @@ class Message(
     var id: Int = 0,
     var receiver: Int = 0,
     @SerializedName("date_creation")
-    var dateCreation: String?,
+    var dateCreation: String? = null,
     var message: String = "",
     var discussion: Int = 0,
     var sender: Int = 0
 )
+
+
+object MessageProvider {
+    val messges = ArrayList<Message>()
+
+    val longMessage =
+        """"Some Content in Here from, Some Content in Here from, 
+    Some Content in Here from, Some Content in Here from, 
+    Some Content in Here from
+    Some Content in Here from
+    Some Content in Here from
+    Some Content in Here from""".trimMargin()
+
+    init {
+        for (i in 1..100) {
+            val r = (1..50).random()
+            val ctn = if (r.mod(2) == 0) longMessage else "Some Content in Here from 1 to $i"
+            val sender = if (r.mod(2) == 0) 2 else 1
+            val msg = Message(
+                id = i, receiver = i, message = ctn,
+                discussion = 1, sender = sender, dateCreation = ""
+            )
+            messges.add(msg)
+        }
+    }
+}
