@@ -1,4 +1,4 @@
-package promag.groupe.proapp.global.message
+package promag.groupe.proapp.global.messenger.messages
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -10,30 +10,21 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Phone
 import androidx.compose.material.icons.outlined.Videocam
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import promag.groupe.proapp.global.MessagesViewModel
 import promag.groupe.proapp.global.ui.theme.FlatWhite
 import promag.groupe.proapp.global.ui.theme.Independence
 import promag.groupe.proapp.global.ui.theme.Independence50
 import promag.groupe.proapp.global.ui.theme.Success
 import promag.groupe.proapp.models.User
 
-class SampleUserProvider : PreviewParameterProvider<User> {
-    override val values = sequenceOf(User(username = "John", name = "John Doe"))
-}
-
 
 @Composable
 fun MessageHeader(user: User?) {
-//    LaunchedEffect(Unit, block = {
-//        vm.getDiscussion(discussionId)
-//    })
+
     val user = user ?: User(username = "John", name = "John Doe")
     Row(
         Modifier

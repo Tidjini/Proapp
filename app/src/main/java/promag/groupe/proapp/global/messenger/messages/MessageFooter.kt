@@ -1,4 +1,4 @@
-package promag.groupe.proapp.global.message
+package promag.groupe.proapp.global.messenger.messages
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -24,7 +24,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import promag.groupe.proapp.global.MessagesViewModel
 import promag.groupe.proapp.global.ui.theme.Independence10
 import promag.groupe.proapp.global.ui.theme.Independence20
 import promag.groupe.proapp.global.ui.theme.Independence50

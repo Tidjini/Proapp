@@ -1,4 +1,4 @@
-package promag.groupe.proapp.global
+package promag.groupe.proapp.global.messenger.discussion
 
 import android.content.Intent
 import android.os.Bundle
@@ -14,6 +14,7 @@ import promag.groupe.proapp.BaseActivity
 import promag.groupe.proapp.DISCUSSION_EXTRA
 import promag.groupe.proapp.adapters.DiscussionAdapter
 import promag.groupe.proapp.databinding.ActivityDiscussionBinding
+import promag.groupe.proapp.global.messenger.messages.MessagesActivity
 
 
 class DiscussionActivity : BaseActivity(), DiscussionAdapter.Listener {

@@ -1,4 +1,4 @@
-package promag.groupe.proapp.global.message
+package promag.groupe.proapp.global.messenger.messages
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf

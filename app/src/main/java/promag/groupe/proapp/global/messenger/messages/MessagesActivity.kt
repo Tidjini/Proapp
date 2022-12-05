@@ -1,4 +1,4 @@
-package promag.groupe.proapp.global.message
+package promag.groupe.proapp.global.messenger.messages
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
