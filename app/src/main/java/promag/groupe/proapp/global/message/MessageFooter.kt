@@ -12,14 +12,15 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Mic
 import androidx.compose.material.icons.outlined.PhotoCameraFront
 import androidx.compose.material.icons.outlined.Send
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -29,16 +30,21 @@ import promag.groupe.proapp.global.ui.theme.Independence20
 import promag.groupe.proapp.global.ui.theme.Independence50
 
 
+fun sendMessage(vm: MessagesViewModel, message: String) {
+
+    if (message.isEmpty()) return
+
+    vm.postMessage(message)
+}
+
+
 @Composable
 fun MessageFooter(vm: MessagesViewModel) {
 
-    var message by remember {
-        mutableStateOf(
-            TextFieldValue("")
-        )
-    }
+
     val lightBlue = Color(0xffd8e6ff)
     val blue = Color(0xff76a9ff)
+    var message = rememberSaveable { mutableStateOf("") }
 
     Row(
         Modifier
@@ -78,8 +84,8 @@ fun MessageFooter(vm: MessagesViewModel) {
                 )
                 .height(42.dp),
             fontSize = 14.sp, placeholderText = "Message",
-
-            )
+            text = message
+        )
 
         Box(
             modifier = Modifier
@@ -110,7 +116,8 @@ fun MessageFooter(vm: MessagesViewModel) {
 
         ) {
             IconButton(onClick = {
-                vm.postMessage()
+                sendMessage(vm, message.value)
+                message.value = ""
             }) {
                 Icon(
                     Icons.Outlined.Send,
@@ -136,9 +143,10 @@ private fun CustomTextField(
     leadingIcon: (@Composable () -> Unit)? = null,
     trailingIcon: (@Composable () -> Unit)? = null,
     placeholderText: String = "Placeholder",
-    fontSize: TextUnit = MaterialTheme.typography.body2.fontSize
+    fontSize: TextUnit = MaterialTheme.typography.body2.fontSize,
+    text: MutableState<String>
 ) {
-    var text by rememberSaveable { mutableStateOf("") }
+
 
     BasicTextField(
 
@@ -150,9 +158,9 @@ private fun CustomTextField(
         modifier = modifier
 
             .fillMaxWidth(),
-        value = text,
+        value = text.value,
         onValueChange = {
-            text = it
+            text.value = it
         },
         singleLine = true,
         cursorBrush = SolidColor(MaterialTheme.colors.primary),
@@ -169,7 +177,7 @@ private fun CustomTextField(
                         .weight(1f)
                         .padding(start = 14.dp)
                 ) {
-                    if (text.isEmpty()) Text(
+                    if (text.value.isEmpty()) Text(
                         placeholderText, style = LocalTextStyle.current.copy(
                             color = MaterialTheme.colors.onSurface.copy(alpha = 0.3f),
                             fontSize = fontSize

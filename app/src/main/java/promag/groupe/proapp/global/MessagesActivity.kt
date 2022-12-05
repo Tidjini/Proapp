@@ -1,12 +1,14 @@
 package promag.groupe.proapp.global
 
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme.typography
@@ -38,6 +40,8 @@ open class BaseCompActivity : ComponentActivity() {
     lateinit var user: User
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
         mApplication = applicationContext as BaseApplication
         user = mApplication.user
     }
@@ -65,13 +69,6 @@ class MessagesActivity : BaseCompActivity() {
     }
 
 
-    override fun onResume() {
-        super.onResume()
-
-
-    }
-
-
 }
 
 class MessagesViewModel(val app: BaseApplication, val discussionId: Int) : ViewModel() {
@@ -94,12 +91,12 @@ class MessagesViewModel(val app: BaseApplication, val discussionId: Int) : ViewM
         }
     }
 
-    fun postMessage() {
+    fun postMessage(message: String) {
 
         val result = app.quotesApi.sendMessage(
             "token ${app.user.token}",
             Message(
-                message = "Message Ajouter For Examples",
+                message = message,
                 discussion = discussionId
             )
         ) ?: return
@@ -113,7 +110,7 @@ class MessagesViewModel(val app: BaseApplication, val discussionId: Int) : ViewM
                     ?: //displayConnexionFailure("BODY ERROR| " + response.errorBody())
                     return
 
-                mMessages.add(message)
+                mMessages.add(0, message)
 
             }
 
@@ -142,8 +139,12 @@ fun BarkHomeContent(discussion: Discussion?, appUser: User?, vm: MessagesViewMod
 
     //DONE get discussion
     //DONE get user from discussion
-    //todo get messages list
-    //todo send message
+    //DONE get messages list
+    //DONE send message
+
+
+    val coroutineScope = rememberCoroutineScope()
+    val listState = rememberLazyListState()
 
     val other = discussion?.other ?: User(username = "John", name = "John Doe")
     LaunchedEffect(Unit, block = {
@@ -160,8 +161,10 @@ fun BarkHomeContent(discussion: Discussion?, appUser: User?, vm: MessagesViewMod
 
 
         LazyColumn(
+            state = listState,
             modifier = Modifier.weight(1f),
-            contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
+            contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp),
+            reverseLayout = true
         ) {
             items(items = vm.messages, itemContent = {
                 MessageListItem(message = it, appUser)
@@ -205,7 +208,7 @@ fun MessageListItem(message: Message, user: User?) {
         Card(
             modifier = Modifier
                 .padding(
-                    top = 8.dp, bottom = 8.dp, start = paddingStart, end = paddingEnd
+                    top = 4.dp, start = paddingStart, end = paddingEnd
                 )
                 .wrapContentWidth()
                 .align(cardAlignment),
