@@ -121,20 +121,19 @@ class BaseApplication : Application() {
             .setAutoCancel(true)
             .setColor(ContextCompat.getColor(this, R.color.colorPrimary))
 
-        // TODO set discussion object
-//        val resultIntent = Intent(applicationContext, MessagesActivity::class.java)
-//        resultIntent.putExtra(DISCUSSION_EXTRA, data.discussion)
-//        val resultPendingIntent: PendingIntent? = TaskStackBuilder.create(this).run {
-//            // Add the intent, which inflates the back stack
-//            addNextIntentWithParentStack(resultIntent)
-//            // Get the PendingIntent containing the entire back stack
-//            getPendingIntent(
-//                0,
-//                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-//            )
-//        }
-//
-//        mBuilder.setContentIntent(resultPendingIntent)
+        val resultIntent = Intent(applicationContext, MessagesActivity::class.java)
+        resultIntent.putExtra(DISCUSSION_EXTRA, data.notifDiscussion)
+        val resultPendingIntent: PendingIntent? = TaskStackBuilder.create(this).run {
+            // Add the intent, which inflates the back stack
+            addNextIntentWithParentStack(resultIntent)
+            // Get the PendingIntent containing the entire back stack
+            getPendingIntent(
+                0,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+        }
+
+        mBuilder.setContentIntent(resultPendingIntent)
 
 
         notificationManager.notify(notificationId, mBuilder.build())

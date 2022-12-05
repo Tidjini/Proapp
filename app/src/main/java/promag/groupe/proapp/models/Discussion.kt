@@ -65,6 +65,8 @@ class Message(
     var dateCreation: String? = null,
     var message: String = "",
     var discussion: Int = 0,
+    @SerializedName("notif_discussion")
+    var notifDiscussion: Discussion?= null,
     @SerializedName("send_to")
     var sendTo: User? = null,
     var sender: Int = 0,
