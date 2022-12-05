@@ -4,20 +4,30 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.Icon
-import androidx.compose.material.TextField
+import androidx.compose.material.LocalTextStyle
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Expand
+import androidx.compose.material.icons.outlined.Explore
 import androidx.compose.material.icons.outlined.Mic
 import androidx.compose.material.icons.outlined.PhotoCameraFront
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import promag.groupe.proapp.global.ui.theme.Independence
+import promag.groupe.proapp.global.ui.theme.Independence10
+import promag.groupe.proapp.global.ui.theme.Independence20
+import promag.groupe.proapp.global.ui.theme.Independence50
 
 
 @Preview
@@ -29,6 +39,8 @@ fun MessageFooter() {
             TextFieldValue("")
         )
     }
+    val lightBlue = Color(0xffd8e6ff)
+    val blue = Color(0xff76a9ff)
 
     Row(
         Modifier
@@ -43,7 +55,7 @@ fun MessageFooter() {
                 .width(36.dp)
                 .height(36.dp)
                 .background(Color.Transparent)
-                .border(width = 1.dp, color = Independence, shape = RoundedCornerShape(24.dp))
+                .border(width = 1.dp, color = Independence20, shape = RoundedCornerShape(24.dp))
 
 
         ) {
@@ -53,24 +65,27 @@ fun MessageFooter() {
                 modifier = Modifier
                     .size(24.dp)
                     .align(Alignment.Center),
-                tint = Independence
+                tint = Independence50
 
             )
         }
-        TextField(
-            value = message, onValueChange = { newText ->
-                message = newText
-            },
-            Modifier
-                .background(Color.Transparent)
+
+        CustomTextField(
+
+            trailingIcon = null, modifier = Modifier
                 .weight(1f)
+                .background(
+                    Independence10, RoundedCornerShape(percent = 25)
+                )
+                .height(42.dp), fontSize = 14.sp, placeholderText = "Message"
         )
+
         Box(
             modifier = Modifier
                 .width(36.dp)
                 .height(36.dp)
                 .background(Color.Transparent)
-                .border(width = 1.dp, color = Independence, shape = RoundedCornerShape(24.dp))
+                .border(width = 1.dp, color = Independence20, shape = RoundedCornerShape(24.dp))
 
 
         ) {
@@ -80,7 +95,7 @@ fun MessageFooter() {
                 modifier = Modifier
                     .size(24.dp)
                     .align(Alignment.Center),
-                tint = Independence
+                tint = Independence50
 
             )
         }
@@ -89,17 +104,17 @@ fun MessageFooter() {
                 .width(36.dp)
                 .height(36.dp)
                 .background(Color.Transparent)
-                .border(width = 1.dp, color = Independence, shape = RoundedCornerShape(24.dp))
+                .border(width = 1.dp, color = Independence20, shape = RoundedCornerShape(24.dp))
 
 
         ) {
             Icon(
-                Icons.Outlined.Expand,
+                Icons.Outlined.Explore,
                 contentDescription = "Favorite",
                 modifier = Modifier
                     .size(24.dp)
                     .align(Alignment.Center),
-                tint = Independence
+                tint = Independence50
 
             )
         }
@@ -108,56 +123,46 @@ fun MessageFooter() {
     }
 }
 
-
 @Composable
-fun AppTextF() {
+private fun CustomTextField(
+    modifier: Modifier = Modifier,
+    leadingIcon: (@Composable () -> Unit)? = null,
+    trailingIcon: (@Composable () -> Unit)? = null,
+    placeholderText: String = "Placeholder",
+    fontSize: TextUnit = MaterialTheme.typography.body2.fontSize
+) {
+    var text by rememberSaveable { mutableStateOf("") }
+    BasicTextField(modifier = modifier
 
-    Column {
-        var textState by remember { mutableStateOf("") }
-        val maxLength = 110
-        val lightBlue = Color(0xffd8e6ff)
-        val blue = Color(0xff76a9ff)
-        Text(
-            text = "Caption",
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 4.dp),
-            textAlign = TextAlign.Start,
-            color = blue
-        )
-        TextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = textState,
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = lightBlue,
-                cursorColor = Color.Black,
-                disabledLabelColor = lightBlue,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent
-            ),
-            onValueChange = {
-                if (it.length <= maxLength) textState = it
-            },
-            shape = RoundedCornerShape(8.dp),
-            singleLine = true,
-            trailingIcon = {
-                if (textState.isNotEmpty()) {
-                    IconButton(onClick = { textState = "" }) {
-                        Icon(
-                            imageVector = Icons.Outlined.Close,
-                            contentDescription = null
+        .fillMaxWidth(),
+        value = text,
+        onValueChange = {
+            text = it
+        },
+        singleLine = true,
+        cursorBrush = SolidColor(MaterialTheme.colors.primary),
+        textStyle = LocalTextStyle.current.copy(
+            color = MaterialTheme.colors.onSurface, fontSize = fontSize
+        ),
+        decorationBox = { innerTextField ->
+            Row(
+                modifier, verticalAlignment = Alignment.CenterVertically
+            ) {
+                if (leadingIcon != null) leadingIcon()
+                Box(
+                    Modifier
+                        .weight(1f)
+                        .padding(start = 14.dp)
+                ) {
+                    if (text.isEmpty()) Text(
+                        placeholderText, style = LocalTextStyle.current.copy(
+                            color = MaterialTheme.colors.onSurface.copy(alpha = 0.3f),
+                            fontSize = fontSize
                         )
-                    }
+                    )
+                    innerTextField()
                 }
+                if (trailingIcon != null) trailingIcon()
             }
-        )
-        Text(
-            text = "${textState.length} / $maxLength",
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 4.dp),
-            textAlign = TextAlign.End,
-            color = blue
-        )
-    }
+        })
 }

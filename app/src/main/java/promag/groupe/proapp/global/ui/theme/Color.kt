@@ -12,6 +12,8 @@ val Teal200 = Color(0xFF03DAC5)
 val Accepted = Color(0xFF2D9CDB)
 val Independence = Color(0xFF4A5562)
 val Independence50 = Color(0x504A5562)
+val Independence20 = Color(0x204A5562)
+val Independence10 = Color(0x104A5562)
 
 val FlatWhite = Color(0xFFFBFBFB)
 val Success = Color(0xFF27AE60)
