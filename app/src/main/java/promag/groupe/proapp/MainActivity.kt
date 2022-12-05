@@ -4,10 +4,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.View
-import android.widget.GridLayout
 import promag.groupe.proapp.global.DiscussionActivity
 import promag.groupe.proapp.infrabitume.Encaissement
 import promag.groupe.proapp.infrabitume.FactureActivity
@@ -20,7 +17,6 @@ import promag.groupe.proapp.views.AppToast
 class MainActivity : BaseActivity() {
 
 
-    private lateinit var container: GridLayout
     private lateinit var mNotificationManager: NotificationManager
 
 
@@ -29,30 +25,7 @@ class MainActivity : BaseActivity() {
         setContentView(R.layout.activity_main)
         mNotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-//        (application as BaseApplication).newestArticleObservers.add { newOne ->
-//            Log.d("socket _observer", newOne)
-//        }
 
-
-//        mSendSocket!!.connect()
-
-    }
-
-
-    override fun onResume() {
-        super.onResume()
-
-        val handler = Handler(Looper.getMainLooper())
-
-//        handler.postDelayed({
-//            attemptSend()
-//        }, 1000 * 5)
-    }
-
-    private fun attemptSend() {
-        val message = "HI there from this terminal"
-
-//        mSendSocket!!.emit("context", message)
     }
 
 

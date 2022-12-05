@@ -151,8 +151,7 @@ class Connexion : BaseActivity() {
                 mApplication.userPreferences.userToken = user.token
                 mApplication.socketConnection()
                 gotoMain()
-                //todo set with shared preferences
-                //todo continue to main activity
+
 
             }
 

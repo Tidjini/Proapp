@@ -56,8 +56,8 @@ class BaseApplication : Application() {
     override fun onTerminate() {
         super.onTerminate()
         mSocket!!.disconnect();
-        //todo clear all events
-        mSocket!!.off("PRODUCT", onNewMessage);
+        //clear all events
+        mSocket!!.off(user.token, onNewMessage);
     }
 
     fun clearSocketListening(event: String?) {

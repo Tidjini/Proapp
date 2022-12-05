@@ -19,7 +19,7 @@ class Discussion(
     var type: String = "s",
     @SerializedName("last_message")
     var lastMessage: Message? = null
-): Serializable {
+) : Serializable {
 
 
     val shortMessage: String
@@ -37,36 +37,23 @@ class Discussion(
             if (lastMessage == null || lastMessage!!.message.isEmpty()) return ""
             var dateCreation = lastMessage!!.dateCreation
             if (dateCreation.isNullOrEmpty()) return ""
-//            dateCreation = dateCreation.replace("T", " ")
 
-            Log.d("DATE DIFF", "$this - $dateCreation: ")
-
-
-
-            try {
-//                val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.ssssss'Z'", Locale.FRANCE)
+            return try {
+                //todo time zone issue GMT+1
                 val format = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'")
                 val date = LocalDateTime.parse(dateCreation, format);
-//                val date = format.parse(dateCreation)
                 val now = LocalDateTime.now()
 
                 Log.d("DATE DIFF", "$now - $date: ")
 
-                return now.difference(date)
+                now.difference(date)
 
             } catch (e: ParseException) {
-                // TODO Auto-generated catch block
                 e.printStackTrace()
-                return "dateTime"
+                "dateTime"
 
             }
-//            val df: DateFormat = SimpleDateFormat(ISO_DATE_TIME_FORMAT)
-//            val ldt: LocalDateTime = LocalDateTime.parse(dateCreation)
-//
-//            val date = Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant());
-//            val now = Date()
-//            return now.difference(date)
-//            return "24 minute(s)"
+
 
         }
 }
@@ -81,7 +68,7 @@ class Message(
     @SerializedName("send_to")
     var sendTo: User? = null,
     var sender: Int = 0,
-): Serializable
+) : Serializable
 
 
 object MessageProvider {

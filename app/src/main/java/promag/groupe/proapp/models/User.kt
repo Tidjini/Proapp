@@ -3,7 +3,7 @@ package promag.groupe.proapp.models
 import java.io.Serializable
 
 
-//todo remember to switch all to English
+
 class User(
     var id: Int = 0,
     var username: String = "",
