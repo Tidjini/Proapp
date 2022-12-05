@@ -55,10 +55,28 @@ fun MyApp() {
 
 @Composable
 fun BarkHomeContent() {
+
+    //todo get discussion
+    //todo get user from discussion
+    //todo get messages list
+    //todo send message
+
+
+
+
+
+
+
+
+
     val messages = remember { MessageProvider.messges }
     Column(Modifier.fillMaxSize()) {
         MessageHeader(user = User(username = "tidjini", name = "Messaoudi Tidjini"))
+
+
         Divider()
+
+
         LazyColumn(
             modifier = Modifier.weight(1f),
             contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
