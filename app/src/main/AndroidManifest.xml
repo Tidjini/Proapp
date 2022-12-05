@@ -39,7 +39,7 @@
         android:usesCleartextTraffic="true"
         tools:ignore="HardcodedDebugMode">
         <activity
-            android:name=".global.MessagesActivity"
+            android:name=".global.messenger.messages.MessagesActivity"
             android:exported="false"
             android:label="@string/title_activity_messages"
             android:theme="@style/AppTheme">

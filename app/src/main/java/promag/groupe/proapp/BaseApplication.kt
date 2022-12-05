@@ -14,7 +14,7 @@ import com.google.gson.Gson
 import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
-import promag.groupe.proapp.global.MessagesActivity
+import promag.groupe.proapp.global.messenger.messages.MessagesActivity
 import promag.groupe.proapp.models.Message
 import promag.groupe.proapp.models.User
 import promag.groupe.proapp.services.procom.ProcomAPI
