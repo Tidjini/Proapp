@@ -1,5 +1,6 @@
 package promag.groupe.proapp.global
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -93,6 +94,9 @@ class DiscussionActivity : BaseActivity(), DiscussionAdapter.Listener {
 //        val product = adapter!!.getProduct(position)
 //
 //        Picasso.get().load(product!!.picture).into(viewBinder.productImage);
+
+        val i = Intent(this, MessagesActivity::class.java)
+        startActivity(i)
     }
 
 }

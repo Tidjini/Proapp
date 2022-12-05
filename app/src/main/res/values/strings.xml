@@ -24,4 +24,5 @@
     <string name="zero_current_commande">il n\'existe aucune commande courante dans votre list</string>
     <string name="refresh">Refresh</string>
     <string name="zero_current_commande_title">Votre liste est vide</string>
+    <string name="title_activity_messages">MessagesActivity</string>
 </resources>
