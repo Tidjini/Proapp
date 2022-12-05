@@ -17,10 +17,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import promag.groupe.proapp.global.message.MessageFooter
 import promag.groupe.proapp.global.message.MessageHeader
-import promag.groupe.proapp.global.ui.theme.Accepted
 import promag.groupe.proapp.global.ui.theme.ProappTheme
-import promag.groupe.proapp.global.ui.theme.Success
 import promag.groupe.proapp.global.ui.theme.Success80
 import promag.groupe.proapp.models.Message
 import promag.groupe.proapp.models.MessageProvider
@@ -58,7 +57,7 @@ fun MyApp() {
 fun BarkHomeContent() {
     val messages = remember { MessageProvider.messges }
     Column(Modifier.fillMaxSize()) {
-        MessageHeader(user= User(username = "tidjini", name = "Messaoudi Tidjini"))
+        MessageHeader(user = User(username = "tidjini", name = "Messaoudi Tidjini"))
         Divider()
         LazyColumn(
             modifier = Modifier.weight(1f),
@@ -68,11 +67,8 @@ fun BarkHomeContent() {
                 MessageListItem(message = it)
             })
         }
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp), text = "MENU", color = Color.Green
-        )
+        Divider()
+        MessageFooter()
 
     }
 
