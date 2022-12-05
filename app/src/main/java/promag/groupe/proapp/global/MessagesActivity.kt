@@ -28,6 +28,9 @@ import promag.groupe.proapp.global.ui.theme.Success80
 import promag.groupe.proapp.models.Discussion
 import promag.groupe.proapp.models.Message
 import promag.groupe.proapp.models.User
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 open class BaseCompActivity : ComponentActivity() {
@@ -81,9 +84,8 @@ class MessagesViewModel(val app: BaseApplication, val discussionId: Int) : ViewM
         viewModelScope.launch {
             try {
                 mMessages.clear()
-                val result =
-                    app.quotesApi.getMessages("token ${app.user.token}", discussionId)
-                        ?: return@launch
+                val result = app.quotesApi.getMessages("token ${app.user.token}", discussionId)
+                    ?: return@launch
 
                 mMessages.addAll(result.body()!!.results)
             } catch (e: Exception) {
@@ -93,7 +95,33 @@ class MessagesViewModel(val app: BaseApplication, val discussionId: Int) : ViewM
     }
 
     fun postMessage() {
-        mMessages.add(Message(message = "Message Ajouter For Examples", sender = app.user.id))
+
+        val result = app.quotesApi.sendMessage(
+            "token ${app.user.token}",
+            Message(
+                message = "Message Ajouter For Examples",
+                discussion = discussionId
+            )
+        ) ?: return
+        result.enqueue(object : Callback<Message?> {
+            override fun onResponse(call: Call<Message?>, response: Response<Message?>) {
+                if (response.errorBody() != null || response.body()!!.id == 0) {
+                    //displayConnexionFailure("BODY ERROR| " + response.errorBody())
+                    return
+                }
+                val message: Message = response.body()
+                    ?: //displayConnexionFailure("BODY ERROR| " + response.errorBody())
+                    return
+
+                mMessages.add(message)
+
+            }
+
+            override fun onFailure(call: Call<Message?>, t: Throwable) {
+                //displayConnexionFailure("ON FAILURE| " + t.toString())
+            }
+
+        })
     }
 }
 
@@ -161,13 +189,11 @@ fun MessageListItem(message: Message, user: User?) {
 //    val colorMagenta = Color.Magenta
 
     // Creating a Radial Gradient Color
-    val gradientRadial =
-        Brush.linearGradient(
-            listOf(
-                MaterialTheme.colors.background,
-                Success80
-            )
+    val gradientRadial = Brush.linearGradient(
+        listOf(
+            MaterialTheme.colors.background, Success80
         )
+    )
     val senderBackground =
         if (message.sender == mUser.id) Modifier.background(gradientRadial) else Modifier.background(
             Color.Transparent
@@ -185,10 +211,7 @@ fun MessageListItem(message: Message, user: User?) {
                 .align(cardAlignment),
             elevation = 1.dp,
             shape = RoundedCornerShape(
-                topStart = 32.dp,
-                topEnd = 32.dp,
-                bottomStart = bottomStart,
-                bottomEnd = bottomEnd
+                topStart = 32.dp, topEnd = 32.dp, bottomStart = bottomStart, bottomEnd = bottomEnd
             ),
             backgroundColor = MaterialTheme.colors.background,
 

@@ -72,7 +72,7 @@ class Discussion(
 }
 
 class Message(
-    var id: Int = 0,
+    var id: Int? = null,
     var receiver: Int = 0,
     @SerializedName("date_creation")
     var dateCreation: String? = null,
