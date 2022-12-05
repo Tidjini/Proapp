@@ -35,12 +35,13 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
+@Suppress("DEPRECATION")
 open class BaseCompActivity : ComponentActivity() {
     lateinit var mApplication: BaseApplication
     lateinit var user: User
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
 
         mApplication = applicationContext as BaseApplication
         user = mApplication.user
@@ -50,7 +51,6 @@ open class BaseCompActivity : ComponentActivity() {
 class MessagesActivity : BaseCompActivity() {
 
     var discussion: Discussion? = null
-    var messages: List<Message> = ArrayList<Message>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         discussion = intent.getSerializableExtra(DISCUSSION_EXTRA) as Discussion?
@@ -71,7 +71,7 @@ class MessagesActivity : BaseCompActivity() {
 
 }
 
-class MessagesViewModel(val app: BaseApplication, val discussionId: Int) : ViewModel() {
+class MessagesViewModel(val app: BaseApplication, private val discussionId: Int) : ViewModel() {
     private val mMessages = mutableStateListOf<Message>()
     var errorMessage: String by mutableStateOf("")
     val messages: List<Message>
@@ -106,11 +106,11 @@ class MessagesViewModel(val app: BaseApplication, val discussionId: Int) : ViewM
                     //displayConnexionFailure("BODY ERROR| " + response.errorBody())
                     return
                 }
-                val message: Message = response.body()
+                val msg: Message = response.body()
                     ?: //displayConnexionFailure("BODY ERROR| " + response.errorBody())
                     return
 
-                mMessages.add(0, message)
+                mMessages.add(0, msg)
 
             }
 
@@ -137,13 +137,10 @@ fun MyApp(discussion: Discussion?, user: User?, vm: MessagesViewModel) {
 @Composable
 fun BarkHomeContent(discussion: Discussion?, appUser: User?, vm: MessagesViewModel) {
 
-    //DONE get discussion
-    //DONE get user from discussion
-    //DONE get messages list
-    //DONE send message
 
 
-    val coroutineScope = rememberCoroutineScope()
+
+//    val coroutineScope = rememberCoroutineScope()
     val listState = rememberLazyListState()
 
     val other = discussion?.other ?: User(username = "John", name = "John Doe")
