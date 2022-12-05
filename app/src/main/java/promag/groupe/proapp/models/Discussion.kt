@@ -73,12 +73,14 @@ class Discussion(
 
 class Message(
     var id: Int? = null,
-    var receiver: Int = 0,
+    var receiver: User? = null,
     @SerializedName("date_creation")
     var dateCreation: String? = null,
     var message: String = "",
     var discussion: Int = 0,
-    var sender: Int = 0
+    @SerializedName("send_to")
+    var sendTo: User? = null,
+    var sender: Int = 0,
 ): Serializable
 
 
@@ -94,15 +96,15 @@ object MessageProvider {
     Some Content in Here from""".trimMargin()
 
     init {
-        for (i in 1..100) {
-            val r = (1..50).random()
-            val ctn = if (r.mod(2) == 0) longMessage else "Some Content in Here from 1 to $i"
-            val sender = if (r.mod(2) == 0) 2 else 1
-            val msg = Message(
-                id = i, receiver = i, message = ctn,
-                discussion = 1, sender = sender, dateCreation = ""
-            )
-            messges.add(msg)
-        }
+//        for (i in 1..100) {
+//            val r = (1..50).random()
+//            val ctn = if (r.mod(2) == 0) longMessage else "Some Content in Here from 1 to $i"
+//            val sender = if (r.mod(2) == 0) 2 else 1
+//            val msg = Message(
+//                id = i, receiver = i, message = ctn,
+//                discussion = 1, sender = sender.id, dateCreation = ""
+//            )
+//            messges.add(msg)
+//        }
     }
 }

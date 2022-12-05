@@ -1,6 +1,5 @@
 package promag.groupe.proapp
 
-import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -14,16 +13,12 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
-import androidx.appcompat.app.AppCompatActivity
-import promag.groupe.proapp.infrabitume.FactureActivity
 import promag.groupe.proapp.models.Auth
 import promag.groupe.proapp.models.User
 import promag.groupe.proapp.services.procom.ProcomAPI
 import promag.groupe.proapp.services.procom.ProcomService
-import promag.groupe.proapp.utils.CacheHelper
 import promag.groupe.proapp.utils.CacheHelper.userToken
 import promag.groupe.proapp.views.AppAlertDialog
-import promag.groupe.proapp.views.AppToast
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -37,7 +32,6 @@ class Connexion : BaseActivity() {
     private lateinit var username: EditText
     private lateinit var password: EditText
     private lateinit var connexionButton: Button
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -155,6 +149,7 @@ class Connexion : BaseActivity() {
 
                 mApplication.user = user
                 mApplication.userPreferences.userToken = user.token
+                mApplication.socketConnection()
                 gotoMain()
                 //todo set with shared preferences
                 //todo continue to main activity

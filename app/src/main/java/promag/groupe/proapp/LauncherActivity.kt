@@ -61,6 +61,7 @@ class LauncherActivity : AppCompatActivity() {
 
                 app.user = user
                 app.userPreferences.userToken = user.token
+                app.socketConnection()
                 gotoMain()
             }
 

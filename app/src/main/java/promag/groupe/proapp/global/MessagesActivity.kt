@@ -20,6 +20,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
+import io.socket.emitter.Emitter
 import kotlinx.coroutines.launch
 import promag.groupe.proapp.BaseApplication
 import promag.groupe.proapp.DISCUSSION_EXTRA
@@ -56,6 +58,7 @@ class MessagesActivity : BaseCompActivity() {
         discussion = intent.getSerializableExtra(DISCUSSION_EXTRA) as Discussion?
 
         val vm = MessagesViewModel(mApplication, discussion!!.id)
+        vm.listen()
         setContent {
             ProappTheme {
                 // A surface container using the 'background' color from the theme
@@ -68,6 +71,12 @@ class MessagesActivity : BaseCompActivity() {
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        if (mApplication.mSocket == null) return
+        mApplication.listenNotifications(mApplication.user.token)
+    }
+
 
 }
 
@@ -76,6 +85,20 @@ class MessagesViewModel(val app: BaseApplication, private val discussionId: Int)
     var errorMessage: String by mutableStateOf("")
     val messages: List<Message>
         get() = mMessages
+
+
+    fun listen() {
+        if (app.mSocket == null) return
+        app.clearSocketListening(app.user.token)
+        app.mSocket!!.on(app.user.token, onNewMessage)
+    }
+
+    private val onNewMessage =
+        Emitter.Listener { args ->
+            val data = args[0]
+            val message = Gson().fromJson<Message>(data.toString(), Message::class.java)
+            mMessages.add(0, message)
+        }
 
     fun getMessages() {
         viewModelScope.launch {
@@ -138,8 +161,6 @@ fun MyApp(discussion: Discussion?, user: User?, vm: MessagesViewModel) {
 fun BarkHomeContent(discussion: Discussion?, appUser: User?, vm: MessagesViewModel) {
 
 
-
-
 //    val coroutineScope = rememberCoroutineScope()
     val listState = rememberLazyListState()
 
@@ -178,11 +199,12 @@ fun BarkHomeContent(discussion: Discussion?, appUser: User?, vm: MessagesViewMod
 @Composable
 fun MessageListItem(message: Message, user: User?) {
     val mUser = user!!
-    val bottomEnd = if (message.sender == mUser.id) 0.dp else 32.dp
-    val bottomStart = if (message.sender != mUser.id) 0.dp else 32.dp
-    val paddingStart = if (message.sender != mUser.id) 8.dp else 32.dp
-    val paddingEnd = if (message.sender == mUser.id) 8.dp else 32.dp
-    val cardAlignment = if (message.sender == mUser.id) Alignment.End else Alignment.Start
+    val sender = message.sendTo!!
+    val bottomEnd = if (sender.id == mUser.id) 0.dp else 32.dp
+    val bottomStart = if (sender.id != mUser.id) 0.dp else 32.dp
+    val paddingStart = if (sender.id != mUser.id) 8.dp else 32.dp
+    val paddingEnd = if (sender.id == mUser.id) 8.dp else 32.dp
+    val cardAlignment = if (sender.id == mUser.id) Alignment.End else Alignment.Start
 
     // Declaring 4 Colors
 //    val colorBlack = Color.Black
@@ -195,7 +217,7 @@ fun MessageListItem(message: Message, user: User?) {
         )
     )
     val senderBackground =
-        if (message.sender == mUser.id) Modifier.background(gradientRadial) else Modifier.background(
+        if (sender.id == mUser.id) Modifier.background(gradientRadial) else Modifier.background(
             Color.Transparent
         )
 
