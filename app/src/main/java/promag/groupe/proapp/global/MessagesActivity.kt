@@ -55,7 +55,7 @@ class MessagesActivity : BaseCompActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background
                 ) {
-                    MyApp(discussion, vm)
+                    MyApp(discussion, mApplication.user, vm)
                 }
             }
         }
@@ -82,7 +82,8 @@ class MessagesViewModel(val app: BaseApplication, val discussionId: Int) : ViewM
             try {
                 mMessages.clear()
                 val result =
-                    app.quotesApi.getMessages("token ${app.user.token}", discussionId) ?: return@launch
+                    app.quotesApi.getMessages("token ${app.user.token}", discussionId)
+                        ?: return@launch
 
                 mMessages.addAll(result.body()!!.results)
             } catch (e: Exception) {
@@ -91,32 +92,32 @@ class MessagesViewModel(val app: BaseApplication, val discussionId: Int) : ViewM
         }
     }
 
-    fun postMessage(){
-        mMessages.addAll(result.body()!!.results)
+    fun postMessage() {
+        mMessages.add(Message(message = "Message Ajouter For Examples", sender = app.user.id))
     }
 }
 
 @Composable
-fun MyApp(discussion: Discussion?, vm: MessagesViewModel) {
+fun MyApp(discussion: Discussion?, user: User?, vm: MessagesViewModel) {
     Scaffold(
 
 
         content = {
 
-            BarkHomeContent(discussion, vm)
+            BarkHomeContent(discussion, user, vm)
         })
 }
 
 
 @Composable
-fun BarkHomeContent(discussion: Discussion?, vm: MessagesViewModel) {
+fun BarkHomeContent(discussion: Discussion?, appUser: User?, vm: MessagesViewModel) {
 
     //DONE get discussion
     //DONE get user from discussion
     //todo get messages list
     //todo send message
 
-    val user = discussion?.other ?: User(username = "John", name = "John Doe")
+    val other = discussion?.other ?: User(username = "John", name = "John Doe")
     LaunchedEffect(Unit, block = {
         vm.getMessages()
     })
@@ -124,7 +125,7 @@ fun BarkHomeContent(discussion: Discussion?, vm: MessagesViewModel) {
 
 
     Column(Modifier.fillMaxSize()) {
-        MessageHeader(user = user)
+        MessageHeader(user = other)
 
 
         Divider()
@@ -135,11 +136,11 @@ fun BarkHomeContent(discussion: Discussion?, vm: MessagesViewModel) {
             contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
         ) {
             items(items = vm.messages, itemContent = {
-                MessageListItem(message = it)
+                MessageListItem(message = it, appUser)
             })
         }
         Divider()
-        MessageFooter()
+        MessageFooter(vm)
 
     }
 
@@ -147,12 +148,13 @@ fun BarkHomeContent(discussion: Discussion?, vm: MessagesViewModel) {
 
 
 @Composable
-fun MessageListItem(message: Message) {
-    val bottomEnd = if (message.sender == 1) 0.dp else 32.dp
-    val bottomStart = if (message.sender != 1) 0.dp else 32.dp
-    val paddingStart = if (message.sender != 1) 8.dp else 32.dp
-    val paddingEnd = if (message.sender == 1) 8.dp else 32.dp
-    val cardAlignment = if (message.sender == 1) Alignment.End else Alignment.Start
+fun MessageListItem(message: Message, user: User?) {
+    val mUser = user!!
+    val bottomEnd = if (message.sender == mUser.id) 0.dp else 32.dp
+    val bottomStart = if (message.sender != mUser.id) 0.dp else 32.dp
+    val paddingStart = if (message.sender != mUser.id) 8.dp else 32.dp
+    val paddingEnd = if (message.sender == mUser.id) 8.dp else 32.dp
+    val cardAlignment = if (message.sender == mUser.id) Alignment.End else Alignment.Start
 
     // Declaring 4 Colors
 //    val colorBlack = Color.Black
@@ -167,7 +169,7 @@ fun MessageListItem(message: Message) {
             )
         )
     val senderBackground =
-        if (message.sender == 1) Modifier.background(gradientRadial) else Modifier.background(
+        if (message.sender == mUser.id) Modifier.background(gradientRadial) else Modifier.background(
             Color.Transparent
         )
 

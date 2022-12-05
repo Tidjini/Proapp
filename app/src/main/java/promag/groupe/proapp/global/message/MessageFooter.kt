@@ -5,34 +5,32 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.Icon
-import androidx.compose.material.LocalTextStyle
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Explore
 import androidx.compose.material.icons.outlined.Mic
 import androidx.compose.material.icons.outlined.PhotoCameraFront
+import androidx.compose.material.icons.outlined.Send
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import promag.groupe.proapp.global.ui.theme.Independence
+import promag.groupe.proapp.global.MessagesViewModel
 import promag.groupe.proapp.global.ui.theme.Independence10
 import promag.groupe.proapp.global.ui.theme.Independence20
 import promag.groupe.proapp.global.ui.theme.Independence50
 
 
-@Preview
 @Composable
-fun MessageFooter() {
+fun MessageFooter(vm: MessagesViewModel) {
 
     var message by remember {
         mutableStateOf(
@@ -72,13 +70,16 @@ fun MessageFooter() {
 
         CustomTextField(
 
-            trailingIcon = null, modifier = Modifier
+            trailingIcon = null,
+            modifier = Modifier
                 .weight(1f)
                 .background(
                     Independence10, RoundedCornerShape(percent = 25)
                 )
-                .height(42.dp), fontSize = 14.sp, placeholderText = "Message"
-        )
+                .height(42.dp),
+            fontSize = 14.sp, placeholderText = "Message",
+
+            )
 
         Box(
             modifier = Modifier
@@ -108,15 +109,21 @@ fun MessageFooter() {
 
 
         ) {
-            Icon(
-                Icons.Outlined.Explore,
-                contentDescription = "Favorite",
-                modifier = Modifier
-                    .size(24.dp)
-                    .align(Alignment.Center),
-                tint = Independence50
+            IconButton(onClick = {
+                vm.postMessage()
+            }) {
+                Icon(
+                    Icons.Outlined.Send,
+                    contentDescription = "Favorite",
+                    modifier = Modifier
+                        .size(24.dp)
+                        .align(Alignment.Center),
+                    tint = Independence50,
 
-            )
+
+                    )
+            }
+
         }
 
 
@@ -132,9 +139,17 @@ private fun CustomTextField(
     fontSize: TextUnit = MaterialTheme.typography.body2.fontSize
 ) {
     var text by rememberSaveable { mutableStateOf("") }
-    BasicTextField(modifier = modifier
 
-        .fillMaxWidth(),
+    BasicTextField(
+
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+        keyboardActions = KeyboardActions(
+//            onDone = { focusRequester.requestFocus() }
+        ),
+
+        modifier = modifier
+
+            .fillMaxWidth(),
         value = text,
         onValueChange = {
             text = it
