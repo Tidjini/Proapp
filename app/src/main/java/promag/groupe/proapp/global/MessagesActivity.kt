@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import promag.groupe.proapp.global.message.MessageHeader
 import promag.groupe.proapp.global.ui.theme.ProappTheme
 import promag.groupe.proapp.models.Message
 import promag.groupe.proapp.models.MessageProvider
@@ -53,6 +54,7 @@ fun MyApp() {
 fun BarkHomeContent() {
     val messages = remember { MessageProvider.messges }
     Column(Modifier.fillMaxSize()) {
+        MessageHeader()
         LazyColumn(
             modifier = Modifier.weight(1f),
             contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)

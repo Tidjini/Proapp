@@ -1,0 +1,92 @@
+package promag.groupe.proapp.global.message
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Menu
+import androidx.compose.material.icons.outlined.Phone
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import promag.groupe.proapp.global.ui.theme.FlatWhite
+import promag.groupe.proapp.global.ui.theme.Independence
+import promag.groupe.proapp.global.ui.theme.Success
+
+@Preview
+@Composable
+fun MessageHeader() {
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .padding(14.dp)
+    ) {
+        Box(
+            modifier = Modifier
+                .width(48.dp)
+                .height(48.dp)
+                .clip(shape = RoundedCornerShape(28.dp))
+                .background(Success)
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(1.dp)
+                    .clip(shape = RoundedCornerShape(28.dp))
+                    .background(FlatWhite)
+
+            ) {
+                Text(
+                    text = "Ti", modifier = Modifier.align(Alignment.Center)
+
+                )
+            }
+
+
+        }
+        Column(
+            modifier = Modifier
+                .padding(start = 14.dp)
+                .align(Alignment.CenterVertically)
+                .weight(1f)
+        ) {
+            Text(
+                text = "Tidjini Messaoudi",
+                style = MaterialTheme.typography.h6,
+                fontSize = 14.sp,
+                color = Independence
+            )
+            Text(
+                text = "online", style = MaterialTheme.typography.caption, color = Independence
+            )
+
+        }
+
+        Row(
+            modifier = Modifier.align(Alignment.CenterVertically)
+        ) {
+            Icon(
+                Icons.Outlined.Phone,
+                contentDescription = "Favorite",
+                modifier = Modifier.size(ButtonDefaults.IconSize)
+            )
+            Icon(
+                Icons.Outlined.Menu,
+                contentDescription = "Favorite",
+                modifier = Modifier
+                    .padding(start = 14.dp)
+                    .size(ButtonDefaults.IconSize)
+            )
+        }
+
+    }
+}
+
