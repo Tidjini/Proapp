@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import promag.groupe.proapp.global.ui.theme.FlatWhite
 import promag.groupe.proapp.global.ui.theme.Independence
+import promag.groupe.proapp.global.ui.theme.Independence50
 import promag.groupe.proapp.global.ui.theme.Success
 
 @Preview
@@ -27,7 +28,7 @@ fun MessageHeader() {
     Row(
         Modifier
             .fillMaxWidth()
-            .padding(14.dp)
+            .padding(horizontal = 24.dp, vertical = 14.dp)
     ) {
         Box(
             modifier = Modifier
@@ -39,7 +40,7 @@ fun MessageHeader() {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(1.dp)
+                    .padding(2.dp)
                     .clip(shape = RoundedCornerShape(28.dp))
                     .background(FlatWhite)
 
@@ -65,7 +66,7 @@ fun MessageHeader() {
                 color = Independence
             )
             Text(
-                text = "online", style = MaterialTheme.typography.caption, color = Independence
+                text = "online", style = MaterialTheme.typography.caption, color = Independence50
             )
 
         }
@@ -76,14 +77,14 @@ fun MessageHeader() {
             Icon(
                 Icons.Outlined.Phone,
                 contentDescription = "Favorite",
-                modifier = Modifier.size(ButtonDefaults.IconSize)
+                modifier = Modifier.size(28.dp)
             )
             Icon(
-                Icons.Outlined.Menu,
+                Icons.Outlined.Videocam,
                 contentDescription = "Favorite",
                 modifier = Modifier
                     .padding(start = 14.dp)
-                    .size(ButtonDefaults.IconSize)
+                    .size(28.dp)
             )
         }
 

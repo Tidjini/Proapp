@@ -18,7 +18,10 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import promag.groupe.proapp.global.message.MessageHeader
+import promag.groupe.proapp.global.ui.theme.Accepted
 import promag.groupe.proapp.global.ui.theme.ProappTheme
+import promag.groupe.proapp.global.ui.theme.Success
+import promag.groupe.proapp.global.ui.theme.Success80
 import promag.groupe.proapp.models.Message
 import promag.groupe.proapp.models.MessageProvider
 
@@ -90,8 +93,8 @@ fun MessageListItem(message: Message) {
     val gradientRadial =
         Brush.linearGradient(
             listOf(
-                MaterialTheme.colors.primary,
-                MaterialTheme.colors.primaryVariant
+                MaterialTheme.colors.background,
+                Success80
             )
         )
     val senderBackground =
@@ -109,7 +112,7 @@ fun MessageListItem(message: Message) {
                 )
                 .wrapContentWidth()
                 .align(cardAlignment),
-            elevation = 2.dp,
+            elevation = 1.dp,
             shape = RoundedCornerShape(
                 topStart = 32.dp,
                 topEnd = 32.dp,
