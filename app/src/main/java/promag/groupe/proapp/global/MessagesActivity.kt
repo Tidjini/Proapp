@@ -50,22 +50,26 @@ open class BaseCompActivity : ComponentActivity() {
     }
 }
 
+//
+
 class MessagesActivity : BaseCompActivity() {
 
     var discussion: Discussion? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        discussion = intent.getSerializableExtra(DISCUSSION_EXTRA) as Discussion?
+        discussion = intent.getSerializableExtra(DISCUSSION_EXTRA) as Discussion
+
 
         val vm = MessagesViewModel(mApplication, discussion!!.id)
         vm.listen()
+
         setContent {
             ProappTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background
                 ) {
-                    MyApp(discussion, mApplication.user, vm)
+                    MyApp(vm, mApplication.user, discussion!!)
                 }
             }
         }
@@ -82,9 +86,13 @@ class MessagesActivity : BaseCompActivity() {
 
 class MessagesViewModel(val app: BaseApplication, private val discussionId: Int) : ViewModel() {
     private val mMessages = mutableStateListOf<Message>()
+    private val mDiscussion = mutableStateOf(Discussion())
     var errorMessage: String by mutableStateOf("")
     val messages: List<Message>
         get() = mMessages
+
+    val discussion: Discussion
+        get() = mDiscussion.value
 
 
     fun listen() {
@@ -96,9 +104,26 @@ class MessagesViewModel(val app: BaseApplication, private val discussionId: Int)
     private val onNewMessage =
         Emitter.Listener { args ->
             val data = args[0]
-            val message = Gson().fromJson<Message>(data.toString(), Message::class.java)
-            mMessages.add(0, message)
+            val message = Gson().fromJson(data.toString(), Message::class.java)
+            if (message.discussion == discussionId)
+                mMessages.add(0, message)
         }
+
+    fun getDiscussion(id: Int) {
+        val token = app.user.token
+        if (token.isNullOrEmpty()) return
+        viewModelScope.launch {
+            try {
+                mMessages.clear()
+                val result = app.quotesApi.getDiscussion("token ${app.user.token}", discussionId)
+                    ?: return@launch
+
+                mDiscussion.value = result.body()!!
+            } catch (e: Exception) {
+                errorMessage = e.message.toString()
+            }
+        }
+    }
 
     fun getMessages() {
         viewModelScope.launch {
@@ -146,25 +171,24 @@ class MessagesViewModel(val app: BaseApplication, private val discussionId: Int)
 }
 
 @Composable
-fun MyApp(discussion: Discussion?, user: User?, vm: MessagesViewModel) {
+fun MyApp(vm: MessagesViewModel, user: User?, discussion: Discussion) {
     Scaffold(
 
-
         content = {
-
-            BarkHomeContent(discussion, user, vm)
+            BarkHomeContent(vm, user, discussion)
         })
 }
 
 
 @Composable
-fun BarkHomeContent(discussion: Discussion?, appUser: User?, vm: MessagesViewModel) {
+fun BarkHomeContent(vm: MessagesViewModel, appUser: User?, discussion: Discussion) {
 
 
 //    val coroutineScope = rememberCoroutineScope()
     val listState = rememberLazyListState()
+    val user = discussion.other
 
-    val other = discussion?.other ?: User(username = "John", name = "John Doe")
+
     LaunchedEffect(Unit, block = {
         vm.getMessages()
     })
@@ -172,7 +196,7 @@ fun BarkHomeContent(discussion: Discussion?, appUser: User?, vm: MessagesViewMod
 
 
     Column(Modifier.fillMaxSize()) {
-        MessageHeader(user = other)
+        MessageHeader(user)
 
 
         Divider()
