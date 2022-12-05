@@ -63,9 +63,10 @@ class DiscussionViewModel(val app: BaseApplication) : ViewModel() {
         }
     }
 
-    fun gotoMessagesActivity(discussion: Discussion) {
+    private fun gotoMessagesActivity(discussion: Discussion) {
         val i = Intent(app, MessagesActivity::class.java)
         i.putExtra(DISCUSSION_EXTRA, discussion)
+        i.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
         app.startActivity(i)
     }
 

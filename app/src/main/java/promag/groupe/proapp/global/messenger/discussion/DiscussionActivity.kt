@@ -3,6 +3,7 @@ package promag.groupe.proapp.global.messenger.discussion
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -53,6 +54,13 @@ class DiscussionActivity : BaseActivity(), DiscussionAdapter.Listener {
     override fun onResume() {
         super.onResume()
         getResult()
+
+    }
+
+    fun test(view : View){
+        val viewMode = DiscussionViewModel(app = mApplication)
+        viewMode.addDiscussion(3)
+
     }
 
 
