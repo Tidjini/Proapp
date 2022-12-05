@@ -1,7 +1,6 @@
 package promag.groupe.proapp.global
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -11,15 +10,14 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme.typography
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import promag.groupe.proapp.BaseApplication
 import promag.groupe.proapp.DISCUSSION_EXTRA
@@ -29,7 +27,6 @@ import promag.groupe.proapp.global.ui.theme.ProappTheme
 import promag.groupe.proapp.global.ui.theme.Success80
 import promag.groupe.proapp.models.Discussion
 import promag.groupe.proapp.models.Message
-import promag.groupe.proapp.models.MessageProvider
 import promag.groupe.proapp.models.User
 
 
@@ -49,13 +46,16 @@ class MessagesActivity : BaseCompActivity() {
     var messages: List<Message> = ArrayList<Message>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        discussion = intent.getSerializableExtra(DISCUSSION_EXTRA) as Discussion?
+
+        val vm = MessagesViewModel(mApplication, discussion!!.id)
         setContent {
             ProappTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background
                 ) {
-                    MyApp(discussion, messages)
+                    MyApp(discussion, vm)
                 }
             }
         }
@@ -64,47 +64,52 @@ class MessagesActivity : BaseCompActivity() {
 
     override fun onResume() {
         super.onResume()
-        discussion = intent.getSerializableExtra(DISCUSSION_EXTRA) as Discussion?
 
-        GlobalScope.launch(Dispatchers.Main) {
+
+    }
+
+
+}
+
+class MessagesViewModel(val app: BaseApplication, val discussionId: Int) : ViewModel() {
+    private val mMessages = mutableStateListOf<Message>()
+    var errorMessage: String by mutableStateOf("")
+    val messages: List<Message>
+        get() = mMessages
+
+    fun getMessages() {
+        viewModelScope.launch {
             try {
+                mMessages.clear()
+                val result =
+                    app.quotesApi.getMessages("token ${app.user.token}", discussionId) ?: return@launch
 
-
-                val token = mApplication.user.token ?: return@launch
-
-                val result = mApplication.quotesApi.getMessages("token $token", discussion!!.id)
-                    ?: return@launch
-
-                if (result.body() == null) {
-                    return@launch
-                }
-
-                val list = result.body()!!.results
-                messages = list
-
-
+                mMessages.addAll(result.body()!!.results)
             } catch (e: Exception) {
-                Log.e("MESSAGES Exception: ", e.toString())
+                errorMessage = e.message.toString()
             }
-
         }
+    }
+
+    fun postMessage(){
+        mMessages.addAll(result.body()!!.results)
     }
 }
 
 @Composable
-fun MyApp(discussion: Discussion?, messages: List<Message>) {
+fun MyApp(discussion: Discussion?, vm: MessagesViewModel) {
     Scaffold(
 
 
         content = {
 
-            BarkHomeContent(discussion, messages)
+            BarkHomeContent(discussion, vm)
         })
 }
 
 
 @Composable
-fun BarkHomeContent(discussion: Discussion?, messages: List<Message> ) {
+fun BarkHomeContent(discussion: Discussion?, vm: MessagesViewModel) {
 
     //DONE get discussion
     //DONE get user from discussion
@@ -112,9 +117,10 @@ fun BarkHomeContent(discussion: Discussion?, messages: List<Message> ) {
     //todo send message
 
     val user = discussion?.other ?: User(username = "John", name = "John Doe")
+    LaunchedEffect(Unit, block = {
+        vm.getMessages()
+    })
 
-
-//    val messages = remember { MessageProvider.messges }
 
 
     Column(Modifier.fillMaxSize()) {
@@ -128,7 +134,7 @@ fun BarkHomeContent(discussion: Discussion?, messages: List<Message> ) {
             modifier = Modifier.weight(1f),
             contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
         ) {
-            items(items = messages, itemContent = {
+            items(items = vm.messages, itemContent = {
                 MessageListItem(message = it)
             })
         }
