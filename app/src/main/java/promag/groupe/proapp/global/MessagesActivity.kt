@@ -37,18 +37,6 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-@Suppress("DEPRECATION")
-open class BaseCompActivity : ComponentActivity() {
-    lateinit var mApplication: BaseApplication
-    lateinit var user: User
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
-
-        mApplication = applicationContext as BaseApplication
-        user = mApplication.user
-    }
-}
 
 //
 
