@@ -93,6 +93,7 @@ class MainActivity : BaseActivity() {
             {
                 mApplication.userPreferences.userToken = null
                 finish()
+                mApplication.onTerminate()
             },
             null
         )
