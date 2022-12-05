@@ -1,6 +1,7 @@
 package promag.groupe.proapp.global
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -17,6 +18,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import promag.groupe.proapp.BaseApplication
 import promag.groupe.proapp.DISCUSSION_EXTRA
 import promag.groupe.proapp.global.message.MessageFooter
 import promag.groupe.proapp.global.message.MessageHeader
@@ -27,9 +32,21 @@ import promag.groupe.proapp.models.Message
 import promag.groupe.proapp.models.MessageProvider
 import promag.groupe.proapp.models.User
 
-class MessagesActivity : ComponentActivity() {
+
+open class BaseCompActivity : ComponentActivity() {
+    lateinit var mApplication: BaseApplication
+    lateinit var user: User
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mApplication = applicationContext as BaseApplication
+        user = mApplication.user
+    }
+}
+
+class MessagesActivity : BaseCompActivity() {
 
     var discussion: Discussion? = null
+    var messages: List<Message> = ArrayList<Message>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -38,7 +55,7 @@ class MessagesActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background
                 ) {
-                    MyApp(discussion)
+                    MyApp(discussion, messages)
                 }
             }
         }
@@ -48,28 +65,46 @@ class MessagesActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
         discussion = intent.getSerializableExtra(DISCUSSION_EXTRA) as Discussion?
-//        if (discussion == null) {
-//            super.onBackPressed()
-//        }
+
+        GlobalScope.launch(Dispatchers.Main) {
+            try {
 
 
+                val token = mApplication.user.token ?: return@launch
+
+                val result = mApplication.quotesApi.getMessages("token $token", discussion!!.id)
+                    ?: return@launch
+
+                if (result.body() == null) {
+                    return@launch
+                }
+
+                val list = result.body()!!.results
+                messages = list
+
+
+            } catch (e: Exception) {
+                Log.e("MESSAGES Exception: ", e.toString())
+            }
+
+        }
     }
 }
 
 @Composable
-fun MyApp(discussion: Discussion?) {
+fun MyApp(discussion: Discussion?, messages: List<Message>) {
     Scaffold(
 
 
         content = {
 
-            BarkHomeContent(discussion)
+            BarkHomeContent(discussion, messages)
         })
 }
 
 
 @Composable
-fun BarkHomeContent(discussion: Discussion?) {
+fun BarkHomeContent(discussion: Discussion?, messages: List<Message> ) {
 
     //DONE get discussion
     //DONE get user from discussion
@@ -79,8 +114,7 @@ fun BarkHomeContent(discussion: Discussion?) {
     val user = discussion?.other ?: User(username = "John", name = "John Doe")
 
 
-
-    val messages = remember { MessageProvider.messges }
+//    val messages = remember { MessageProvider.messges }
 
 
     Column(Modifier.fillMaxSize()) {

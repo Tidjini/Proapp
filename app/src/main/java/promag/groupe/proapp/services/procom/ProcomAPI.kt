@@ -41,4 +41,7 @@ interface ProcomAPI {
     @GET("discussions/")
     suspend fun getDiscussions(@Header("Authorization") token: String) : Response<PageResponse<Discussion>>?
 
+    @GET("messages/")
+    suspend fun getMessages(@Header("Authorization") token: String, @Query("discussion") id:Int) : Response<PageResponse<Message>>?
+
 }
