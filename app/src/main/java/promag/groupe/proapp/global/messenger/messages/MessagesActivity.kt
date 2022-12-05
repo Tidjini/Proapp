@@ -29,13 +29,13 @@ import promag.groupe.proapp.models.User
 class MessagesActivity : BaseComponentActivity() {
 
     var discussion: Discussion? = null
+    var vm: MessagesViewModel? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         discussion = intent.getSerializableExtra(DISCUSSION_EXTRA) as Discussion
 
 
-        val vm = MessagesViewModel(mApplication, discussion!!.id)
-        vm.listen()
+        vm = MessagesViewModel(mApplication, discussion!!.id)
 
         setContent {
             ProappTheme {
@@ -43,14 +43,21 @@ class MessagesActivity : BaseComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background
                 ) {
-                    Messages(vm, mApplication.user, discussion!!)
+                    Messages(vm!!, mApplication.user, discussion!!)
                 }
             }
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (vm != null)
+            vm!!.listen()
+    }
+
     override fun onPause() {
         super.onPause()
+
         if (mApplication.mSocket == null) return
         mApplication.listenNotifications(mApplication.user.token)
     }

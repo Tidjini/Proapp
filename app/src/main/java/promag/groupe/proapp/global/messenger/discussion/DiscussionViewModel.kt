@@ -55,6 +55,7 @@ class DiscussionViewModel(val app: BaseApplication) : ViewModel() {
                 if (result?.body() == null) return@launch
 
                 mDiscussions.add(0, result.body()!!)
+                //todo verify the other user
                 gotoMessagesActivity(result.body()!!)
 
             } catch (e: Exception) {
