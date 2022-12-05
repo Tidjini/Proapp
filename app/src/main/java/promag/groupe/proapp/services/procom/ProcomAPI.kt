@@ -61,7 +61,7 @@ interface ProcomAPI {
     @POST("discussions/")
     suspend fun createDiscussion(
         @Header("Authorization") token: String,
-        @Body discussion: Discussion
+        @Body discussion: DiscussionCreator
     ): Response<Discussion?>?
 
 }

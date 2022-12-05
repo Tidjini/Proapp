@@ -73,27 +73,4 @@ class Message(
 ) : Serializable
 
 
-object MessageProvider {
-    val messges = ArrayList<Message>()
-
-    val longMessage =
-        """"Some Content in Here from, Some Content in Here from, 
-    Some Content in Here from, Some Content in Here from, 
-    Some Content in Here from
-    Some Content in Here from
-    Some Content in Here from
-    Some Content in Here from""".trimMargin()
-
-    init {
-//        for (i in 1..100) {
-//            val r = (1..50).random()
-//            val ctn = if (r.mod(2) == 0) longMessage else "Some Content in Here from 1 to $i"
-//            val sender = if (r.mod(2) == 0) 2 else 1
-//            val msg = Message(
-//                id = i, receiver = i, message = ctn,
-//                discussion = 1, sender = sender.id, dateCreation = ""
-//            )
-//            messges.add(msg)
-//        }
-    }
-}
+class DiscussionCreator(val user: Int, val name : String)
