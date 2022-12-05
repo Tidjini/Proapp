@@ -1,5 +1,7 @@
 package promag.groupe.proapp.global.ui.theme
 
+import androidx.compose.material.MaterialTheme
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
 val Purple200 = Color(0xFFBB86FC)
@@ -14,3 +16,12 @@ val Independence50 = Color(0x504A5562)
 val FlatWhite = Color(0xFFFBFBFB)
 val Success = Color(0xFF27AE60)
 val Success80 = Color(0x8027AE60)
+
+
+val SuccessGradient =
+    Brush.linearGradient(
+        listOf(
+            Success,
+            Success80
+        )
+    )

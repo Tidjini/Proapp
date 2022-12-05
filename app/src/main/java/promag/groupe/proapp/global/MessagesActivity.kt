@@ -24,6 +24,7 @@ import promag.groupe.proapp.global.ui.theme.Success
 import promag.groupe.proapp.global.ui.theme.Success80
 import promag.groupe.proapp.models.Message
 import promag.groupe.proapp.models.MessageProvider
+import promag.groupe.proapp.models.User
 
 class MessagesActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,7 +58,8 @@ fun MyApp() {
 fun BarkHomeContent() {
     val messages = remember { MessageProvider.messges }
     Column(Modifier.fillMaxSize()) {
-        MessageHeader()
+        MessageHeader(user= User(username = "tidjini", name = "Messaoudi Tidjini"))
+        Divider()
         LazyColumn(
             modifier = Modifier.weight(1f),
             contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
