@@ -43,21 +43,7 @@ class MessagesViewModel(val app: BaseApplication, private val discussionId: Int)
                 mMessages.add(0, message)
         }
 
-    fun getDiscussion(id: Int) {
-        val token = app.user.token
-        if (token.isNullOrEmpty()) return
-        viewModelScope.launch {
-            try {
-                mMessages.clear()
-                val result = app.quotesApi.getDiscussion("token ${app.user.token}", discussionId)
-                    ?: return@launch
 
-                mDiscussion.value = result.body()!!
-            } catch (e: Exception) {
-                errorMessage = e.message.toString()
-            }
-        }
-    }
 
     fun getMessages() {
         viewModelScope.launch {
