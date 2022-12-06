@@ -1,13 +1,14 @@
 package promag.groupe.proapp.services.procom
 
-import promag.groupe.proapp.models.Product
+import promag.groupe.proapp.models.PageResponse
+import promag.groupe.proapp.models.commercial.Product
 import retrofit2.Response
 import retrofit2.http.*
 
 interface CommercialAPI {
 
     @GET("products/")
-    suspend fun getProducts(@Header("Authorization") token: String): Response<List<Product>>?
+    suspend fun getProducts(@Header("Authorization") token: String): Response<PageResponse<Product>>?
 
     @POST("products/")
     suspend fun createProduct(

@@ -17,6 +17,7 @@ import io.socket.emitter.Emitter
 import promag.groupe.proapp.global.messenger.messages.MessagesActivity
 import promag.groupe.proapp.models.Message
 import promag.groupe.proapp.models.User
+import promag.groupe.proapp.services.procom.CommercialAPI
 import promag.groupe.proapp.services.procom.ProcomAPI
 import promag.groupe.proapp.services.procom.ProcomService
 import promag.groupe.proapp.utils.CacheHelper
@@ -29,6 +30,7 @@ class BaseApplication : Application() {
     lateinit var user: User
     lateinit var userPreferences: SharedPreferences
     lateinit var quotesApi: ProcomAPI
+    lateinit var commercialApi: CommercialAPI
 
     var mSocket: Socket? = null
     var observed = false
@@ -49,6 +51,7 @@ class BaseApplication : Application() {
         //globals
         userPreferences = CacheHelper.customPreference(applicationContext, USER_PREFERENCE)
         quotesApi = ProcomService.getInstance().create(ProcomAPI::class.java)
+        commercialApi = ProcomService.getInstance().create(CommercialAPI::class.java)
 
     }
 
