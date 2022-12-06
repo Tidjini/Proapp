@@ -77,7 +77,7 @@ class MainActivity : BaseActivity() {
     }
 
 // TODO
-//    - create new one / copie to new project reanme it to procom
+//    - DONE create new one / copie to new project reanme it to procom
 //    - bitume simple application
 //    - Stock Reception
 //    - Product - Qte - Value - Each Reception, Date
