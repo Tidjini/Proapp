@@ -65,7 +65,7 @@ class MainActivity : BaseActivity() {
             "Voulez vous vraiment quitter l'application ?",
             {
                 mApplication.userPreferences.userToken = null
-                finish()
+                finishAffinity()
                 mApplication.onTerminate()
             },
             null
@@ -74,7 +74,21 @@ class MainActivity : BaseActivity() {
 
     override fun onBackPressed() {
         this.finishAffinity()
-
     }
+
+// TODO
+//    - create new one / copie to new project reanme it to procom
+//    - bitume simple application
+//    - Stock Reception
+//    - Product - Qte - Value - Each Reception, Date
+//    - Bon Livraison
+//    - Tier - Produit - Qte - Prix - Value, date
+//    - Deduire Stock formule
+//    - Les Encaissements
+//    - Tier - Montant - Type - Date
+//    - Chauffeur Tasks also:
+//    - Task -> chauffeur, DONE / CANCEL /
+//    - Instance de Facture:
+//    - Simple, NO UI designing
 
 }
