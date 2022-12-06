@@ -57,7 +57,7 @@ class DiscussionActivity : BaseActivity(), DiscussionAdapter.Listener {
 
     }
 
-    fun test(view : View){
+    fun createDisccusion(view : View){
         val viewMode = DiscussionViewModel(app = mApplication)
         viewMode.addDiscussion(3)
 

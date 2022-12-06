@@ -17,29 +17,59 @@
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <include
+        <!--        <include-->
+        <!--            android:id="@+id/discussion_header"-->
+        <!--            layout="@layout/app_header" />-->
+        <LinearLayout
             android:id="@+id/discussion_header"
-            layout="@layout/app_header" />
-        <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="test"
-            android:onClick="test"
-            />
+            android:layout_margin="14dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="Chats"
+                android:textSize="18sp"
+                android:textStyle="bold"
+
+                />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/transparent"
+                android:onClick="createDisccusion"
+                android:src="@drawable/ic_add_person"
+                android:text="test"
+                app:tint="@color/colorPrimary" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/discussion_header"
+            android:background="@color/gray" />
+
+
         <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:indeterminateDrawable="@drawable/progress_circular"
             app:isGone="@{!loading}" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="Votre liste de produits est Vide\nverifier votre service."
-            app:isGone="@{!empty_list}"
-            />
+            app:isGone="@{!empty_list}" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/product_list"
@@ -47,7 +77,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/discussion_header"
             android:orientation="vertical"
-            tools:listitem="@layout/discussion_item"
-            />
+            tools:listitem="@layout/discussion_item" />
     </RelativeLayout>
 </layout>
