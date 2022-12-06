@@ -7,6 +7,7 @@ import promag.groupe.proapp.BASE_URL_API
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+
 object ProcomService {
 
 
@@ -18,4 +19,7 @@ object ProcomService {
             // convert JSON object to Java object
             .build()
     }
+
+
+
 }
