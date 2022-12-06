@@ -9,8 +9,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import promag.groupe.proapp.BaseApplication
-import promag.groupe.proapp.global.messenger.messages.MessagesActivity
+import promag.groupe.proapp.PRODUCT_EXTRA
 import promag.groupe.proapp.models.commercial.Product
+import java.lang.Double
+import kotlin.Exception
+import kotlin.String
+import kotlin.toString
 
 class ProductViewModel(val app: BaseApplication) : ViewModel() {
 
@@ -44,6 +48,24 @@ class ProductViewModel(val app: BaseApplication) : ViewModel() {
         }
     }
 
+
+    fun save(name: String, qte: String, value: String, product: Product) {
+
+        try {
+            product.qteStock = Double.parseDouble(qte)
+            product.value = Double.parseDouble(value)
+            product.name = name
+
+            if (product.id == null || product.id == 0) {
+                return createProduct(product)
+            }
+            return updateProduct(product)
+
+        } catch (e: Exception) {
+            //todo display error message
+        }
+    }
+
     fun createProduct(product: Product) {
         viewModelScope.launch {
             try {
@@ -51,7 +73,7 @@ class ProductViewModel(val app: BaseApplication) : ViewModel() {
                 app.commercialApi.createProduct("token ${app.user.token}", product)
                     ?: return@launch
 
-                gotoProductssActivity()
+                gotoProductCollectionView()
             } catch (e: Exception) {
                 errorMessage = e.message.toString()
             }
@@ -62,10 +84,10 @@ class ProductViewModel(val app: BaseApplication) : ViewModel() {
         viewModelScope.launch {
             try {
 
-                app.commercialApi.updateProduct("token ${app.user.token}", product)
+                app.commercialApi.updateProduct("token ${app.user.token}", product.id!!, product)
                     ?: return@launch
 
-                gotoProductssActivity()
+                gotoProductCollectionView()
             } catch (e: Exception) {
                 errorMessage = e.message.toString()
             }
@@ -73,10 +95,27 @@ class ProductViewModel(val app: BaseApplication) : ViewModel() {
     }
 
 
-    private fun gotoProductssActivity() {
-        val i = Intent(app, MessagesActivity::class.java)
+    private fun gotoProductCollectionView() {
+        val i = Intent(app, ProductCollectionView::class.java)
         i.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
         app.startActivity(i)
+    }
+
+    fun createProductView() {
+
+        val intent = Intent(app, ProductView::class.java)
+        intent.putExtra(PRODUCT_EXTRA, Product())
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
+
+        app.startActivity(intent)
+    }
+
+    fun editProductView(product: Product) {
+        mProduct.value = product
+        val intent = Intent(app, ProductView::class.java)
+        intent.putExtra(PRODUCT_EXTRA, product)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
+        app.startActivity(intent)
     }
 
 

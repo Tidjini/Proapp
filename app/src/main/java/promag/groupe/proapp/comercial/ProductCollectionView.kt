@@ -1,5 +1,6 @@
 package promag.groupe.proapp.comercial
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -10,10 +11,10 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.AddCircle
 import androidx.compose.material.icons.outlined.ArrowBack
-import androidx.compose.material.icons.outlined.Filter
+import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.outlined.FilterList
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -21,18 +22,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModelProvider
 import promag.groupe.proapp.BaseComponentActivity
+import promag.groupe.proapp.MainActivity
 import promag.groupe.proapp.global.ui.theme.*
 import promag.groupe.proapp.models.User
 import promag.groupe.proapp.models.commercial.Product
 
 
-class ProductsView : BaseComponentActivity() {
+class ProductCollectionView : BaseComponentActivity() {
 
-    var vm: ProductViewModel? = null
+    lateinit var vm: ProductViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        vm = ProductViewModel(mApplication)
+
+        vm = ViewModelProvider(
+            this, AppViewModelFactory(mApplication)
+        )[ProductViewModel::class.java]
 
         setContent {
             ProappTheme {
@@ -50,12 +57,18 @@ class ProductsView : BaseComponentActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        val i = Intent(this, MainActivity::class.java)
+        startActivity(i)
+        this.finish()
+    }
+
 
 }
 
 
 @Composable
-fun MainContent(vm: ProductViewModel, user: User, activity: ProductsView) {
+fun MainContent(vm: ProductViewModel, user: User, activity: ProductCollectionView) {
 
 
     val listState = rememberLazyListState()
@@ -68,7 +81,7 @@ fun MainContent(vm: ProductViewModel, user: User, activity: ProductsView) {
 
 
     Column(Modifier.fillMaxSize()) {
-        CreateDiscussionHeader(activity)
+        ProductsViewHeader(activity)
         Divider()
         LazyColumn(
             state = listState,
@@ -87,7 +100,7 @@ fun MainContent(vm: ProductViewModel, user: User, activity: ProductsView) {
 //todo use translate between frensh and english
 
 @Composable
-fun CreateDiscussionHeader(activity: ProductsView) {
+fun ProductsViewHeader(activity: ProductCollectionView) {
 
     Row(
         Modifier
@@ -122,14 +135,16 @@ fun CreateDiscussionHeader(activity: ProductsView) {
 
             IconButton(onClick = { /*TODO*/ }) {
                 Icon(
-                    Icons.Outlined.Filter,
+                    Icons.Outlined.FilterList,
                     contentDescription = "Filter",
                     modifier = Modifier.size(28.dp),
                     tint = Success
 
                 )
             }
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = {
+                activity.vm.createProductView()
+            }) {
                 Icon(
                     Icons.Outlined.AddCircle,
                     contentDescription = "Add Products",
@@ -207,9 +222,9 @@ fun ProductItem(item: Product, viewModel: ProductViewModel) {
 
         }
 
-        IconButton(onClick = { /*Todo modification*/ }) {
+        IconButton(onClick = { viewModel.editProductView(item) }) {
             Icon(
-                Icons.Outlined.Add,
+                Icons.Outlined.Edit,
                 contentDescription = "Add Contact",
                 modifier = Modifier.size(28.dp),
                 tint = Success

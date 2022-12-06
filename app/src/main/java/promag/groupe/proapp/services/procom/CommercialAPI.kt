@@ -19,6 +19,7 @@ interface CommercialAPI {
     @PUT("products/{id}/")
     suspend fun updateProduct(
         @Header("Authorization") token: String,
+        @Path("id") id: Int,
         @Body product: Product
     ): Response<Product>?
 

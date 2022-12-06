@@ -9,7 +9,7 @@ class Product(
     var qteStock: Double = 0.0,
     var value: Double = 0.0,
     var unite: String = "unite"
-) {
+) : java.io.Serializable {
     val caption: String
         get() {
             if (name.isNullOrEmpty()) return "An"
