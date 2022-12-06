@@ -64,4 +64,7 @@ interface ProcomAPI {
         @Body discussion: DiscussionCreator
     ): Response<Discussion?>?
 
+    @GET("utilisateurs/")
+    suspend fun getUsers(@Header("Authorization") token: String): Response<List<User>>?
+
 }

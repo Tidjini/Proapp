@@ -57,9 +57,10 @@ class DiscussionActivity : BaseActivity(), DiscussionAdapter.Listener {
 
     }
 
-    fun createDisccusion(view : View){
-        val viewMode = DiscussionViewModel(app = mApplication)
-        viewMode.addDiscussion(3)
+    fun createDisccusion(view: View) {
+
+        val intent = Intent(this, Contacts::class.java)
+        startActivity(intent)
 
     }
 

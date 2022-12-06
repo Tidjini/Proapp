@@ -46,6 +46,20 @@ class DiscussionViewModel(val app: BaseApplication) : ViewModel() {
         }
     }
 
+    fun getContacts() {
+        viewModelScope.launch {
+            try {
+                mContacts.clear()
+                val result = app.quotesApi.getUsers("token ${app.user.token}")
+                    ?: return@launch
+
+                mContacts.addAll(result.body()!!)
+            } catch (e: Exception) {
+                errorMessage = e.message.toString()
+            }
+        }
+    }
+
     fun addDiscussion(userId: Int) {
 
         val discussion = DiscussionCreator(user = userId, name = "room_name")

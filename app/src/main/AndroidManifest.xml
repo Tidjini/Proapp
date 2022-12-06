@@ -49,6 +49,17 @@
 
         </activity>
         <activity
+            android:name=".global.messenger.discussion.Contacts"
+            android:exported="false"
+            android:label="@string/title_activity_contacts"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+
+        </activity>
+
+        <activity
             android:name=".infrabitume.FactureDetailActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan">
