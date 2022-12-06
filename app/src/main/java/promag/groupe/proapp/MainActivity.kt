@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import promag.groupe.proapp.comercial.ProductsView
 import promag.groupe.proapp.global.messenger.discussion.DiscussionActivity
 import promag.groupe.proapp.infrabitume.Encaissement
 import promag.groupe.proapp.infrabitume.FactureActivity
@@ -57,6 +58,10 @@ class MainActivity : BaseActivity() {
 
     }
 
+    fun onStockClicked(view: View) {
+        val intent = Intent(this, ProductsView::class.java)
+        startActivity(intent)
+    }
 
     fun onLogout(view: View) {
         AppAlertDialog.showYesNoDialog(
