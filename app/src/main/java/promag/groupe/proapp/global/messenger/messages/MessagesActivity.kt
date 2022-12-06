@@ -1,5 +1,6 @@
 package promag.groupe.proapp.global.messenger.messages
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -19,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import promag.groupe.proapp.BaseComponentActivity
 import promag.groupe.proapp.DISCUSSION_EXTRA
+import promag.groupe.proapp.global.messenger.discussion.DiscussionActivity
 import promag.groupe.proapp.global.ui.theme.ProappTheme
 import promag.groupe.proapp.global.ui.theme.Success80
 import promag.groupe.proapp.models.Discussion
@@ -62,6 +64,12 @@ class MessagesActivity : BaseComponentActivity() {
         mApplication.listenNotifications(mApplication.user.token)
     }
 
+    override fun onBackPressed() {
+        val i = Intent(this, DiscussionActivity::class.java)
+        startActivity(i)
+//        super.onBackPressed()
+
+    }
 
 }
 

@@ -72,4 +72,9 @@ class MainActivity : BaseActivity() {
         )
     }
 
+    override fun onBackPressed() {
+        this.finishAffinity()
+
+    }
+
 }

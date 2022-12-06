@@ -13,6 +13,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import promag.groupe.proapp.BaseActivity
 import promag.groupe.proapp.DISCUSSION_EXTRA
+import promag.groupe.proapp.MainActivity
 import promag.groupe.proapp.adapters.DiscussionAdapter
 import promag.groupe.proapp.databinding.ActivityDiscussionBinding
 import promag.groupe.proapp.global.messenger.messages.MessagesActivity
@@ -112,4 +113,8 @@ class DiscussionActivity : BaseActivity(), DiscussionAdapter.Listener {
         startActivity(i)
     }
 
+    override fun onBackPressed() {
+        val i = Intent(this, MainActivity::class.java)
+        startActivity(i)
+    }
 }

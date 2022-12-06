@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/montserrat_bold"
-                android:text="Chats"
+                android:text="Messages"
                 android:textSize="18sp"
                 android:textStyle="bold"
 
