@@ -83,9 +83,9 @@ class MainActivity : BaseActivity() {
 
 // TODO
 //    - DONE create new one / copie to new project reanme it to procom
-//    - bitume simple application
-//    - Stock Reception
-//    - Product - Qte - Value - Each Reception, Date
+//    - DONE bitume simple application
+//    - DONE Stock Reception
+//    - DONE Product - Qte - Value - Each Reception, Date
 //    - Bon Livraison
 //    - Tier - Produit - Qte - Prix - Value, date
 //    - Deduire Stock formule
@@ -95,5 +95,7 @@ class MainActivity : BaseActivity() {
 //    - Task -> chauffeur, DONE / CANCEL /
 //    - Instance de Facture:
 //    - Simple, NO UI designing
+//    - Notifications  for Task
+//    - Notifications  for stock changes admins
 
 }
