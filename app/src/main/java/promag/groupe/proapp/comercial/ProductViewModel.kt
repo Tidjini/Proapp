@@ -11,7 +11,9 @@ import kotlinx.coroutines.launch
 import promag.groupe.proapp.BaseApplication
 import promag.groupe.proapp.PRODUCT_EXTRA
 import promag.groupe.proapp.models.commercial.Product
+import promag.groupe.proapp.models.commercial.StockMovement
 import java.lang.Double
+import kotlin.Boolean
 import kotlin.Exception
 import kotlin.String
 import kotlin.toString
@@ -66,6 +68,39 @@ class ProductViewModel(val app: BaseApplication) : ViewModel() {
         }
     }
 
+
+    fun createStockMovement(
+        document: String,
+        qte: String,
+        prixUnite: String,
+        out: Boolean,
+        product: Product
+    ) {
+
+        val q = Double.parseDouble(qte)
+        val prix = Double.parseDouble(prixUnite)
+
+        val move = StockMovement(
+            document = document,
+            qte = q,
+            prixUnite = prix,
+            product = product.id,
+            out = out
+        )
+
+        viewModelScope.launch {
+            try {
+
+                val result = app.commercialApi.createStockMovement("token ${app.user.token}", move)
+
+
+                gotoProductCollectionView()
+            } catch (e: Exception) {
+                errorMessage = e.message.toString()
+            }
+        }
+    }
+
     fun createProduct(product: Product) {
         viewModelScope.launch {
             try {
@@ -113,6 +148,14 @@ class ProductViewModel(val app: BaseApplication) : ViewModel() {
     fun editProductView(product: Product) {
         mProduct.value = product
         val intent = Intent(app, ProductView::class.java)
+        intent.putExtra(PRODUCT_EXTRA, product)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
+        app.startActivity(intent)
+    }
+
+    fun setMovementView(product: Product) {
+        mProduct.value = product
+        val intent = Intent(app, StockMovementView::class.java)
         intent.putExtra(PRODUCT_EXTRA, product)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
         app.startActivity(intent)

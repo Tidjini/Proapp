@@ -11,10 +11,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.AddCircle
-import androidx.compose.material.icons.outlined.ArrowBack
-import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material.icons.outlined.FilterList
+import androidx.compose.material.icons.outlined.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -222,13 +219,24 @@ fun ProductItem(item: Product, viewModel: ProductViewModel) {
 
         }
 
-        IconButton(onClick = { viewModel.editProductView(item) }) {
-            Icon(
-                Icons.Outlined.Edit,
-                contentDescription = "Add Contact",
-                modifier = Modifier.size(28.dp),
-                tint = Success
-            )
+        Row() {
+            IconButton(onClick = { viewModel.setMovementView(item) }) {
+                Icon(
+                    Icons.Outlined.MoveToInbox,
+                    contentDescription = "Movement",
+                    modifier = Modifier.size(28.dp),
+                    tint = Success
+                )
+            }
+            IconButton (onClick = { viewModel.editProductView(item) }) {
+                Icon(
+                    Icons.Outlined.Edit,
+                    contentDescription = "Add Contact",
+                    modifier = Modifier.size(28.dp),
+                    tint = Success
+                )
+            }
+
         }
 
 
