@@ -41,12 +41,12 @@ class Discussion(
             return try {
                 //todo time zone issue GMT+1
                 val format = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'")
-                val date = LocalDateTime.parse(dateCreation, format);
+                var date = LocalDateTime.parse(dateCreation, format);
                 val now = LocalDateTime.now()
 
                 Log.d("DATE DIFF", "$now - $date: ")
 
-                now.difference(date)
+                now.difference(date.plusHours(1))
 
             } catch (e: ParseException) {
                 e.printStackTrace()
@@ -66,11 +66,11 @@ class Message(
     var message: String = "",
     var discussion: Int = 0,
     @SerializedName("notif_discussion")
-    var notifDiscussion: Discussion?= null,
+    var notifDiscussion: Discussion? = null,
     @SerializedName("send_to")
     var sendTo: User? = null,
     var sender: Int = 0,
 ) : Serializable
 
 
-class DiscussionCreator(val user: Int, val name : String)
+class DiscussionCreator(val user: Int, val name: String)
