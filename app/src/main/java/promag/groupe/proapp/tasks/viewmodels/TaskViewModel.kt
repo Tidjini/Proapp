@@ -10,11 +10,9 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import promag.groupe.proapp.BaseApplication
 import promag.groupe.proapp.PRODUCT_EXTRA
-import promag.groupe.proapp.TIER_EXTRA
-import promag.groupe.proapp.comercial.models.Payment
-import promag.groupe.proapp.comercial.views.PaymentView
 import promag.groupe.proapp.models.User
 import promag.groupe.proapp.tasks.models.Task
+import promag.groupe.proapp.tasks.views.TaskCollectionView
 
 
 class TaskViewModel(val app: BaseApplication) : ViewModel() {
@@ -50,7 +48,6 @@ class TaskViewModel(val app: BaseApplication) : ViewModel() {
     }
 
 
-
     fun save(label: String, description: String, statue: String, receiver: User, task: Task) {
 
         try {
@@ -69,7 +66,6 @@ class TaskViewModel(val app: BaseApplication) : ViewModel() {
             //todo display error message
         }
     }
-
 
 
     fun createTask(task: Task) {
@@ -123,8 +119,6 @@ class TaskViewModel(val app: BaseApplication) : ViewModel() {
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
         app.startActivity(intent)
     }
-
-
 
 
 }

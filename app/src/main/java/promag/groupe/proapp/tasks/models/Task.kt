@@ -21,4 +21,23 @@ class Task(
 
         }
 
+    val shortDescription: String
+        get() {
+            if (description.isEmpty()) return "No Description to display"
+            if (description.length > 70) return "${description.substring(0, 70)} ..."
+            return description
+
+        }
+
+    val statueVerbose: String
+        get() {
+            return when(statue){
+                "i" -> "Instance"
+                "a" -> "Accepted"
+                "c" -> "Canceled"
+                else -> "Instance"
+            }
+
+        }
+
 }
