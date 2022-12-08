@@ -170,7 +170,8 @@ fun TaskEditor(vm: TaskViewModel, task: Task) {
             horizontalAlignment = Alignment.Start
         ) {
             Text(
-                text = "Personnel: ${receiver.value}"
+                text = "Tâche Affectée à: ${receiver.value}",
+                modifier = Modifier.padding(vertical = 14.dp)
             )
             Text(
                 text = "Intitule"

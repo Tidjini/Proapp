@@ -136,7 +136,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
                         android:gravity="center"
-                        android:text="Trésorerie"
+                        android:text="Récap"
                         android:textSize="11sp"
                         android:textStyle="bold" />
                 </LinearLayout>

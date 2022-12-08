@@ -78,7 +78,7 @@ fun TaskCollectionContent(vm: TaskViewModel, user: User, activity: TaskCollectio
 
     val listState = rememberLazyListState()
 
-    var type = rememberSaveable { mutableStateOf(1) }
+    var type = rememberSaveable { mutableStateOf(if(user.isAdmin) 0 else 1) }
 
     LaunchedEffect(Unit, block = {
         vm.getTasks(type = type.value)
