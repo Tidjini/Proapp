@@ -1,4 +1,4 @@
-package promag.groupe.proapp.comercial
+package promag.groupe.proapp.comercial.views
 
 import android.content.Intent
 import android.os.Bundle
@@ -24,7 +24,8 @@ import promag.groupe.proapp.BaseComponentActivity
 import promag.groupe.proapp.MainActivity
 import promag.groupe.proapp.global.ui.theme.*
 import promag.groupe.proapp.models.User
-import promag.groupe.proapp.models.commercial.Tier
+import promag.groupe.proapp.comercial.models.Tier
+import promag.groupe.proapp.comercial.viewmodels.TierViewModel
 
 
 class TierCollectionView : BaseComponentActivity() {
