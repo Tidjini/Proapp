@@ -14,6 +14,7 @@ import promag.groupe.proapp.comercial.TierCollectionView
 import promag.groupe.proapp.comercial.StockMovementView
 import promag.groupe.proapp.comercial.models.Payment
 import promag.groupe.proapp.comercial.models.Tier
+import promag.groupe.proapp.comercial.views.TierCollectionView
 import promag.groupe.proapp.models.commercial.StockMovement
 
 
@@ -82,17 +83,16 @@ class TierViewModel(val app: BaseApplication) : ViewModel() {
         val mtn = montant.toDouble()
 
         val payment = Payment(
-            document = document,
-            qte = q,
-            prixUnite = prix,
-            tier = tier.id,
+            label = label,
+            montant = mtn,
+            tier = tier.id!!,
             out = out
         )
 
         viewModelScope.launch {
             try {
 
-                val result = app.commercialApi.createStockMovement("token ${app.user.token}", move)
+                val result = app.commercialApi.createPayment("token ${app.user.token}", payment)
 
 
                 gotoTierCollectionView()
