@@ -11,7 +11,9 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.*
+import androidx.compose.material.icons.outlined.ArrowBack
+import androidx.compose.material.icons.outlined.FilterList
+import androidx.compose.material.icons.outlined.MoveToInbox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -118,7 +120,7 @@ fun PaymentsViewHeader(activity: PaymentCollectionView) {
         }
 
         Text(
-            text = "Payments",
+            text = "Paiements",
             style = MaterialTheme.typography.h6,
             fontSize = 18.sp,
             color = Independence,
@@ -168,7 +170,8 @@ fun PaymentItem(item: Payment, viewModel: TierViewModel) {
 
             ) {
                 Text(
-                    text = item.caption, modifier = Modifier.align(Alignment.Center)
+                    text = if (item.tierItem == null) item.caption else item.tierItem!!.caption,
+                    modifier = Modifier.align(Alignment.Center)
 
                 )
             }

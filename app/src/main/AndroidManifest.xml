@@ -112,7 +112,9 @@
         <activity
             android:name=".comercial.views.TierView"
             android:exported="false" />
-
+        <activity
+            android:name=".comercial.views.PaymentCollectionView"
+            android:exported="false" />
         <activity
             android:name=".comercial.views.PaymentView"
             android:exported="false" />

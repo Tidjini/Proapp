@@ -204,19 +204,17 @@ fun TierItem(item: Tier, viewModel: TierViewModel) {
                 fontSize = 14.sp,
                 color = Independence
             )
-            Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
-                Text(
-                    text = "Débit: ${item.debit}",
-                    style = MaterialTheme.typography.caption,
-                    color = Independence50
-                )
-                Text(
-                    text = "Crédit: ${item.credit}",
-                    style = MaterialTheme.typography.caption,
-                    color = Independence50
-                )
+            Text(
+                text = "Débit: ${item.debit}",
+                style = MaterialTheme.typography.caption,
+                color = Independence50
+            )
+            Text(
+                text = "Crédit: ${item.credit}",
+                style = MaterialTheme.typography.caption,
+                color = Independence50
+            )
 
-            }
             Text(
                 text = "Solde: ${item.balance}",
                 style = MaterialTheme.typography.h6,

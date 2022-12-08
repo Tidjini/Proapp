@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import promag.groupe.proapp.comercial.ProductCollectionView
+import promag.groupe.proapp.comercial.views.PaymentCollectionView
 import promag.groupe.proapp.comercial.views.TierCollectionView
 import promag.groupe.proapp.global.messenger.discussion.DiscussionActivity
 import promag.groupe.proapp.infrabitume.Encaissement
@@ -68,6 +69,10 @@ class MainActivity : BaseActivity() {
         startActivity(intent)
     }
 
+    fun onPaymentClicked(view: View) {
+        val intent = Intent(this, PaymentCollectionView::class.java)
+        startActivity(intent)
+    }
 
 
     fun onLogout(view: View) {
