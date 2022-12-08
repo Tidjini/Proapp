@@ -10,9 +10,11 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import promag.groupe.proapp.BaseApplication
 import promag.groupe.proapp.PRODUCT_EXTRA
+import promag.groupe.proapp.TASK_EXTRA
 import promag.groupe.proapp.models.User
 import promag.groupe.proapp.tasks.models.Task
 import promag.groupe.proapp.tasks.views.TaskCollectionView
+import promag.groupe.proapp.tasks.views.TaskView
 
 
 class TaskViewModel(val app: BaseApplication) : ViewModel() {
@@ -48,13 +50,13 @@ class TaskViewModel(val app: BaseApplication) : ViewModel() {
     }
 
 
-    fun save(label: String, description: String, statue: String, receiver: User, task: Task) {
+    fun save(label: String, description: String, statue: String, receiver: Int, task: Task) {
 
         try {
             task.label = label
             task.description = description
             task.statue = statue
-            task.receiver = receiver.id
+            task.receiver = receiver
 
 
             if (task.id == null || task.id == 0) {
@@ -72,8 +74,8 @@ class TaskViewModel(val app: BaseApplication) : ViewModel() {
         viewModelScope.launch {
             try {
 
-                app.tasksAPI.createTask("token ${app.user.token}", task)
-                    ?: return@launch
+//                app.tasksAPI.createTask("token ${app.user.token}", task)
+//                    ?: return@launch
 
                 gotoTaskCollectionView()
             } catch (e: Exception) {
@@ -115,7 +117,7 @@ class TaskViewModel(val app: BaseApplication) : ViewModel() {
     fun editTaskView(task: Task) {
         mTask.value = task
         val intent = Intent(app, TaskView::class.java)
-        intent.putExtra(PRODUCT_EXTRA, task)
+        intent.putExtra(TASK_EXTRA, task)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
         app.startActivity(intent)
     }
