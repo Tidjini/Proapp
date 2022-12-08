@@ -24,6 +24,7 @@ import promag.groupe.proapp.BaseComponentActivity
 import promag.groupe.proapp.MainActivity
 import promag.groupe.proapp.comercial.AppViewModelFactory
 import promag.groupe.proapp.comercial.models.Tier
+import promag.groupe.proapp.comercial.models.toPrice
 import promag.groupe.proapp.comercial.viewmodels.TierViewModel
 import promag.groupe.proapp.global.ui.theme.*
 import promag.groupe.proapp.models.User
@@ -167,7 +168,9 @@ fun TierItem(item: Tier, viewModel: TierViewModel) {
     Row(
         Modifier
             .fillMaxWidth()
-            .padding(14.dp)
+            .padding(14.dp),
+        verticalAlignment = Alignment.CenterVertically
+
     ) {
         Box(
             modifier = Modifier
@@ -205,18 +208,18 @@ fun TierItem(item: Tier, viewModel: TierViewModel) {
                 color = Independence
             )
             Text(
-                text = "Débit: ${item.debit}",
+                text = "Débit: ${toPrice(item.debit)}",
                 style = MaterialTheme.typography.caption,
                 color = Independence50
             )
             Text(
-                text = "Crédit: ${item.credit}",
+                text = "Crédit: ${toPrice(item.credit)}",
                 style = MaterialTheme.typography.caption,
                 color = Independence50
             )
 
             Text(
-                text = "Solde: ${item.balance}",
+                text = "Solde: ${toPrice(item.balance)}",
                 style = MaterialTheme.typography.h6,
                 fontSize = 14.sp,
                 color = Independence
@@ -228,7 +231,7 @@ fun TierItem(item: Tier, viewModel: TierViewModel) {
         Row() {
             IconButton(onClick = { viewModel.setPaymentView(item) }) {
                 Icon(
-                    Icons.Outlined.MoveToInbox,
+                    Icons.Outlined.Payment,
                     contentDescription = "Movement",
                     modifier = Modifier.size(28.dp),
                     tint = Success

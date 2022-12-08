@@ -183,7 +183,8 @@ fun ProductItem(item: Product, viewModel: ProductViewModel) {
 
             ) {
                 Text(
-                    text = item.caption, modifier = Modifier.align(Alignment.Center)
+                    text = item.caption, modifier = Modifier.align(Alignment.Center),
+                    fontSize = 11.sp
 
                 )
             }

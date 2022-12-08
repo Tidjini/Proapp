@@ -26,6 +26,7 @@ import promag.groupe.proapp.BaseComponentActivity
 import promag.groupe.proapp.MainActivity
 import promag.groupe.proapp.comercial.AppViewModelFactory
 import promag.groupe.proapp.comercial.models.Payment
+import promag.groupe.proapp.comercial.models.toPrice
 import promag.groupe.proapp.comercial.viewmodels.TierViewModel
 import promag.groupe.proapp.global.ui.theme.*
 import promag.groupe.proapp.models.User
@@ -152,7 +153,8 @@ fun PaymentItem(item: Payment, viewModel: TierViewModel) {
     Row(
         Modifier
             .fillMaxWidth()
-            .padding(14.dp)
+            .padding(14.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
             modifier = Modifier
@@ -192,9 +194,9 @@ fun PaymentItem(item: Payment, viewModel: TierViewModel) {
             )
             Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
                 Text(
-                    text = "${item.tierItem!!.label}",
-                    style = MaterialTheme.typography.h6,
-                    fontSize = 14.sp,
+                    text = item.tierItem!!.label,
+                    style = MaterialTheme.typography.caption,
+
                     color = Independence
                 )
                 Text(
@@ -206,7 +208,7 @@ fun PaymentItem(item: Payment, viewModel: TierViewModel) {
 
             }
             Text(
-                text = "Montant: ${item.montant}",
+                text = "Montant: ${toPrice(item.montant)}",
                 style = MaterialTheme.typography.h6,
                 fontSize = 14.sp,
                 color = Independence
@@ -215,17 +217,7 @@ fun PaymentItem(item: Payment, viewModel: TierViewModel) {
 
         }
 
-        Row() {
-            IconButton(onClick = { /*todo*/ }) {
-                Icon(
-                    Icons.Outlined.MoveToInbox,
-                    contentDescription = "Movement",
-                    modifier = Modifier.size(28.dp),
-                    tint = Success
-                )
-            }
 
-        }
 
 
     }

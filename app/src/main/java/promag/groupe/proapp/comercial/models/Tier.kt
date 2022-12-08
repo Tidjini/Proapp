@@ -1,7 +1,20 @@
 package promag.groupe.proapp.comercial.models
 
 import com.google.gson.annotations.SerializedName
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.text.NumberFormat
+import java.util.*
 
+fun toPrice(value: Double, currency: String = "DA"): String {
+    var format: NumberFormat = NumberFormat.getCurrencyInstance(Locale.FRANCE)
+    val decimalFormatSymbols: DecimalFormatSymbols =
+        (format as DecimalFormat).decimalFormatSymbols
+    decimalFormatSymbols.currencySymbol = ""
+    format.decimalFormatSymbols = decimalFormatSymbols
+    val price: String = format.format(value).trim()
+    return "$price $currency"
+}
 
 class Tier(
     var id: Int? = null,
@@ -23,6 +36,7 @@ class Tier(
             return "${label[0].uppercase()}"
 
         }
+
 
 }
 

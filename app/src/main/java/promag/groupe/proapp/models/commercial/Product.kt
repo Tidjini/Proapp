@@ -14,7 +14,7 @@ class Product(
         get() {
             if (name.isNullOrEmpty()) return "An"
             try {
-                return "${name[0].uppercase()}${name[1].lowercase()}"
+                return "${name.substring(0, 4).uppercase()}"
 
             } catch (exeception: Exception) {
 

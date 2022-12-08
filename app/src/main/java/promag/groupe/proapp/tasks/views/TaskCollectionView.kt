@@ -98,7 +98,7 @@ fun TaskCollectionContent(vm: TaskViewModel, user: User, activity: TaskCollectio
                 }, colors = ButtonDefaults.buttonColors(backgroundColor = Red, contentColor = Color.White),
                 modifier = Modifier.height(48.dp).padding(start = 14.dp).weight(1f)
             ) {
-                Text(text = "Tâches Créés")
+                Text(text = "Tâches Créées")
             }
             Button(
                 onClick = {

@@ -14,9 +14,7 @@ import com.google.gson.Gson
 import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
-import promag.groupe.proapp.comercial.models.Payment
 import promag.groupe.proapp.comercial.views.PaymentCollectionView
-import promag.groupe.proapp.comercial.views.PaymentView
 import promag.groupe.proapp.global.messenger.messages.MessagesActivity
 import promag.groupe.proapp.models.Message
 import promag.groupe.proapp.models.User
@@ -24,6 +22,7 @@ import promag.groupe.proapp.services.procom.CommercialAPI
 import promag.groupe.proapp.services.procom.ProcomAPI
 import promag.groupe.proapp.services.procom.ProcomService
 import promag.groupe.proapp.services.procom.TasksAPI
+import promag.groupe.proapp.tasks.views.TaskCollectionView
 import promag.groupe.proapp.utils.CacheHelper
 import java.net.URISyntaxException
 import kotlin.properties.Delegates
@@ -66,7 +65,9 @@ class BaseApplication : Application() {
         super.onTerminate()
         mSocket!!.disconnect();
         //clear all events
-        mSocket!!.off(user.token, onNewMessage);
+        mSocket!!.off(user.token, onNewMessage)
+        mSocket!!.off("${user.token}_tasks", onTaskChange)
+
         if (user.isAdmin)
             mSocket!!.off("payment_added", onPayementAdded)
 
@@ -90,6 +91,8 @@ class BaseApplication : Application() {
         try {
             mSocket = IO.socket(BASE_URL)
             mSocket!!.on(user.token, onNewMessage)
+            mSocket!!.on("${user.token}_tasks", onTaskChange)
+
             if (user.isAdmin)
                 mSocket!!.on("payment_added", onPayementAdded)
             mSocket!!.connect()
@@ -112,10 +115,59 @@ class BaseApplication : Application() {
 
         }
 
+    private val onTaskChange =
+        Emitter.Listener { args ->
+            val data = args[0]
+            val message = data.toString()
+            playNotif()
+            displayTaskChangeNotif(message)
+
+
+        }
+
+    fun displayTaskChangeNotif(message: String) {
+        val notificationManager = this.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+
+        val notificationId: Int = 0
+        val channelId = "channel-id"
+        val channelName = "Channel Name"
+        val importance = NotificationManager.IMPORTANCE_HIGH
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val mChannel = NotificationChannel(
+                channelId, channelName, importance
+            )
+            notificationManager.createNotificationChannel(mChannel)
+        }
+        val mBuilder: NotificationCompat.Builder = NotificationCompat.Builder(this, channelId)
+            .setSmallIcon(R.drawable.logo) //R.mipmap.ic_launcher
+            .setContentTitle("Gestion Tâches")
+            .setContentText(message)
+            .setVibrate(longArrayOf(100, 250))
+            .setLights(Color.YELLOW, 500, 5000)
+            .setAutoCancel(true)
+            .setColor(ContextCompat.getColor(this, R.color.colorPrimary))
+
+        val resultIntent = Intent(applicationContext, TaskCollectionView::class.java)
+        val resultPendingIntent: PendingIntent? = TaskStackBuilder.create(this).run {
+            // Add the intent, which inflates the back stack
+            addNextIntentWithParentStack(resultIntent)
+            // Get the PendingIntent containing the entire back stack
+            getPendingIntent(
+                0,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+        }
+
+        mBuilder.setContentIntent(resultPendingIntent)
+
+
+        notificationManager.notify(notificationId, mBuilder.build())
+    }
+
     private val onPayementAdded =
         Emitter.Listener { args ->
             val data = args[0]
-            val g = Gson()
             val message = data.toString()
             playNotif()
             displayNotificationForPayment(message)
@@ -123,6 +175,7 @@ class BaseApplication : Application() {
 
 
         }
+
     fun displayNotificationForPayment(message: String) {
         val notificationManager = this.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
