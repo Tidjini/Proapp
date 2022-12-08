@@ -23,13 +23,13 @@ import androidx.lifecycle.ViewModelProvider
 import promag.groupe.proapp.BaseComponentActivity
 import promag.groupe.proapp.MainActivity
 import promag.groupe.proapp.comercial.AppViewModelFactory
-import promag.groupe.proapp.comercial.models.Tier
+import promag.groupe.proapp.comercial.models.Payment
 import promag.groupe.proapp.comercial.viewmodels.TierViewModel
 import promag.groupe.proapp.global.ui.theme.*
 import promag.groupe.proapp.models.User
 
 
-class TierCollectionView : BaseComponentActivity() {
+class PaymentCollectionView : BaseComponentActivity() {
 
     lateinit var vm: TierViewModel
 
@@ -49,7 +49,7 @@ class TierCollectionView : BaseComponentActivity() {
                     Scaffold(
 
                         content = {
-                            TierCollectionContent(vm!!, mApplication.user, this)
+                            PaymentCollectionContent(vm!!, mApplication.user, this)
                         })
                 }
             }
@@ -67,27 +67,27 @@ class TierCollectionView : BaseComponentActivity() {
 
 
 @Composable
-fun TierCollectionContent(vm: TierViewModel, user: User, activity: TierCollectionView) {
+fun PaymentCollectionContent(vm: TierViewModel, user: User, activity: PaymentCollectionView) {
 
 
     val listState = rememberLazyListState()
 
 
     LaunchedEffect(Unit, block = {
-        vm.getTiers()
+        vm.getPayments()
     })
 
 
 
     Column(Modifier.fillMaxSize()) {
-        TiersViewHeader(activity)
+        PaymentsViewHeader(activity)
         Divider()
         LazyColumn(
             state = listState,
             modifier = Modifier.weight(1f),
         ) {
-            items(items = vm.tiers, itemContent = {
-                TierItem(item = it, vm)
+            items(items = vm.payments, itemContent = {
+                PaymentItem(item = it, vm)
                 Divider()
             })
         }
@@ -99,7 +99,7 @@ fun TierCollectionContent(vm: TierViewModel, user: User, activity: TierCollectio
 //todo use translate between frensh and english
 
 @Composable
-fun TiersViewHeader(activity: TierCollectionView) {
+fun PaymentsViewHeader(activity: PaymentCollectionView) {
 
     Row(
         Modifier
@@ -118,7 +118,7 @@ fun TiersViewHeader(activity: TierCollectionView) {
         }
 
         Text(
-            text = "Tiers",
+            text = "Payments",
             style = MaterialTheme.typography.h6,
             fontSize = 18.sp,
             color = Independence,
@@ -128,31 +128,14 @@ fun TiersViewHeader(activity: TierCollectionView) {
                 .weight(1f)
         )
 
-        Row(
-            modifier = Modifier.align(Alignment.CenterVertically)
-        ) {
+        IconButton(onClick = { /*TODO*/ }) {
+            Icon(
+                Icons.Outlined.FilterList,
+                contentDescription = "Filter",
+                modifier = Modifier.size(28.dp),
+                tint = Success
 
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(
-                    Icons.Outlined.FilterList,
-                    contentDescription = "Filter",
-                    modifier = Modifier.size(28.dp),
-                    tint = Success
-
-                )
-            }
-            IconButton(onClick = {
-                activity.vm.createTierView()
-            }) {
-                Icon(
-                    Icons.Outlined.AddCircle,
-                    contentDescription = "Add Tiers",
-                    modifier = Modifier.size(28.dp),
-                    tint = Success
-
-                )
-            }
-
+            )
         }
 
     }
@@ -161,7 +144,7 @@ fun TiersViewHeader(activity: TierCollectionView) {
 
 //Todo add symbole or shortcut
 @Composable
-fun TierItem(item: Tier, viewModel: TierViewModel) {
+fun PaymentItem(item: Payment, viewModel: TierViewModel) {
 
 
     Row(
@@ -206,19 +189,21 @@ fun TierItem(item: Tier, viewModel: TierViewModel) {
             )
             Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
                 Text(
-                    text = "Débit: ${item.debit}",
-                    style = MaterialTheme.typography.caption,
-                    color = Independence50
+                    text = "${item.tierItem!!.label}",
+                    style = MaterialTheme.typography.h6,
+                    fontSize = 14.sp,
+                    color = Independence
                 )
                 Text(
-                    text = "Crédit: ${item.credit}",
+                    text = " ${if (item.out) "Paiement" else "Encaissement"}",
                     style = MaterialTheme.typography.caption,
                     color = Independence50
                 )
 
+
             }
             Text(
-                text = "Solde: ${item.balance}",
+                text = "Montant: ${item.montant}",
                 style = MaterialTheme.typography.h6,
                 fontSize = 14.sp,
                 color = Independence
@@ -228,18 +213,10 @@ fun TierItem(item: Tier, viewModel: TierViewModel) {
         }
 
         Row() {
-            IconButton(onClick = { viewModel.setPaymentView(item) }) {
+            IconButton(onClick = { /*todo*/ }) {
                 Icon(
                     Icons.Outlined.MoveToInbox,
                     contentDescription = "Movement",
-                    modifier = Modifier.size(28.dp),
-                    tint = Success
-                )
-            }
-            IconButton(onClick = { viewModel.editTierView(item) }) {
-                Icon(
-                    Icons.Outlined.Edit,
-                    contentDescription = "Add Contact",
                     modifier = Modifier.size(28.dp),
                     tint = Success
                 )

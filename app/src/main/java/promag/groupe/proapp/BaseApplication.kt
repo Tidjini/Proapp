@@ -14,6 +14,8 @@ import com.google.gson.Gson
 import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
+import promag.groupe.proapp.comercial.models.Payment
+import promag.groupe.proapp.comercial.views.PaymentView
 import promag.groupe.proapp.global.messenger.messages.MessagesActivity
 import promag.groupe.proapp.models.Message
 import promag.groupe.proapp.models.User
@@ -61,15 +63,21 @@ class BaseApplication : Application() {
         mSocket!!.disconnect();
         //clear all events
         mSocket!!.off(user.token, onNewMessage);
+        if (user.isAdmin)
+            mSocket!!.off("payment_added", onPayementAdded)
+
     }
 
     fun clearSocketListening(event: String?) {
         if (event.isNullOrEmpty()) return
         mSocket!!.off(event, onNewMessage)
+        if (user.isAdmin)
+            mSocket!!.off("payment_added", onPayementAdded)
     }
 
     fun listenNotifications(event: String?) {
         mSocket!!.on(event, onNewMessage)
+
     }
 
     fun socketConnection() {
@@ -79,6 +87,8 @@ class BaseApplication : Application() {
         try {
             mSocket = IO.socket(BASE_URL)
             mSocket!!.on(user.token, onNewMessage)
+            if (user.isAdmin)
+                mSocket!!.on("payment_added", onPayementAdded)
             mSocket!!.connect()
 
         } catch (e: URISyntaxException) {
@@ -99,6 +109,57 @@ class BaseApplication : Application() {
 
         }
 
+    private val onPayementAdded =
+        Emitter.Listener { args ->
+            val data = args[0]
+            val g = Gson()
+            val da = g.fromJson<Message>(data.toString(), Message::class.java)
+            playNotif()
+            displayNotificationForPayment(da)
+            Log.d("app_socket", data.toString())
+
+
+        }
+    fun displayNotificationForPayment(data: Payment) {
+        val notificationManager = this.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+
+        val notificationId: Int = 0
+        val channelId = "channel-id"
+        val channelName = "Channel Name"
+        val importance = NotificationManager.IMPORTANCE_HIGH
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val mChannel = NotificationChannel(
+                channelId, channelName, importance
+            )
+            notificationManager.createNotificationChannel(mChannel)
+        }
+        val mBuilder: NotificationCompat.Builder = NotificationCompat.Builder(this, channelId)
+            .setSmallIcon(R.drawable.logo) //R.mipmap.ic_launcher
+            .setContentTitle("Paiements")
+            .setContentText(data.label)
+            .setVibrate(longArrayOf(100, 250))
+            .setLights(Color.YELLOW, 500, 5000)
+            .setAutoCancel(true)
+            .setColor(ContextCompat.getColor(this, R.color.colorPrimary))
+
+        val resultIntent = Intent(applicationContext, PaymentView::class.java)
+        resultIntent.putExtra(PAYMENT_EXTRA, data)
+        val resultPendingIntent: PendingIntent? = TaskStackBuilder.create(this).run {
+            // Add the intent, which inflates the back stack
+            addNextIntentWithParentStack(resultIntent)
+            // Get the PendingIntent containing the entire back stack
+            getPendingIntent(
+                0,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+        }
+
+        mBuilder.setContentIntent(resultPendingIntent)
+
+
+        notificationManager.notify(notificationId, mBuilder.build())
+    }
 
     fun displayNotification(data: Message) {
         val notificationManager = this.getSystemService(NOTIFICATION_SERVICE) as NotificationManager

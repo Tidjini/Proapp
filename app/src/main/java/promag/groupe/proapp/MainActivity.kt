@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import promag.groupe.proapp.comercial.ProductCollectionView
+import promag.groupe.proapp.comercial.views.TierCollectionView
 import promag.groupe.proapp.global.messenger.discussion.DiscussionActivity
 import promag.groupe.proapp.infrabitume.Encaissement
 import promag.groupe.proapp.infrabitume.FactureActivity
@@ -62,6 +63,12 @@ class MainActivity : BaseActivity() {
         val intent = Intent(this, ProductCollectionView::class.java)
         startActivity(intent)
     }
+    fun onTiersClicked(view: View) {
+        val intent = Intent(this, TierCollectionView::class.java)
+        startActivity(intent)
+    }
+
+
 
     fun onLogout(view: View) {
         AppAlertDialog.showYesNoDialog(

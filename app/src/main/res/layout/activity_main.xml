@@ -31,20 +31,23 @@
 
 
 
+
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
                     android:layout_marginTop="28dp"
                     android:gravity="center"
-                    android:onClick="onInfraStockClicked"
-                    android:orientation="vertical">
+                    android:onClick="onStockClicked"
+                    android:orientation="vertical"
+
+                    >
 
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="56dp"
-                        android:src="@drawable/bitume_delivery" />
+                        android:src="@drawable/bitume_stock" />
 
                     <TextView
                         style="@style/TextViewStyle"
@@ -52,9 +55,40 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
                         android:gravity="center"
-                        android:text="Infra. Livraison"
+                        android:text="Stock"
                         android:textSize="11sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_marginTop="28dp"
+                    android:gravity="center"
+                    android:onClick="onTiersClicked"
+                    android:orientation="vertical"
+
+                    >
+
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="56dp"
+                        android:src="@drawable/tiers" />
+
+                    <TextView
+                        style="@style/TextViewStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:gravity="center"
+                        android:text="Tiers"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+
+                        />
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="0dp"
@@ -77,7 +111,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
                         android:gravity="center"
-                        android:text="Infra. Trésorerie"
+                        android:text="Trésorerie"
                         android:textSize="11sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -94,8 +128,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="56dp"
-                        android:padding="4dp"
-                        android:src="@drawable/docs" />
+                        android:src="@drawable/instance" />
 
                     <TextView
                         style="@style/TextViewStyle"
@@ -103,7 +136,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
                         android:gravity="center"
-                        android:text="Fact. Instance"
+                        android:text="Instances"
                         android:textSize="11sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -129,10 +162,15 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
                         android:gravity="center"
-                        android:text="Infra. Commandes"
+                        android:text="Commandes"
                         android:textSize="11sp"
                         android:textStyle="bold" />
                 </LinearLayout>
+
+
+
+
+
 
 
                 <LinearLayout
@@ -141,16 +179,14 @@
                     android:layout_columnWeight="1"
                     android:layout_marginTop="28dp"
                     android:gravity="center"
-                    android:onClick="onStockClicked"
-                    android:orientation="vertical"
-
-                    >
+                    android:onClick="onInfraStockClicked"
+                    android:orientation="vertical">
 
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="56dp"
-                        android:src="@drawable/bitume_stock" />
+                        android:src="@drawable/bitume_delivery" />
 
                     <TextView
                         style="@style/TextViewStyle"
@@ -158,13 +194,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
                         android:gravity="center"
-                        android:text="Infra. Stock"
+                        android:text="Livraison"
                         android:textSize="11sp"
-                        android:textStyle="bold"
-
-                        />
+                        android:textStyle="bold" />
                 </LinearLayout>
-
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -194,12 +227,10 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_columnSpan="2"
                     android:layout_columnWeight="1"
                     android:layout_marginTop="28dp"
-                    android:gravity="center"
-                    android:orientation="vertical" />
 
+                    />
                 <LinearLayout
 
                     android:layout_width="0dp"

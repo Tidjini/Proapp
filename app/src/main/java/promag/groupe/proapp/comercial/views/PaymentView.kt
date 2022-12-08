@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModelProvider
 import promag.groupe.proapp.BaseComponentActivity
 import promag.groupe.proapp.PRODUCT_EXTRA
+import promag.groupe.proapp.TIER_EXTRA
 import promag.groupe.proapp.comercial.AppViewModelFactory
 import promag.groupe.proapp.comercial.models.Tier
 import promag.groupe.proapp.comercial.viewmodels.TierViewModel
@@ -46,7 +47,7 @@ class PaymentView : BaseComponentActivity() {
         vm =
             ViewModelProvider(this, AppViewModelFactory(mApplication))[TierViewModel::class.java]
 
-        tier = intent.getSerializableExtra(PRODUCT_EXTRA) as Tier
+        tier = intent.getSerializableExtra(TIER_EXTRA) as Tier
 
         setContent {
             ProappTheme {
@@ -166,8 +167,8 @@ fun PaymentEditor(vm: TierViewModel, tier: Tier) {
 
                     checked = out.value, onCheckedChange = { out.value = it })
                 Text(
-                    text = if (out.value) "Encaissement" else
-                        "Payement (Rembourssement)",
+                    text = if (out.value) "Payement (Rembourssement) " else
+                        "Encaissement",
                 )
             }
 

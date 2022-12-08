@@ -57,6 +57,8 @@ interface CommercialAPI {
         @Header("Authorization") token: String,
         @Body payment: Payment
     ): Response<Payment>?
+    @GET("payments/")
+    suspend fun getPayments(@Header("Authorization") token: String): Response<PageResponse<Payment>>?
 
 
 

@@ -1,5 +1,6 @@
 package promag.groupe.proapp.models
 
+import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 
@@ -11,7 +12,9 @@ class User(
     var prenom: String = "",
     var photo: String? = null,
     var name: String = "",
-    var token: String? = null
+    var token: String? = null,
+    @SerializedName("is_admin")
+    var isAdmin : Boolean = false
 ) : Serializable {
 
     val caption: String

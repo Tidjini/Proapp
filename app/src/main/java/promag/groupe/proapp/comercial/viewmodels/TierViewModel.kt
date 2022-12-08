@@ -10,9 +10,10 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import promag.groupe.proapp.BaseApplication
 import promag.groupe.proapp.PRODUCT_EXTRA
-import promag.groupe.proapp.comercial.StockMovementView
+import promag.groupe.proapp.TIER_EXTRA
 import promag.groupe.proapp.comercial.models.Payment
 import promag.groupe.proapp.comercial.models.Tier
+import promag.groupe.proapp.comercial.views.PaymentView
 import promag.groupe.proapp.comercial.views.TierCollectionView
 import promag.groupe.proapp.comercial.views.TierView
 
@@ -21,6 +22,7 @@ import promag.groupe.proapp.comercial.views.TierView
 class TierViewModel(val app: BaseApplication) : ViewModel() {
 
     private val mTiers = mutableStateListOf<Tier>()
+    private val mPayments = mutableStateListOf<Payment>()
     private val mTier = mutableStateOf(Tier())
 
     var errorMessage: String by mutableStateOf("")
@@ -28,6 +30,10 @@ class TierViewModel(val app: BaseApplication) : ViewModel() {
     val tiers: List<Tier>
         get() {
             return mTiers
+        }
+    val payments: List<Payment>
+        get() {
+            return mPayments
         }
 
     val tier: Tier
@@ -50,6 +56,20 @@ class TierViewModel(val app: BaseApplication) : ViewModel() {
         }
     }
 
+    fun getPayments() {
+        viewModelScope.launch {
+            try {
+                mPayments.clear()
+                val result = app.commercialApi.getPayments("token ${app.user.token}")
+                    ?: return@launch
+
+
+                mPayments.addAll(result.body()!!.results)
+            } catch (e: Exception) {
+                errorMessage = e.message.toString()
+            }
+        }
+    }
 
     fun save(label: String, type: String, debit: String, credit: String, tier: Tier) {
 
@@ -153,10 +173,10 @@ class TierViewModel(val app: BaseApplication) : ViewModel() {
         app.startActivity(intent)
     }
 
-    fun setMovementView(tier: Tier) {
+    fun setPaymentView(tier: Tier) {
         mTier.value = tier
-        val intent = Intent(app, StockMovementView::class.java)
-        intent.putExtra(PRODUCT_EXTRA, tier)
+        val intent = Intent(app, PaymentView::class.java)
+        intent.putExtra(TIER_EXTRA, tier)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
         app.startActivity(intent)
     }
