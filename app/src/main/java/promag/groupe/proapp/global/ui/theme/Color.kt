@@ -18,7 +18,7 @@ val Independence10 = Color(0x104A5562)
 val FlatWhite = Color(0xFFFBFBFB)
 val Success = Color(0xFF27AE60)
 val Success80 = Color(0x8027AE60)
-val Red = Color(0xEB5757)
+val Red = Color(0xFFEB5757)
 
 
 val SuccessGradient =

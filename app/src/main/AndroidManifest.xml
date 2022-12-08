@@ -118,6 +118,13 @@
         <activity
             android:name=".comercial.views.PaymentView"
             android:exported="false" />
+        <activity
+            android:name=".tasks.views.TaskCollectionView"
+            android:exported="false" />
+        <activity
+            android:name=".tasks.views.TaskView"
+            android:exported="false" />
+
 
         <activity
             android:name=".Connexion"

@@ -165,7 +165,31 @@
                         android:textSize="11sp"
                         android:textStyle="bold" />
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_marginTop="28dp"
+                    android:gravity="center"
+                    android:onClick="onTaskClicked"
+                    android:orientation="vertical">
 
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="56dp"
+                        android:src="@drawable/tasks_done" />
+
+                    <TextView
+                        style="@style/TextViewStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:gravity="center"
+                        android:text="Tâches"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -303,31 +327,7 @@
                         android:textStyle="bold" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"
-                    android:layout_marginTop="28dp"
-                    android:gravity="center"
-                    android:onClick="onOthersClicked"
-                    android:orientation="vertical">
 
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="56dp"
-                        android:src="@drawable/options" />
-
-                    <TextView
-                        style="@style/TextViewStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:gravity="center"
-                        android:text="Ges. Tâches"
-                        android:textSize="11sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="0dp"

@@ -12,6 +12,7 @@ import promag.groupe.proapp.global.messenger.discussion.DiscussionActivity
 import promag.groupe.proapp.infrabitume.Encaissement
 import promag.groupe.proapp.infrabitume.FactureActivity
 import promag.groupe.proapp.infrabitume.LivraisonActivity
+import promag.groupe.proapp.tasks.views.TaskCollectionView
 import promag.groupe.proapp.utils.CacheHelper.userToken
 import promag.groupe.proapp.views.AppAlertDialog
 import promag.groupe.proapp.views.AppToast
@@ -71,6 +72,11 @@ class MainActivity : BaseActivity() {
 
     fun onPaymentClicked(view: View) {
         val intent = Intent(this, PaymentCollectionView::class.java)
+        startActivity(intent)
+    }
+
+    fun onTaskClicked(view: View) {
+        val intent = Intent(this, TaskCollectionView::class.java)
         startActivity(intent)
     }
 

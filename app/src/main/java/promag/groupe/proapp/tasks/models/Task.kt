@@ -57,7 +57,7 @@ class Task(
 
         }
 
-    fun changeState(): String {
+    fun changeState(statue: String): String {
         return when (statue) {
             "i" -> {
                 return "a"
@@ -65,7 +65,10 @@ class Task(
             "a" -> {
                 return "t"
             }
-            else -> return "a"
+            "t" -> {
+                return "t"
+            }
+            else -> return "t"
         }
     }
 

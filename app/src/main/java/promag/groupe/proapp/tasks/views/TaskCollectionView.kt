@@ -22,6 +22,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModelProvider
@@ -88,17 +89,26 @@ fun TaskCollectionContent(vm: TaskViewModel, user: User, activity: TaskCollectio
     Column(Modifier.fillMaxSize()) {
         TasksViewHeader(activity)
         Divider()
-        Row(horizontalArrangement = Arrangement.SpaceAround) {
-            Button(onClick = {
-                type.value = 0
+        Row(horizontalArrangement = Arrangement.SpaceAround, modifier = Modifier.padding(top = 14.dp)) {
+            Button(
+                onClick = {
+                    type.value = 0
+                    vm.getTasks(type = type.value)
 
-            }) {
+                }, colors = ButtonDefaults.buttonColors(backgroundColor = Red, contentColor = Color.White),
+                modifier = Modifier.height(48.dp).padding(start = 14.dp).weight(1f)
+            ) {
                 Text(text = "Tâches Créés")
             }
-            Button(onClick = {
-                type.value = 1
+            Button(
+                onClick = {
+                    type.value = 1
+                    vm.getTasks(type = type.value)
 
-            }) {
+                },
+                colors = ButtonDefaults.buttonColors(backgroundColor = Success, contentColor = Color.White),
+                modifier = Modifier.height(48.dp).padding(horizontal = 14.dp).weight(1f)
+            ) {
                 Text(text = "Tâches Affectées")
             }
         }
@@ -140,7 +150,7 @@ fun TasksViewHeader(activity: TaskCollectionView) {
         }
 
         Text(
-            text = "Tasks",
+            text = "Tâches",
             style = MaterialTheme.typography.h6,
             fontSize = 18.sp,
             color = Independence,
@@ -164,7 +174,7 @@ fun TasksViewHeader(activity: TaskCollectionView) {
                 )
             }
             IconButton(onClick = {
-                activity.vm.createTaskView()
+//                todo activity.vm.createTaskView()
             }) {
                 Icon(
                     Icons.Outlined.AddCircle,

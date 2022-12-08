@@ -17,6 +17,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -169,7 +170,7 @@ fun TaskEditor(vm: TaskViewModel, task: Task) {
             horizontalAlignment = Alignment.Start
         ) {
             Text(
-                text = "Personne: ${receiver}"
+                text = "Personnel: ${receiver.value}"
             )
             Text(
                 text = "Intitule"
@@ -199,7 +200,6 @@ fun TaskEditor(vm: TaskViewModel, task: Task) {
                 text = description,
                 placeholderText = "description",
                 keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Done
                 ),
                 keyboardActions = KeyboardActions(
@@ -207,18 +207,54 @@ fun TaskEditor(vm: TaskViewModel, task: Task) {
                 )
             )
 
-            Row(horizontalArrangement = Arrangement.SpaceEvenly) {
-                Button(onClick = {
-                    statue.value = task.changeState()
-
-                }, modifier = Modifier.background(Success)) {
-                    Text(text = "Etat ${task.statVerbose(statue.value)}")
+//            Row(horizontalArrangement = Arrangement.SpaceEvenly) {
+//                Button(onClick = {
+//                    statue.value = task.changeState()
+//
+//                }, modifier = Modifier.background(Success)) {
+//                    Text(text = "Etat ${task.statVerbose(statue.value)}")
+//                }
+//                Button(onClick = {
+//                    statue.value = task.changeState()
+//
+//                }, modifier = Modifier.background(Red)) {
+//                    Text(text = "Annuler ${task.statVerbose(statue.value)}")
+//                }
+//            }
+            Row(
+                horizontalArrangement = Arrangement.SpaceAround,
+                modifier = Modifier.padding(top = 14.dp)
+            ) {
+                Button(
+                    onClick = {
+                        statue.value = task.changeState(statue.value)
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = Success,
+                        contentColor = Color.White
+                    ),
+                    modifier = Modifier
+                        .height(48.dp)
+                        .padding()
+                        .weight(1f)
+                ) {
+                    Text(text = "Etat ${task.statVerbose(statue.value)}", fontSize = 11.sp)
                 }
-                Button(onClick = {
-                    statue.value = task.changeState()
+                Button(
+                    onClick = {
+                        statue.value = task.cancel()
 
-                }, modifier = Modifier.background(Red)) {
-                    Text(text = "Annuler ${task.statVerbose(statue.value)}")
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = Red,
+                        contentColor = Color.White
+                    ),
+                    modifier = Modifier
+                        .height(48.dp)
+                        .padding(start = 14.dp)
+                        .weight(1f)
+                ) {
+                    Text(text = "Annuler", fontSize = 11.sp)
                 }
             }
 
