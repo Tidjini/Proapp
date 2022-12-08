@@ -107,6 +107,17 @@
             android:name=".comercial.StockMovementView"
             android:exported="false" />
         <activity
+            android:name=".comercial.views.TierCollectionView"
+            android:exported="false" />
+        <activity
+            android:name=".comercial.views.TierView"
+            android:exported="false" />
+
+        <activity
+            android:name=".comercial.views.PaymentView"
+            android:exported="false" />
+
+        <activity
             android:name=".Connexion"
             android:exported="false">
             <meta-data
