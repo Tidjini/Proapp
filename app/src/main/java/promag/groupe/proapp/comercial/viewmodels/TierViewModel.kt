@@ -10,12 +10,11 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import promag.groupe.proapp.BaseApplication
 import promag.groupe.proapp.PRODUCT_EXTRA
-import promag.groupe.proapp.comercial.TierCollectionView
 import promag.groupe.proapp.comercial.StockMovementView
 import promag.groupe.proapp.comercial.models.Payment
 import promag.groupe.proapp.comercial.models.Tier
 import promag.groupe.proapp.comercial.views.TierCollectionView
-import promag.groupe.proapp.models.commercial.StockMovement
+import promag.groupe.proapp.comercial.views.TierView
 
 
 
@@ -52,12 +51,12 @@ class TierViewModel(val app: BaseApplication) : ViewModel() {
     }
 
 
-    fun save(label: String, type: String, debit: Double, credit: Double, tier: Tier) {
+    fun save(label: String, type: String, debit: String, credit: String, tier: Tier) {
 
         try {
             tier.label = label
-            tier.debit = debit
-            tier.credit = credit
+            tier.debit = debit.toDouble()
+            tier.credit = credit.toDouble()
             tier.type = type
 
 

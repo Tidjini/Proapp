@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModelProvider
 import promag.groupe.proapp.BaseComponentActivity
 import promag.groupe.proapp.MainActivity
+import promag.groupe.proapp.comercial.AppViewModelFactory
 import promag.groupe.proapp.global.ui.theme.*
 import promag.groupe.proapp.models.User
 import promag.groupe.proapp.comercial.models.Tier
@@ -85,7 +86,7 @@ fun TierCollectionContent(vm: TierViewModel, user: User, activity: TierCollectio
             state = listState,
             modifier = Modifier.weight(1f),
         ) {
-            items(items = vm.products, itemContent = {
+            items(items = vm.tiers, itemContent = {
                 TierItem(item = it, vm)
                 Divider()
             })
@@ -198,19 +199,24 @@ fun TierItem(item: Tier, viewModel: TierViewModel) {
                 .weight(1f)
         ) {
             Text(
-                text = item.name,
+                text = item.label,
                 style = MaterialTheme.typography.h6,
                 fontSize = 14.sp,
                 color = Independence
             )
             Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
                 Text(
-                    text = "Qte ${item.qteStock}",
+                    text = "Débit: ${item.debit}",
                     style = MaterialTheme.typography.caption,
                     color = Independence50
                 )
                 Text(
-                    text = "Valeur ${item.value}",
+                    text = "Crédit: ${item.credit}",
+                    style = MaterialTheme.typography.caption,
+                    color = Independence50
+                )
+                Text(
+                    text = "Solde: ${item.balance}",
                     style = MaterialTheme.typography.caption,
                     color = Independence50
                 )
