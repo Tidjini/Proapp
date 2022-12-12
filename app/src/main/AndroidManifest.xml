@@ -124,6 +124,9 @@
         <activity
             android:name=".tasks.views.TaskView"
             android:exported="false" />
+        <activity
+            android:name=".global.Webener"
+            android:exported="false" />
 
 
         <activity

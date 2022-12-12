@@ -8,6 +8,7 @@ import android.view.View
 import promag.groupe.proapp.comercial.ProductCollectionView
 import promag.groupe.proapp.comercial.views.PaymentCollectionView
 import promag.groupe.proapp.comercial.views.TierCollectionView
+import promag.groupe.proapp.global.Webener
 import promag.groupe.proapp.global.messenger.discussion.DiscussionActivity
 import promag.groupe.proapp.infrabitume.Encaissement
 import promag.groupe.proapp.infrabitume.FactureActivity
@@ -77,6 +78,11 @@ class MainActivity : BaseActivity() {
 
     fun onTaskClicked(view: View) {
         val intent = Intent(this, TaskCollectionView::class.java)
+        startActivity(intent)
+    }
+
+    fun onWebClicked(view: View) {
+        val intent = Intent(this, Webener::class.java)
         startActivity(intent)
     }
 
