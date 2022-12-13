@@ -43,16 +43,16 @@ interface CommercialAPI {
     ): Response<StockMovement>?
 
     //Tier
-    @GET("tiers/")
+    @GET("thirds/")
     suspend fun getTiers(@Header("Authorization") token: String): Response<PageResponse<Tier>>?
 
-    @POST("tiers/")
+    @POST("thirds/")
     suspend fun createTier(
         @Header("Authorization") token: String,
         @Body tier: Tier
     ): Response<Tier>?
 
-    @PUT("tiers/{id}/")
+    @PUT("thirds/{id}/")
     suspend fun updateTier(
         @Header("Authorization") token: String,
         @Path("id") id: Int,

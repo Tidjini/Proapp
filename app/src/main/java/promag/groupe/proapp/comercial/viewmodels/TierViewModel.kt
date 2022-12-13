@@ -104,7 +104,7 @@ class TierViewModel(val app: BaseApplication) : ViewModel() {
         val payment = Payment(
             label = label,
             amount = mtn,
-            tier = tier.id!!,
+            third = tier.id!!,
             out = out
         )
 
