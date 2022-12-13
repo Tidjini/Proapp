@@ -4,6 +4,7 @@ import promag.groupe.proapp.comercial.models.Payment
 import promag.groupe.proapp.comercial.models.Tier
 import promag.groupe.proapp.models.PageResponse
 import promag.groupe.proapp.models.commercial.Product
+import promag.groupe.proapp.models.commercial.ProductComposition
 import promag.groupe.proapp.models.commercial.StockMovement
 import retrofit2.Response
 import retrofit2.http.*
@@ -20,6 +21,12 @@ interface CommercialAPI {
         @Header("Authorization") token: String,
         @Body product: Product
     ): Response<Product>?
+
+    @POST("compositions/")
+    suspend fun createProoductCompostion(
+        @Header("Authorization") token: String,
+        @Body composition: ProductComposition
+    ): Response<ProductComposition>?
 
     @PUT("products/{id}/")
     suspend fun updateProduct(

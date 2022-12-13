@@ -205,12 +205,12 @@ fun ProductItem(item: Product, viewModel: ProductViewModel) {
             )
             Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
                 Text(
-                    text = "Qte ${item.qteStock}",
+                    text = "Qte ${item.stockQte}",
                     style = MaterialTheme.typography.caption,
                     color = Independence50
                 )
                 Text(
-                    text = "Valeur ${item.value}",
+                    text = "Valeur ${item.stockValue}",
                     style = MaterialTheme.typography.caption,
                     color = Independence50
                 )

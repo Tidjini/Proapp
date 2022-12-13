@@ -8,8 +8,7 @@ class StockMovement(
     var item: Product = Product(),
     var product: Int? = null,
     var qte: Double = 0.0,
-    @SerializedName("prix_unite")
-    var prixUnite: Double = 0.0,
+    var value: Double = 0.0,
     var document: String = "Reception N° 0001",
     var out: Boolean = false
 

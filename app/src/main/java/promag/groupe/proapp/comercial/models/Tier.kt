@@ -44,7 +44,7 @@ class Payment(
     var id: Int? = null,
     var label: String = "",
     var tier: Int = 0,
-    var montant: Double = 0.0,
+    var amount: Double = 0.0,
     @SerializedName("tier_item")
     var tierItem: Tier? = null,
     var out: Boolean = false

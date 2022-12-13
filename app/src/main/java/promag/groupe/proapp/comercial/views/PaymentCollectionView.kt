@@ -208,7 +208,7 @@ fun PaymentItem(item: Payment, viewModel: TierViewModel) {
 
             }
             Text(
-                text = "Montant: ${toPrice(item.montant)}",
+                text = "Montant: ${toPrice(item.amount)}",
                 style = MaterialTheme.typography.h6,
                 fontSize = 14.sp,
                 color = Independence

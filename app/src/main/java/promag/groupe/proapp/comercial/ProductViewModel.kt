@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 import promag.groupe.proapp.BaseApplication
 import promag.groupe.proapp.PRODUCT_EXTRA
 import promag.groupe.proapp.models.commercial.Product
+import promag.groupe.proapp.models.commercial.ProductComposition
 import promag.groupe.proapp.models.commercial.StockMovement
 import java.lang.Double
 import kotlin.Boolean
@@ -52,12 +53,13 @@ class ProductViewModel(val app: BaseApplication) : ViewModel() {
     }
 
 
-    fun save(name: String, qte: String, value: String, product: Product) {
+    fun save(name: String, ref: String, qte: String, value: String, product: Product) {
 
         try {
-            product.qteStock = Double.parseDouble(qte)
-            product.value = Double.parseDouble(value)
+            product.stockQte = Double.parseDouble(qte)
+            product.stockValue = Double.parseDouble(value)
             product.name = name
+            product.reference = ref
 
             if (product.id == null || product.id == 0) {
                 return createProduct(product)
@@ -84,7 +86,7 @@ class ProductViewModel(val app: BaseApplication) : ViewModel() {
         val move = StockMovement(
             document = document,
             qte = q,
-            prixUnite = prix,
+            value = prix,
             product = product.id,
             out = out
         )
@@ -110,6 +112,20 @@ class ProductViewModel(val app: BaseApplication) : ViewModel() {
                     ?: return@launch
 
                 gotoProductCollectionView()
+            } catch (e: Exception) {
+                errorMessage = e.message.toString()
+            }
+        }
+    }
+
+    fun createProductCompsition(composition: ProductComposition) {
+        viewModelScope.launch {
+            try {
+
+                app.commercialApi.createProoductCompostion("token ${app.user.token}", composition)
+                    ?: return@launch
+
+//                gotoProductCollectionView()
             } catch (e: Exception) {
                 errorMessage = e.message.toString()
             }

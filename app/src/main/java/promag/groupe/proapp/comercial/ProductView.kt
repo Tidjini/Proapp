@@ -1,6 +1,5 @@
 package promag.groupe.proapp.comercial
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
@@ -160,8 +159,9 @@ public inline fun <T> Iterable<T>.contains(predicate: (T) -> Boolean): Boolean {
 fun ProductEditor(vm: ProductViewModel, product: Product) {
 
     var name = rememberSaveable { mutableStateOf(product.name) }
-    var qteStock = rememberSaveable { mutableStateOf("${product.qteStock}") }
-    var valueStock = rememberSaveable { mutableStateOf("${product.value}") }
+    var ref = rememberSaveable { mutableStateOf(product.reference) }
+    var qteStock = rememberSaveable { mutableStateOf("${product.stockQte}") }
+    var valueStock = rememberSaveable { mutableStateOf("${product.stockValue}") }
     var qte = rememberSaveable { mutableStateOf("") }
 
     val notesList = remember {
@@ -200,6 +200,20 @@ fun ProductEditor(vm: ProductViewModel, product: Product) {
                 fontSize = 14.sp,
                 text = name,
                 placeholderText = "Produit"
+            )
+            Text(
+                text = "Référence"
+            )
+            CustomTextField(
+                trailingIcon = null,
+                modifier = Modifier
+                    .background(
+                        Independence10, RoundedCornerShape(percent = 5)
+                    )
+                    .height(56.dp),
+                fontSize = 14.sp,
+                text = ref,
+                placeholderText = "Référence"
             )
             Text(
                 text = "Qauntité Stock"
@@ -247,6 +261,7 @@ fun ProductEditor(vm: ProductViewModel, product: Product) {
 
                 vm.save(
                     name = name.value,
+                    ref = ref.value,
                     qte = qteStock.value,
                     value = valueStock.value,
                     product = product
@@ -287,6 +302,8 @@ fun ProductEditor(vm: ProductViewModel, product: Product) {
                 )
                 Button(onClick = {
                     if (vm.compositionSelected.value == null) return@Button
+                    if (product.id == null) return@Button
+                    if (vm.compositionSelected.value!!.id == product.id) return@Button
 
                     if (notesList.contains { it.composer == vm.compositionSelected.value!!.id })
                         return@Button
@@ -297,17 +314,20 @@ fun ProductEditor(vm: ProductViewModel, product: Product) {
                     try {
                         qteDouble = qte.value.toDouble()
                     } catch (ex: Exception) {
-                        qteDouble = 0.0
+                        return@Button
                     }
 
-                    notesList.add(
-                        ProductComposition(
-                            product = product.id,
-                            composer = vm.compositionSelected.value!!.id,
-                            qte = qteDouble,
-                            composeName = vm.compositionSelected.value!!.name
-                        )
+                    if (qteDouble == 0.0) return@Button
+
+                    val newOne = ProductComposition(
+                        product = product.id,
+                        composer = vm.compositionSelected.value!!.id,
+                        qte = qteDouble,
+                        composeName = vm.compositionSelected.value!!.name
                     )
+                    notesList.add(newOne)
+
+                    vm.createProductCompsition(newOne)
 
 
                 }) {

@@ -5,10 +5,11 @@ import com.google.gson.annotations.SerializedName
 class Product(
     var id: Int? = null,
     var name: String = "",
-    @SerializedName("qte_stock")
-    var qteStock: Double = 0.0,
-    var value: Double = 0.0,
-    var unite: String = "unite",
+    var reference: String = "REF",
+    @SerializedName("stock_qte")
+    var stockQte: Double = 0.0,
+    @SerializedName("stock_value")
+    var stockValue: Double = 0.0,
     val compositions : List<ProductComposition> = listOf()
 ) : java.io.Serializable {
     val caption: String
