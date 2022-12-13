@@ -22,6 +22,7 @@ class ProductViewModel(val app: BaseApplication) : ViewModel() {
 
     private val mProducts = mutableStateListOf<Product>()
     private val mProduct = mutableStateOf(Product())
+    var compositionSelected = mutableStateOf<Product?>(null)
 
     var errorMessage: String by mutableStateOf("")
 

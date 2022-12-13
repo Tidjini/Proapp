@@ -1,10 +1,14 @@
 package promag.groupe.proapp.comercial
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -12,11 +16,11 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.Photo
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -24,11 +28,9 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModelProvider
 import promag.groupe.proapp.BaseComponentActivity
 import promag.groupe.proapp.PRODUCT_EXTRA
-import promag.groupe.proapp.global.ui.theme.Independence
-import promag.groupe.proapp.global.ui.theme.Independence10
-import promag.groupe.proapp.global.ui.theme.ProappTheme
-import promag.groupe.proapp.global.ui.theme.Success
+import promag.groupe.proapp.global.ui.theme.*
 import promag.groupe.proapp.models.commercial.Product
+import promag.groupe.proapp.models.commercial.ProductComposition
 import promag.groupe.proapp.views.CustomTextField
 
 
@@ -148,12 +150,28 @@ fun ProductViewHeader(product: Product, activity: ProductView) {
 //    }
 //}
 
+
+public inline fun <T> Iterable<T>.contains(predicate: (T) -> Boolean): Boolean {
+    for (element in this) if (predicate(element)) return true
+    return false
+}
+
 @Composable
 fun ProductEditor(vm: ProductViewModel, product: Product) {
 
     var name = rememberSaveable { mutableStateOf(product.name) }
     var qteStock = rememberSaveable { mutableStateOf("${product.qteStock}") }
     var valueStock = rememberSaveable { mutableStateOf("${product.value}") }
+    var qte = rememberSaveable { mutableStateOf("") }
+
+    val notesList = remember {
+        mutableStateListOf<ProductComposition>()
+    }
+
+
+    LaunchedEffect(Unit, block = {
+        notesList.addAll(product.compositions)
+    })
 
     Row(
         Modifier
@@ -236,6 +254,75 @@ fun ProductEditor(vm: ProductViewModel, product: Product) {
             }) {
                 Text(text = "Sauvgarder")
             }
+
+//            Compositions(vm, product)
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .height(60.dp),
+                verticalAlignment = Alignment.Top,
+                horizontalArrangement = Arrangement.spacedBy(14.dp)
+            ) {
+                Box(modifier = Modifier.weight(1f)) {
+                    DropdownDemo(vm)
+                }
+                CustomTextField(
+                    trailingIcon = null,
+                    modifier = Modifier
+                        .weight(.8f)
+                        .background(
+                            Independence10, RoundedCornerShape(percent = 5)
+                        )
+                        .height(56.dp),
+                    fontSize = 14.sp,
+                    text = qte,
+                    placeholderText = "Qte",
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number,
+                        imeAction = ImeAction.Done
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onDone = { /*todo*/ }
+                    )
+                )
+                Button(onClick = {
+                    if (vm.compositionSelected.value == null) return@Button
+
+                    if (notesList.contains { it.composer == vm.compositionSelected.value!!.id })
+                        return@Button
+
+
+                    var qteDouble: Double = 0.0
+
+                    try {
+                        qteDouble = qte.value.toDouble()
+                    } catch (ex: Exception) {
+                        qteDouble = 0.0
+                    }
+
+                    notesList.add(
+                        ProductComposition(
+                            product = product.id,
+                            composer = vm.compositionSelected.value!!.id,
+                            qte = qteDouble,
+                            composeName = vm.compositionSelected.value!!.name
+                        )
+                    )
+
+
+                }) {
+                    Text(text = "+")
+                }
+
+            }
+
+            Divider()
+            LazyColumn() {
+                items(items = notesList, itemContent = {
+                    CompositionItem(item = it)
+                    Divider()
+                })
+            }
         }
 
 
@@ -243,3 +330,102 @@ fun ProductEditor(vm: ProductViewModel, product: Product) {
 }
 
 
+@Composable
+fun DropdownDemo(vm: ProductViewModel) {
+
+
+    LaunchedEffect(Unit, block = {
+        vm.getProducts()
+    })
+    var expanded by remember { mutableStateOf(false) }
+
+
+    var selected: Product? by remember { mutableStateOf(null) }
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .wrapContentSize(Alignment.TopStart)
+    ) {
+        Text(
+            text = if (selected != null) selected!!.name else "Product", modifier = Modifier
+                .fillMaxWidth()
+                .clickable(onClick = { expanded = true })
+                .background(
+                    Independence10, RoundedCornerShape(percent = 5)
+                )
+                .padding(14.dp)
+        )
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    Independence50
+                )
+        ) {
+            vm.products.forEachIndexed { index, product ->
+                DropdownMenuItem(onClick = {
+                    selected = product
+                    vm.compositionSelected.value = product
+                    expanded = false
+                }) {
+                    Text(text = product.name)
+                }
+            }
+        }
+    }
+}
+
+
+@Composable
+fun CompositionItem(item: ProductComposition) {
+
+
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .padding(14.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(14.dp)
+    ) {
+        Box(
+            modifier = Modifier
+                .width(48.dp)
+                .height(48.dp)
+                .clip(shape = RoundedCornerShape(28.dp))
+                .background(Success)
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(2.dp)
+                    .clip(shape = RoundedCornerShape(28.dp))
+                    .background(FlatWhite)
+
+            ) {
+                Text(
+                    text = item.caption, modifier = Modifier.align(Alignment.Center),
+                    fontSize = 11.sp
+
+                )
+            }
+
+
+        }
+        Text(
+            text = item.composeName,
+            style = MaterialTheme.typography.h6,
+            fontSize = 14.sp,
+            color = Independence
+        )
+        Text(
+            text = "Qte ${item.qte}",
+            style = MaterialTheme.typography.caption,
+            color = Independence50
+        )
+
+
+    }
+}
