@@ -94,8 +94,8 @@ class MainActivity : BaseActivity() {
             "Voulez vous vraiment quitter l'application ?",
             {
                 mApplication.userPreferences.userToken = null
+                this.finish()
                 finishAffinity()
-                mApplication.onTerminate()
             },
             null
         )
