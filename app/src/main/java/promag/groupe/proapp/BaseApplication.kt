@@ -1,13 +1,17 @@
 package promag.groupe.proapp
 
 import android.app.*
+import android.content.ContentValues.TAG
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
+import android.provider.Settings
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.google.gson.Gson
@@ -57,6 +61,8 @@ class BaseApplication : Application() {
         quotesApi = ProcomService.getInstance().create(ProcomAPI::class.java)
         commercialApi = ProcomService.getInstance().create(CommercialAPI::class.java)
         tasksAPI = ProcomService.getInstance().create(TasksAPI::class.java)
+
+        alarmPermissions()
 
     }
 
@@ -271,6 +277,25 @@ class BaseApplication : Application() {
 
         }
 
+    }
+
+
+    private fun alarmPermissions(){
+        val alarmManager: AlarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val hasPermission: Boolean = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            alarmManager.canScheduleExactAlarms()
+        } else {
+            true
+        }
+
+        if(!hasPermission){
+            val intent = Intent().apply {
+                action = Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM
+            }
+            startActivity(intent)
+        }
+
+        Log.e(TAG, "alarmPermissions: $hasPermission")
     }
 
 
