@@ -4,7 +4,6 @@ import android.util.Log
 import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
-import promag.groupe.proapp.NOTIFICATION_END
 import java.net.URISyntaxException
 
 class NotificationApi {
@@ -12,7 +11,7 @@ class NotificationApi {
     companion object{
         private var mSocket: Socket? = null
 
-        fun build(endpoint: String = NOTIFICATION_END, event:String="event", listener: Emitter.Listener? = null) : Socket?{
+        fun build(endpoint: String = "NOTIFICATION_END", event:String="event", listener: Emitter.Listener? = null) : Socket?{
             try{
                 mSocket = IO.socket(endpoint)
                 mSocket!!.connect()

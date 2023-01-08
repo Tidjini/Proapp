@@ -89,13 +89,13 @@ class BaseApplication : Application() {
         if (user.token.isNullOrEmpty()) return
 
         try {
-            mSocket = IO.socket(BASE_URL)
-            mSocket!!.on(user.token, onNewMessage)
-            mSocket!!.on("${user.token}_tasks", onTaskChange)
-
-            if (user.isAdmin)
-                mSocket!!.on("payment_added", onPayementAdded)
-            mSocket!!.connect()
+//            mSocket = IO.socket(BASE_URL)
+//            mSocket!!.on(user.token, onNewMessage)
+//            mSocket!!.on("${user.token}_tasks", onTaskChange)
+//
+//            if (user.isAdmin)
+//                mSocket!!.on("payment_added", onPayementAdded)
+//            mSocket!!.connect()
 
         } catch (e: URISyntaxException) {
 
