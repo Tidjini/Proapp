@@ -40,6 +40,13 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="HardcodedDebugMode">
+        <receiver
+            android:name=".services.MyBroadcastReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.app.action.SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED" />
+            </intent-filter>
+        </receiver>
         <activity
             android:name=".global.messenger.messages.MessagesActivity"
             android:exported="false"
