@@ -1,0 +1,8 @@
+{
+  "APP_URL" : "http://10.0.0.21:8000",
+  "APP_URL_API" : "http://10.0.0.21:8000/api",
+  "APP_AUTH_TOKEN_URL" : "http://10.0.0.21:8000/api",
+  "APP_AUTH_USER_URL" : "http://10.0.0.21:8000/api",
+  "APP_PIESOCKET_API_KEY" : "Y42tEqSEf35expzZEpyjnBOycrk2MWK5RBrcjjZD",
+  "APP_PIESOCKET_CLUSTER_ID" : "s8153.nyc1"
+}

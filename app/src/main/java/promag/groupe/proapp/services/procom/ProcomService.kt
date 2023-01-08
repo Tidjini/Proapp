@@ -13,6 +13,9 @@ object ProcomService {
 
 
     fun getInstance(): Retrofit {
+
+
+
         return Retrofit.Builder().baseUrl(BASE_URL_API)
             .addConverterFactory(GsonConverterFactory.create())
             // we need to add converter factory to
