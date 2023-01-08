@@ -120,7 +120,7 @@ class Connexion : BaseActivity() {
             //todo if there is some validations, for inputs, chars limits ..
             val username = username.text.toString().trim()
             val password = password.text.toString().trim()
-            authentication(username = username, password = password)
+            confirmation(username = username, password = password)
         }
     }
 
@@ -130,10 +130,6 @@ class Connexion : BaseActivity() {
         //create the Auth object to send as body
         val auth = Auth(username = username, password = password)
         val result = quotesApi.authUsername(auth) ?: return
-
-
-
-
         result.enqueue(object : Callback<User?> {
             override fun onResponse(call: Call<User?>, response: Response<User?>) {
                 if (response.errorBody() != null || response.body()!!.id == 0) {
@@ -179,21 +175,14 @@ class Connexion : BaseActivity() {
         startActivity(intent)
         this.finish()
     }
-//
-//
-//    private fun confirmation() {
-//        AppAlertDialog.showYesNoDialog(
-//            this,
-//            "Vérification",
-//            "Voulez vous confirmer la connection avec le numéro: ${phone.text} ?",
-//            {
-//
-//                val intent = Intent(this, MainActivity::class.java)
-//                startActivity(intent)
-//                finish()
-//
-//            },
-//            null
-//        )
-//    }
+
+    private fun confirmation(username: String, password: String) {
+        AppAlertDialog.showYesNoDialog(
+            this,
+            "Vérification",
+            "Voulez vous confirmer la connection avec : $username ?",
+            { authentication(username, password) },
+            null
+        )
+    }
 }
