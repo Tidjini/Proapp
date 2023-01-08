@@ -15,9 +15,9 @@ class Environment{
     private var host = "http://10.0.0.21:8000"
 
     constructor(env: String){
-        if(env == "dev") host = "http://10.0.0.21:8000"
+        host = if(env == "dev") "http://10.0.0.21:8000/"
         else {
-            host = "https://mini-erp-beta.vercel.app"
+            "https://mini-erp-beta.vercel.app/"
         }
     }
 
@@ -28,17 +28,17 @@ class Environment{
 
     val BASE_URL_API : String
         get(){
-            return "$BASE_URL/api"
+            return BASE_URL + "api/"
         }
 
     val APP_AUTH_TOKEN_URL : String
         get(){
-            return "$BASE_URL/api/auth/token"
+            return BASE_URL+"api/auth/token/"
         }
 
     val APP_AUTH_USER_URL : String
         get(){
-            return "$BASE_URL/api/auth/username"
+            return BASE_URL+"api/auth/username/"
         }
 
 
