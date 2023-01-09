@@ -65,6 +65,27 @@ class LocationService : Service() {
 
         super.onStartCommand(intent, flags, startId)
 
+
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            Log.d("location_service", "ACCESS_COARSE_LOCATION")
+
+        }
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            Log.d("location_service", "ACCESS_FINE_LOCATION")
+
+
+        }
+
+
+
         Log.d("location_service", "onStartCommand .......")
         onLocationChanged()
         return START_STICKY
@@ -74,6 +95,8 @@ class LocationService : Service() {
     var fusedLocationClient: FusedLocationProviderClient? = null
 
     fun onLocationChanged() {
+
+
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         val locationRequest = LocationRequest.create().apply {
@@ -95,17 +118,23 @@ class LocationService : Service() {
             }
         }
 
-
         if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
+            Log.d("location_service", "ACCESS_COARSE_LOCATION")
             return
         }
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            Log.d("location_service", "ACCESS_FINE_LOCATION")
+            return
+        }
+
 
         fusedLocationClient!!.requestLocationUpdates(
             locationRequest,
@@ -158,7 +187,7 @@ class LocationService : Service() {
 
     }
 
-    private fun onRestart(){
+    private fun onRestart() {
         Log.d("location_service", "onRestart .......")
         val restartService = Intent(applicationContext, this.javaClass)
         val pendingIntent = PendingIntent.getService(
@@ -168,10 +197,9 @@ class LocationService : Service() {
             PendingIntent.FLAG_ONE_SHOT
         )
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        alarmManager.setRepeating(
+        alarmManager.setExact(
             AlarmManager.RTC_WAKEUP,
-            System.currentTimeMillis(),
-            10000,
+            System.currentTimeMillis() + 10000,
             pendingIntent
         )
     }

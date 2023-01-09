@@ -30,13 +30,22 @@ class LauncherActivity : AppCompatActivity() {
         super.onResume()
 
         if (Helpers.checkOverlayPermission(this)) {
-//            verifyGpsState()
-            main()
+            verifyGpsState()
         } else {
             startSetOverlaySettings()
         }
 
 
+    }
+
+    private fun verifyGpsState() {
+//        gpsNotReadyYet()
+
+        if (Helpers.checkGpsState(application as BaseApplication, this)) {
+//            afterGpsIsOn()
+            main()
+
+        }
     }
 
     private fun startSetOverlaySettings() {
