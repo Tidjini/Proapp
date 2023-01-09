@@ -175,14 +175,30 @@ class LocationService : Service() {
     override fun onTaskRemoved(rootIntent: Intent?) {
 
         Log.d("location_service", "onTaskRemoved .......")
-//        onRestart()
         super.onTaskRemoved(rootIntent)
+//        if(!isMyServiceRunning(LocationService::class.java)){
+//            onRestart()
+//        }
+
 
     }
 
-    override fun onDestroy() {
+    private fun isMyServiceRunning(serviceClass: Class<*>): Boolean {
+        val manager = getSystemService(ACTIVITY_SERVICE) as ActivityManager
+        for (service in manager.getRunningServices(Int.MAX_VALUE)) {
+            if (serviceClass.name == service.service.className) {
+                Log.d("location_service", "Running")
+                return true
+            }
+        }
+        Log.d("location_service", "Not running")
+        return false
+    }
 
-        onRestart()
+    override fun onDestroy() {
+        Log.d("location_service", "onDestroy .......")
+
+//        onRestart()
         super.onDestroy()
 
     }
@@ -199,7 +215,7 @@ class LocationService : Service() {
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarmManager.setExact(
             AlarmManager.RTC_WAKEUP,
-            System.currentTimeMillis() + 10000,
+            System.currentTimeMillis(),
             pendingIntent
         )
     }
