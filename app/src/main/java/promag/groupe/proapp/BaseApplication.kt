@@ -20,6 +20,7 @@ import promag.groupe.proapp.comercial.views.PaymentCollectionView
 import promag.groupe.proapp.global.messenger.messages.MessagesActivity
 import promag.groupe.proapp.models.Message
 import promag.groupe.proapp.models.User
+import promag.groupe.proapp.services.AlarmReceiver
 import promag.groupe.proapp.services.procom.CommercialAPI
 import promag.groupe.proapp.services.procom.ProcomAPI
 import promag.groupe.proapp.services.procom.ProcomService
@@ -295,6 +296,17 @@ class BaseApplication : Application() {
         }
 
         Log.e(ContentValues.TAG, "alarmPermissions: $hasPermission")
+    }
+
+    private fun setAlarm(){
+        val intent = Intent(this, AlarmReceiver::class.java)
+
+
+        pendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.getBroadcast(this, 0, intent,PendingIntent.FLAG_IMMUTABLE )
+        } else {
+            PendingIntent.getBroadcast(this, 0, intent,0 )
+        }
     }
 
 
