@@ -1,6 +1,7 @@
 package promag.groupe.proapp
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.os.Looper
 import android.provider.Settings
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import promag.groupe.proapp.models.User
 import promag.groupe.proapp.utils.CacheHelper.userToken
 import promag.groupe.proapp.utils.Helpers
@@ -16,7 +18,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class LauncherActivity : AppCompatActivity() {
+
+class LauncherActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsResultCallback {
     private lateinit var app: BaseApplication
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,19 +27,35 @@ class LauncherActivity : AppCompatActivity() {
         app = applicationContext as BaseApplication
         setContentView(R.layout.activity_launcher)
     }
-
+    var perms = arrayOf("android.permission.ACCESS_FINE_LOCATION", "android.permission.ACCESS_COARSE_LOCATION")
 
     override fun onResume() {
         super.onResume()
+        val overlayPermission = Helpers.checkOverlayPermission(this)
+        if(!overlayPermission){
+            startSetOverlaySettings()
+            return
+        }
+
+        val locationPermission = Helpers.checkFineLocationPermission(this)
+
+        if(!locationPermission){
+            val permsRequestCode = 200
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(perms, permsRequestCode)
+            }
+            return
+        }
 
         if (Helpers.checkOverlayPermission(this)) {
             verifyGpsState()
         } else {
-            startSetOverlaySettings()
         }
 
 
     }
+
+
 
     private fun verifyGpsState() {
 //        gpsNotReadyYet()
@@ -59,7 +78,21 @@ class LauncherActivity : AppCompatActivity() {
         }
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            200 -> {
+                val fineLocation = grantResults[0] === PackageManager.PERMISSION_GRANTED
+                val coarseLocation = grantResults[1] === PackageManager.PERMISSION_GRANTED
 
+                Log.d("location_service", "ACCESS_FINE_LOCATION $fineLocation ACCESS_COARSE_LOCATION $coarseLocation")
+            }
+        }
+    }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {

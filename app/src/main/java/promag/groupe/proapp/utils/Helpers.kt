@@ -1,11 +1,15 @@
 package promag.groupe.proapp.utils
 
+import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.IntentSender
+import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Build
 import android.provider.Settings
+import android.util.Log
+import androidx.core.app.ActivityCompat
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.common.api.PendingResult
 import com.google.android.gms.common.api.Result
@@ -77,6 +81,21 @@ class Helpers {
             } catch (e: Exception) {
                 false
             }
+        }
+
+        fun checkFineLocationPermission(context: Context): Boolean {
+            if (ActivityCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                return false
+
+            }
+            return true
         }
     }
 
