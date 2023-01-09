@@ -54,6 +54,11 @@
                 <action android:name="android.app.action.SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED" />
             </intent-filter>
         </receiver>
+        <service
+            android:name=".services.LocationService"
+            android:enabled="true"
+            android:exported="true"
+            android:foregroundServiceType="location" />
         <activity
             android:name=".global.messenger.messages.MessagesActivity"
             android:exported="false"
