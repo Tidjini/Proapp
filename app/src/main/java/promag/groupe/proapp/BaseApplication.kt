@@ -320,9 +320,8 @@ class BaseApplication : Application() {
             PendingIntent.getBroadcast(applicationContext, 0, intent, 0)
         }
 
-//        alarmManager!!.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 10000, pendingIntent)
         alarmManager!!.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),  10000, pendingIntent)
-//        alarmManager!!.set(
+//        alarmManager!!.setExact(
 //            AlarmManager.RTC_WAKEUP,
 //            System.currentTimeMillis() + 15 * 1000,
 //            pendingIntent
