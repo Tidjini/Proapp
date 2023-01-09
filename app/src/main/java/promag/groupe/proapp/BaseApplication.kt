@@ -11,6 +11,7 @@ import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import android.util.Log
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.google.gson.Gson
@@ -297,33 +298,37 @@ class BaseApplication : Application() {
             startActivity(intent)
         }
 
-        Log.e(ContentValues.TAG, "alarmPermissions: $hasPermission")
+        Log.d("Location Alarm", "alarmPermissions: $hasPermission")
 
         if (hasPermission) {
-            Thread {
-                setAlarm()
-            }.start()
+            setAlarm()
+
+//            Thread {
+//            }.start()
         }
     }
+
 
     private fun setAlarm() {
-        val intent = Intent(this, AlarmReceiver::class.java)
+        val intent = Intent(applicationContext, AlarmReceiver::class.java)
 
+//        Toast.makeText(applicationContext, "Alarm! Wake up! Wake up!", Toast.LENGTH_LONG).show()
 
         pendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+            PendingIntent.getBroadcast(applicationContext, 0, intent, PendingIntent.FLAG_IMMUTABLE)
         } else {
-            PendingIntent.getBroadcast(this, 0, intent, 0)
+            PendingIntent.getBroadcast(applicationContext, 0, intent, 0)
         }
 
-        //alarmManager!!.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 10 * 1000, 10000, pendingIntent)
-
-        alarmManager!!.set(
-            AlarmManager.RTC_WAKEUP,
-            System.currentTimeMillis() + 10 * 1000,
-            pendingIntent
-        );
+//        alarmManager!!.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 10000, pendingIntent)
+        alarmManager!!.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),  10000, pendingIntent)
+//        alarmManager!!.set(
+//            AlarmManager.RTC_WAKEUP,
+//            System.currentTimeMillis() + 15 * 1000,
+//            pendingIntent
+//        );
     }
+
 
 
 }
