@@ -278,7 +278,9 @@ class BaseApplication : Application() {
 
     }
 
+    //alarm
     var alarmManager: AlarmManager? = null
+    var pendingIntent: PendingIntent? = null
 
     private fun alarmPermissions() {
         alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
@@ -298,15 +300,23 @@ class BaseApplication : Application() {
         Log.e(ContentValues.TAG, "alarmPermissions: $hasPermission")
     }
 
-    private fun setAlarm(){
+    private fun setAlarm() {
         val intent = Intent(this, AlarmReceiver::class.java)
 
 
         pendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            PendingIntent.getBroadcast(this, 0, intent,PendingIntent.FLAG_IMMUTABLE )
+            PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
         } else {
-            PendingIntent.getBroadcast(this, 0, intent,0 )
+            PendingIntent.getBroadcast(this, 0, intent, 0)
         }
+
+        //alarmManager!!.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 10 * 1000, 10000, pendingIntent)
+
+        alarmManager!!.set(
+            AlarmManager.RTC_WAKEUP,
+            System.currentTimeMillis() + 10 * 1000,
+            pendingIntent
+        );
     }
 
 
