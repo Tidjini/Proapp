@@ -1,7 +1,7 @@
 package promag.groupe.proapp
 
 import android.app.*
-import android.content.ContentValues.TAG
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -11,11 +11,9 @@ import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.google.gson.Gson
-import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
 import promag.groupe.proapp.comercial.views.PaymentCollectionView
@@ -279,23 +277,24 @@ class BaseApplication : Application() {
 
     }
 
+    var alarmManager: AlarmManager? = null
 
-    private fun alarmPermissions(){
-        val alarmManager: AlarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+    private fun alarmPermissions() {
+        alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val hasPermission: Boolean = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            alarmManager.canScheduleExactAlarms()
+            alarmManager!!.canScheduleExactAlarms()
         } else {
             true
         }
 
-        if(!hasPermission){
+        if (!hasPermission) {
             val intent = Intent().apply {
                 action = Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM
             }
             startActivity(intent)
         }
 
-        Log.e(TAG, "alarmPermissions: $hasPermission")
+        Log.e(ContentValues.TAG, "alarmPermissions: $hasPermission")
     }
 
 
