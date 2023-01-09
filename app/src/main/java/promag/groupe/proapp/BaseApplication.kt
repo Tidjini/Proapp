@@ -298,6 +298,12 @@ class BaseApplication : Application() {
         }
 
         Log.e(ContentValues.TAG, "alarmPermissions: $hasPermission")
+
+        if (hasPermission) {
+            Thread {
+                setAlarm()
+            }.start()
+        }
     }
 
     private fun setAlarm() {
