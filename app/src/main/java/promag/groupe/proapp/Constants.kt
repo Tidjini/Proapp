@@ -9,6 +9,8 @@ const val PRODUCT_EXTRA = "PRODUCT"
 const val TIER_EXTRA = "TIER"
 const val PAYMENT_EXTRA = "PAYMENT"
 const val TASK_EXTRA = "TASK"
+const val OVERLAY_PERMISSION = 1000
+const val LOCATION_SETTINGS_REQUEST_CODE = 1001
 
 class Environment{
 

@@ -1,10 +1,8 @@
 package promag.groupe.proapp.services
 
 import android.Manifest
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.Service
+import android.app.*
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
@@ -66,6 +64,8 @@ class LocationService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
         super.onStartCommand(intent, flags, startId)
+
+        Log.d("location_service", "onStartCommand .......")
         onLocationChanged()
         return START_STICKY
     }
@@ -77,8 +77,8 @@ class LocationService : Service() {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         val locationRequest = LocationRequest.create().apply {
-            interval = (1000 * 60).toLong()
-            fastestInterval = (1000 * 60).toLong()
+            interval = (10).toLong()
+            fastestInterval = (10).toLong()
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
 
@@ -146,16 +146,34 @@ class LocationService : Service() {
     override fun onTaskRemoved(rootIntent: Intent?) {
 
         Log.d("location_service", "onTaskRemoved .......")
-
+//        onRestart()
         super.onTaskRemoved(rootIntent)
 
     }
 
     override fun onDestroy() {
 
-        Log.d("location_service", "onDestroy .......")
+        onRestart()
         super.onDestroy()
 
+    }
+
+    private fun onRestart(){
+        Log.d("location_service", "onRestart .......")
+        val restartService = Intent(applicationContext, this.javaClass)
+        val pendingIntent = PendingIntent.getService(
+            applicationContext,
+            1,
+            restartService,
+            PendingIntent.FLAG_ONE_SHOT
+        )
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmManager.setRepeating(
+            AlarmManager.RTC_WAKEUP,
+            System.currentTimeMillis(),
+            10000,
+            pendingIntent
+        )
     }
 
 

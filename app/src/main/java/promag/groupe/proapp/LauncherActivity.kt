@@ -1,13 +1,17 @@
 package promag.groupe.proapp
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import kotlinx.coroutines.delay
+import android.provider.Settings
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import promag.groupe.proapp.models.User
 import promag.groupe.proapp.utils.CacheHelper.userToken
+import promag.groupe.proapp.utils.Helpers
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,8 +28,44 @@ class LauncherActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        main()
+
+        if (Helpers.checkOverlayPermission(this)) {
+//            verifyGpsState()
+            main()
+        } else {
+            startSetOverlaySettings()
+        }
+
+
     }
+
+    private fun startSetOverlaySettings() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val intent = Intent(
+                Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse(
+                    "package:$packageName"
+                )
+            )
+            startActivityForResult(intent, OVERLAY_PERMISSION)
+        }
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            LOCATION_SETTINGS_REQUEST_CODE -> when (resultCode) {
+                RESULT_OK -> {
+                    Log.d("location_service", "LOCATION_SETTINGS_REQUEST_CODE RESULT_OK $RESULT_OK")
+                }
+                RESULT_CANCELED -> {
+                    Log.d("location_service", "LOCATION_SETTINGS_REQUEST_CODE RESULT_CANCELED $RESULT_CANCELED")
+                }
+            }
+        }
+    }
+
+
 
     private fun main() {
 
