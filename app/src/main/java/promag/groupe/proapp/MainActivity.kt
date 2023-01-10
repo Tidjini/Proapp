@@ -14,6 +14,7 @@ import promag.groupe.proapp.infrabitume.Encaissement
 import promag.groupe.proapp.infrabitume.FactureActivity
 import promag.groupe.proapp.infrabitume.LivraisonActivity
 import promag.groupe.proapp.tasks.views.TaskCollectionView
+import promag.groupe.proapp.utils.CacheHelper.userId
 import promag.groupe.proapp.utils.CacheHelper.userToken
 import promag.groupe.proapp.views.AppAlertDialog
 import promag.groupe.proapp.views.AppToast
@@ -96,6 +97,7 @@ class MainActivity : BaseActivity() {
             "Voulez vous vraiment quitter l'application ?",
             {
                 mApplication.userPreferences.userToken = null
+                mApplication.userPreferences.userId = 0
                 this.finish()
                 finishAffinity()
             },

@@ -6,6 +6,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import promag.groupe.proapp.models.User
+import promag.groupe.proapp.utils.CacheHelper.userId
 import promag.groupe.proapp.utils.CacheHelper.userToken
 import retrofit2.Call
 import retrofit2.Callback
@@ -83,6 +84,7 @@ class LauncherActivity : BaseActivity() {
 
                 mApplication.user = user
                 mApplication.userPreferences.userToken = user.token
+                mApplication.userPreferences.userId = user.id
 //                app.socketConnection()
                 gotoMain()
             }

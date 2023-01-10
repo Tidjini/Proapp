@@ -17,6 +17,7 @@ import promag.groupe.proapp.models.Auth
 import promag.groupe.proapp.models.User
 import promag.groupe.proapp.services.procom.ProcomAPI
 import promag.groupe.proapp.services.procom.ProcomService
+import promag.groupe.proapp.utils.CacheHelper.userId
 import promag.groupe.proapp.utils.CacheHelper.userToken
 import promag.groupe.proapp.views.AppAlertDialog
 import retrofit2.Call
@@ -143,6 +144,7 @@ class Connexion : BaseActivity() {
 
                 mApplication.user = user
                 mApplication.userPreferences.userToken = user.token
+                mApplication.userPreferences.userId = user.id
                 mApplication.socketConnection()
                 gotoMain()
 

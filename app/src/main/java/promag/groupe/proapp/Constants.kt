@@ -3,6 +3,7 @@ package promag.groupe.proapp
 
 const val USER_PREFERENCE = "user_data"
 const val USER_TOKEN = "token"
+const val USER_ID = "id"
 const val ISO_DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.ssssss'Z'"
 const val DISCUSSION_EXTRA = "DISCUSSION"
 const val PRODUCT_EXTRA = "PRODUCT"

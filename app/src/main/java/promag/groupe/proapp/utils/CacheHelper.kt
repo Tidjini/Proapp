@@ -3,6 +3,7 @@ package promag.groupe.proapp.utils
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
+import promag.groupe.proapp.USER_ID
 import promag.groupe.proapp.USER_TOKEN
 
 
@@ -29,6 +30,13 @@ object CacheHelper {
             }
         }
 
+    var SharedPreferences.userId
+        get() = getInt(USER_ID, 0)
+        set(value) {
+            editMe {
+                it.putInt(USER_ID, value)
+            }
+        }
     
     var SharedPreferences.clearValues
         get() = { }

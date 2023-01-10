@@ -13,22 +13,26 @@ import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import com.google.android.gms.location.*
+import promag.groupe.proapp.BaseApplication
 import promag.groupe.proapp.NOTIFICATION_LOCATION_CHANNEL_ID
 import promag.groupe.proapp.R
+import promag.groupe.proapp.utils.CacheHelper.userToken
 
 
 class LocationService : Service() {
-
+    lateinit var mApplication : BaseApplication
 
     override fun onCreate() {
 
         super.onCreate()
+        mApplication = application as BaseApplication
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startMyForegroundService()
         } else {
             startForeground(1, Notification())
         }
+
 
 
     }
@@ -84,7 +88,7 @@ class LocationService : Service() {
     var mLocationCallback: LocationCallback? = null
     var fusedLocationClient: FusedLocationProviderClient? = null
 
-    fun onLocationChanged() {
+    private fun onLocationChanged() {
 
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -134,6 +138,8 @@ class LocationService : Service() {
     }
 
     private fun updateTransporterLocation(location: Location) {
+
+        mApplication.userPreferences.userToken
 
         Log.d(
             "location_service",
