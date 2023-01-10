@@ -16,12 +16,17 @@ import com.google.android.gms.location.*
 import promag.groupe.proapp.BaseApplication
 import promag.groupe.proapp.NOTIFICATION_LOCATION_CHANNEL_ID
 import promag.groupe.proapp.R
+import promag.groupe.proapp.models.UserLocalisation
 import promag.groupe.proapp.utils.CacheHelper.userId
 import promag.groupe.proapp.utils.CacheHelper.userToken
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
+const val TAG = "Location Service"
 
 class LocationService : Service() {
-    lateinit var mApplication : BaseApplication
+    lateinit var mApplication: BaseApplication
 
     override fun onCreate() {
 
@@ -33,7 +38,6 @@ class LocationService : Service() {
         } else {
             startForeground(1, Notification())
         }
-
 
 
     }
@@ -66,7 +70,7 @@ class LocationService : Service() {
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            Log.d("location_service", "ACCESS_COARSE_LOCATION")
+            Log.d(TAG, "ACCESS_COARSE_LOCATION")
 
         }
         if (ActivityCompat.checkSelfPermission(
@@ -74,14 +78,14 @@ class LocationService : Service() {
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            Log.d("location_service", "ACCESS_FINE_LOCATION")
+            Log.d(TAG, "ACCESS_FINE_LOCATION")
 
 
         }
 
 
 
-        Log.d("location_service", "onStartCommand .......")
+        Log.d(TAG, "onStartCommand .......")
         onLocationChanged()
         return START_STICKY
     }
@@ -105,10 +109,10 @@ class LocationService : Service() {
                 if (locationResult.locations.isNotEmpty()) {
                     val newLocation = locationResult.locations[0] ?: return
                     updateTransporterLocation(location = newLocation)
-                    Log.d("location_service", "my position is null ${newLocation.longitude}")
+                    Log.d(TAG, "my position is null ${newLocation.longitude}")
 
                 } else {
-                    Log.d("location_service", "my position is null")
+                    Log.d(TAG, "my position is null")
                 }
             }
         }
@@ -118,7 +122,7 @@ class LocationService : Service() {
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            Log.d("location_service", "ACCESS_COARSE_LOCATION")
+            Log.d(TAG, "ACCESS_COARSE_LOCATION")
             return
         }
         if (ActivityCompat.checkSelfPermission(
@@ -126,7 +130,7 @@ class LocationService : Service() {
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            Log.d("location_service", "ACCESS_FINE_LOCATION")
+            Log.d(TAG, "ACCESS_FINE_LOCATION")
             return
         }
 
@@ -138,22 +142,54 @@ class LocationService : Service() {
         )
     }
 
-    private var oldLocation : Location? = null
+    private var oldLocation: Location? = null
 
     private fun updateTransporterLocation(location: Location) {
+        val userId = mApplication.userPreferences.userId
+        val userToken = mApplication.userPreferences.userToken ?: return
+        if (userId == 0) return
+        val distance = oldLocation?.distanceTo(location)
 
-        if(mApplication.userPreferences.userId == 0) return
-        if(oldLocation == null) {
+        if (distance == null || distance > 20.0) {
+            updatePosition(userToken, userId, location)
+            Log.d(
+                TAG,
+                "location updated at position : lat: ${location.latitude}, long:${location.longitude}"
+            )
 
-
-
-            oldLocation = location
         }
 
-        Log.d(
-            "location_service",
-            "updateTransporterLocation ${location.longitude} ${location.latitude}"
+
+    }
+
+    private fun updatePosition(userToken: String, userId: Int, location: Location) {
+        val position = UserLocalisation(
+            user = userId,
+            longitude = location.longitude,
+            latitude = location.latitude
         )
+        val result = mApplication.quotesApi.updatePosition(
+            token = userToken,
+            id = userId,
+            localisation = position
+        ) ?: return
+        result.enqueue(object : Callback<UserLocalisation?> {
+            override fun onResponse(
+                call: Call<UserLocalisation?>,
+                response: Response<UserLocalisation?>
+            ) {
+                if (response.errorBody() != null || response.body()!!.user == 0) {
+                    return
+                }
+                val position: UserLocalisation = response.body() ?: return
+            }
+
+            override fun onFailure(call: Call<UserLocalisation?>, t: Throwable) {
+            }
+
+        })
+
+        oldLocation = location
     }
 
 
@@ -163,23 +199,23 @@ class LocationService : Service() {
 
 
     override fun onUnbind(intent: Intent?): Boolean {
-        Log.d("location_service", "onUnbind .......")
+        Log.d(TAG, "onUnbind .......")
         return super.onUnbind(intent)
     }
 
     override fun onTrimMemory(level: Int) {
-        Log.d("location_service", "onTrimMemory .......")
+        Log.d(TAG, "onTrimMemory .......")
         super.onTrimMemory(level)
     }
 
     override fun onLowMemory() {
-        Log.d("location_service", "onLowMemory .......")
+        Log.d(TAG, "onLowMemory .......")
         super.onLowMemory()
     }
 
     override fun onTaskRemoved(rootIntent: Intent?) {
 
-        Log.d("location_service", "onTaskRemoved .......")
+        Log.d(TAG, "onTaskRemoved .......")
         super.onTaskRemoved(rootIntent)
 //        if(!isMyServiceRunning(LocationService::class.java)){
 //            onRestart()
@@ -192,16 +228,16 @@ class LocationService : Service() {
         val manager = getSystemService(ACTIVITY_SERVICE) as ActivityManager
         for (service in manager.getRunningServices(Int.MAX_VALUE)) {
             if (serviceClass.name == service.service.className) {
-                Log.d("location_service", "Running")
+                Log.d(TAG, "Running")
                 return true
             }
         }
-        Log.d("location_service", "Not running")
+        Log.d(TAG, "Not running")
         return false
     }
 
     override fun onDestroy() {
-        Log.d("location_service", "onDestroy .......")
+        Log.d(TAG, "onDestroy .......")
 
 //        onRestart()
         super.onDestroy()
@@ -209,7 +245,7 @@ class LocationService : Service() {
     }
 
     private fun onRestart() {
-        Log.d("location_service", "onRestart .......")
+        Log.d(TAG, "onRestart .......")
         val restartService = Intent(applicationContext, this.javaClass)
         val pendingIntent = PendingIntent.getService(
             applicationContext,
