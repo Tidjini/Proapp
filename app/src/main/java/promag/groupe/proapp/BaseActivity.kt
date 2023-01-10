@@ -1,7 +1,6 @@
 package promag.groupe.proapp
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -48,29 +47,10 @@ open abstract class BaseActivity : AppCompatActivity() {
         }
 
 
-//        checkNetworkState()
+        onNetworkUnavailable()
         onRequirementsChecked()
 
     }
-
-//    fun checkNetworkState() {
-//        var available = NetworkMonitor.checkNetworkState(mApplication)
-//        if (!available) {
-//            AppAlertDialog.showAlertDialog(
-//                this,
-//                "Vérification Connexion",
-//                "Voulez vous confirmer la connection avec : ?"
-//            ) { dialog ->
-//                available = NetworkMonitor.checkNetworkState(mApplication)
-//                if (!available)
-//                    dialog.show()
-//                else {
-//                    onRequirementsChecked()
-//                }
-//
-//            }
-//        }
-//    }
 
 
     override fun onRequestPermissionsResult(
@@ -127,7 +107,6 @@ open abstract class BaseActivity : AppCompatActivity() {
     abstract fun onRequirementsChecked()
 
 
-    var networkDialogBuilder: AlertDialog.Builder? = null
     var networkDialog: DialogInterface? = null
     open fun onNetworkAvailable() {
         Log.d(TAG, "onNetworkAvailable: ")
@@ -139,11 +118,10 @@ open abstract class BaseActivity : AppCompatActivity() {
     open fun onNetworkUnavailable() {
         networkDialog = AppAlertDialog.showAlertDialog(
             this,
-            "Vérification Connexion",
-            "Voulez vous confirmer la connection avec : ?"
-        ) { builder, dialog ->
-//            networkDialog = dialog
-//            networkDialogBuilder = builder
+            "Connexion",
+            "Problem de connexion veillez vérifier votre WIFI ou vos données mobile"
+        ) { builder, _ ->
+
             val available = NetworkMonitor.checkNetworkState(mApplication)
             if (!available) networkDialog = builder.show()
         }
