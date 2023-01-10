@@ -68,20 +68,7 @@ class Helpers {
             return false
         }
 
-        fun checkOverlayPermission(context: Context): Boolean {
-            return try {
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    Settings.canDrawOverlays(context)
-
-                } else {
-                    true
-                }
-
-            } catch (e: Exception) {
-                false
-            }
-        }
 
     }
 

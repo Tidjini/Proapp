@@ -46,7 +46,7 @@ open abstract class BaseActivity : AppCompatActivity() {
 
     }
 
-    abstract fun onLocationPermissionGranted(finlocationPermissionGranted: Boolean, coarseLocationPermissionGranted: Boolean)
+    abstract fun onLocationPermissionGranted(fineLocationPermissionGranted: Boolean, coarseLocationPermissionGranted: Boolean)
 
 
 

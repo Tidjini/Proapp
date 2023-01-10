@@ -18,6 +18,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+const val TAG = "Launcher Activity"
 
 class LauncherActivity : BaseActivity(){
     private lateinit var app: BaseApplication
@@ -36,15 +37,8 @@ class LauncherActivity : BaseActivity(){
             return
         }
 
-        val locationPermission = Helpers.checkFineLocationPermission(this)
 
-        if(!locationPermission){
-            val permsRequestCode = 200
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(perms, permsRequestCode)
-            }
-            return
-        }
+
 
         if (Helpers.checkOverlayPermission(this)) {
             verifyGpsState()
@@ -54,8 +48,8 @@ class LauncherActivity : BaseActivity(){
 
     }
 
-    override fun onLocationPermissionGranted() {
-        TODO("Not yet implemented")
+    override fun onLocationPermissionGranted(fineLocationGranted: Boolean, coarseLocationGranted: Boolean) {
+        Log.d(TAG, "onLocationPermissionGranted: fine Location : $fineLocationGranted | coarse location : $coarseLocationGranted" )
     }
 
 
