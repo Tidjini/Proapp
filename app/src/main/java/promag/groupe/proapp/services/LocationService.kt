@@ -16,6 +16,7 @@ import com.google.android.gms.location.*
 import promag.groupe.proapp.BaseApplication
 import promag.groupe.proapp.NOTIFICATION_LOCATION_CHANNEL_ID
 import promag.groupe.proapp.R
+import promag.groupe.proapp.utils.CacheHelper.userId
 import promag.groupe.proapp.utils.CacheHelper.userToken
 
 
@@ -137,9 +138,17 @@ class LocationService : Service() {
         )
     }
 
+    private var oldLocation : Location? = null
+
     private fun updateTransporterLocation(location: Location) {
 
-        mApplication.userPreferences.userToken
+        if(mApplication.userPreferences.userId == 0) return
+        if(oldLocation == null) {
+
+
+
+            oldLocation = location
+        }
 
         Log.d(
             "location_service",

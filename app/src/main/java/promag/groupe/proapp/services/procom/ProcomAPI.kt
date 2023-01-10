@@ -38,6 +38,9 @@ interface ProcomAPI {
     @GET("auth/token/")
     fun authToken(@Header("Authorization") token: String): Call<User?>?
 
+    @GET("api/localisations/")
+    fun updatePosition(@Header("Authorization") token: String, localisation: UserLocalisation): Call<UserLocalisation?>?
+
 
     @GET("discussions/")
     suspend fun getDiscussions(@Header("Authorization") token: String): Response<PageResponse<Discussion>>?
