@@ -58,6 +58,29 @@ class DiscussionActivity : BaseActivity(), DiscussionAdapter.Listener {
 
     }
 
+    override fun onLocationPermissionGranted(
+        fineLocationPermissionGranted: Boolean,
+        coarseLocationPermissionGranted: Boolean
+    ) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onOverlaySettingGranted() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onGpsActivated() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onGpsDeactivated() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onRequirementsChecked() {
+        TODO("Not yet implemented")
+    }
+
     fun createDisccusion(view: View) {
 
         val intent = Intent(this, Contacts::class.java)

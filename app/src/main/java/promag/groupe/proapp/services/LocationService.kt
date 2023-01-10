@@ -23,7 +23,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-const val TAG = "Location Service"
+const val TAG = "GA Location Service"
 
 class LocationService : Service() {
     lateinit var mApplication: BaseApplication
@@ -99,8 +99,8 @@ class LocationService : Service() {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         val locationRequest = LocationRequest.create().apply {
-            interval = (10).toLong()
-            fastestInterval = (10).toLong()
+            interval = (10 * 1000).toLong()
+            fastestInterval = (5 * 1000).toLong()
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
 
@@ -109,7 +109,7 @@ class LocationService : Service() {
                 if (locationResult.locations.isNotEmpty()) {
                     val newLocation = locationResult.locations[0] ?: return
                     updateTransporterLocation(location = newLocation)
-                    Log.d(TAG, "my position is null ${newLocation.longitude}")
+                    Log.d(TAG, "my position is ${newLocation.longitude}")
 
                 } else {
                     Log.d(TAG, "my position is null")
@@ -169,7 +169,7 @@ class LocationService : Service() {
             latitude = location.latitude
         )
         val result = mApplication.quotesApi.updatePosition(
-            token = userToken,
+            token = "token $userToken",
             id = userId,
             localisation = position
         ) ?: return
@@ -182,9 +182,17 @@ class LocationService : Service() {
                     return
                 }
                 val position: UserLocalisation = response.body() ?: return
+                Log.d(
+                    TAG,
+                    "REAL position update: lat: ${location.latitude}, long:${location.longitude}"
+                )
             }
 
             override fun onFailure(call: Call<UserLocalisation?>, t: Throwable) {
+                Log.d(
+                    TAG,
+                    "onFailure: lat: ${location.latitude}, long:${location.longitude}"
+                )
             }
 
         })

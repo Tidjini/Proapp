@@ -130,23 +130,18 @@ class MainActivity : BaseActivity() {
         fineLocationPermissionGranted: Boolean,
         coarseLocationPermissionGranted: Boolean
     ) {
-        TODO("Not yet implemented")
     }
 
     override fun onOverlaySettingGranted() {
-        TODO("Not yet implemented")
     }
 
     override fun onGpsActivated() {
-        TODO("Not yet implemented")
     }
 
     override fun onGpsDeactivated() {
-        TODO("Not yet implemented")
     }
 
     override fun onRequirementsChecked() {
-        TODO("Not yet implemented")
     }
 
 }

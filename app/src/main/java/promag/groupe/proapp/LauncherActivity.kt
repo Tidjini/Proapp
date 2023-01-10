@@ -1,11 +1,13 @@
 package promag.groupe.proapp
 
+import android.app.ActivityManager
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import promag.groupe.proapp.models.User
+import promag.groupe.proapp.services.LocationService
 import promag.groupe.proapp.utils.CacheHelper.userId
 import promag.groupe.proapp.utils.CacheHelper.userToken
 import retrofit2.Call
@@ -45,7 +47,37 @@ class LauncherActivity : BaseActivity() {
     }
 
     override fun onRequirementsChecked() {
+        launchLocationService()
         main()
+    }
+
+    var mServiceLocationIntent: Intent? = null
+    private fun launchLocationService() {
+
+        try {
+            mServiceLocationIntent = Intent(this, LocationService::class.java)
+            if (!isMyServiceRunning(LocationService::class.java)) {
+                stopService(mServiceLocationIntent)
+            }
+            //val mServiceIntent = Intent(this, LocationService::class.java) ?: return
+            startService(mServiceLocationIntent)
+
+        } catch (e: Exception) {
+        }
+    }
+
+
+
+    private fun isMyServiceRunning(serviceClass: Class<*>): Boolean {
+        val manager = getSystemService(ACTIVITY_SERVICE) as ActivityManager
+        for (service in manager.getRunningServices(Int.MAX_VALUE)) {
+            if (serviceClass.name == service.service.className) {
+                Log.d("location_service", "Running")
+                return true
+            }
+        }
+        Log.d("location_service", "Not running")
+        return false
     }
 
 

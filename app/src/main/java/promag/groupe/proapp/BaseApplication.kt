@@ -17,7 +17,6 @@ import promag.groupe.proapp.comercial.views.PaymentCollectionView
 import promag.groupe.proapp.global.messenger.messages.MessagesActivity
 import promag.groupe.proapp.models.Message
 import promag.groupe.proapp.models.User
-import promag.groupe.proapp.services.LocationService
 import promag.groupe.proapp.services.procom.CommercialAPI
 import promag.groupe.proapp.services.procom.ProcomAPI
 import promag.groupe.proapp.services.procom.ProcomService
@@ -59,7 +58,7 @@ class BaseApplication : Application() {
         tasksAPI = ProcomService.getInstance().create(TasksAPI::class.java)
 
         setLocationNotificationChannel()
-        launchLocationService()
+//        launchLocationService()
     }
 
 
@@ -79,33 +78,6 @@ class BaseApplication : Application() {
         }
     }
 
-
-    var mServiceLocationIntent: Intent? = null
-    private fun launchLocationService() {
-
-        try {
-            mServiceLocationIntent = Intent(this, LocationService::class.java)
-            if (!isMyServiceRunning(LocationService::class.java)) {
-                stopService(mServiceLocationIntent)
-            }
-            //val mServiceIntent = Intent(this, LocationService::class.java) ?: return
-            startService(mServiceLocationIntent)
-
-        } catch (e: Exception) {
-        }
-    }
-
-    private fun isMyServiceRunning(serviceClass: Class<*>): Boolean {
-        val manager = getSystemService(ACTIVITY_SERVICE) as ActivityManager
-        for (service in manager.getRunningServices(Int.MAX_VALUE)) {
-            if (serviceClass.name == service.service.className) {
-                Log.d("location_service", "Running")
-                return true
-            }
-        }
-        Log.d("location_service", "Not running")
-        return false
-    }
 
     override fun onTerminate() {
         super.onTerminate()

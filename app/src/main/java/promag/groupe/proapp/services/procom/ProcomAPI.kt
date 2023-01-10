@@ -38,7 +38,7 @@ interface ProcomAPI {
     @GET("auth/token/")
     fun authToken(@Header("Authorization") token: String): Call<User?>?
 
-    @PUT("api/localisations/{id}/")
+    @PUT("localisations/{id}/")
     fun updatePosition(@Header("Authorization") token: String, @Path("id") id: Int, @Body localisation: UserLocalisation): Call<UserLocalisation?>?
 
 
