@@ -20,9 +20,6 @@ class LauncherActivity : BaseActivity() {
         setContentView(R.layout.activity_launcher)
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
 
     override fun onLocationPermissionGranted(
         fineLocationPermissionGranted: Boolean,
@@ -44,6 +41,10 @@ class LauncherActivity : BaseActivity() {
 
     override fun onGpsDeactivated() {
         Log.d(TAG, "GPS is Deactivated")
+    }
+
+    override fun onRequirementsChecked() {
+        main()
     }
 
 
