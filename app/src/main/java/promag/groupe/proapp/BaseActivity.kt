@@ -1,8 +1,10 @@
 package promag.groupe.proapp
 
+import android.app.Activity
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import promag.groupe.proapp.permissions.Location
 
@@ -45,6 +47,14 @@ open abstract class BaseActivity : AppCompatActivity() {
 
 
     }
+
+    val getResult =
+        registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()) {
+            if(it.resultCode == Activity.RESULT_OK){
+                val value = it.data?.getStringExtra("input")
+            }
+        }
 
     abstract fun onLocationPermissionGranted(fineLocationPermissionGranted: Boolean, coarseLocationPermissionGranted: Boolean)
 
