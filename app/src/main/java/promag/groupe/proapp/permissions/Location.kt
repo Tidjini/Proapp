@@ -1,17 +1,20 @@
 package promag.groupe.proapp.permissions
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
+import android.os.Build
 import androidx.core.app.ActivityCompat
 
 
 //const val ACCESS_FINE_LOCATON = "android.permission.ACCESS_FINE_LOCATION"
 //const val ACCESS_COARSE_LOCATON = "android.permission.ACCESS_COARSE_LOCATION"
 const val LOCATION_PERMISSION_REQUEST_CODE = 2000
+
 class Location {
 
-    companion object{
+    companion object {
         fun checkPermissionLocation(context: Context): Boolean {
             if (ActivityCompat.checkSelfPermission(
                     context,
@@ -26,6 +29,20 @@ class Location {
             }
             return true
         }
+
+        fun requestPermissionLocation(activity: Activity) {
+
+            val permissions = arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            )
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                activity.requestPermissions(permissions, LOCATION_PERMISSION_REQUEST_CODE)
+            }
+
+        }
+
+
     }
 
 
