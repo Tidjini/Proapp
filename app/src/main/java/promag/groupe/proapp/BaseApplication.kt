@@ -323,54 +323,7 @@ class BaseApplication : Application() {
 
     }
 
-    //alarm
-    var alarmManager: AlarmManager? = null
-    var pendingIntent: PendingIntent? = null
 
-    private fun alarmPermissions() {
-        alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val hasPermission: Boolean = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            alarmManager!!.canScheduleExactAlarms()
-        } else {
-            true
-        }
-
-        if (!hasPermission) {
-            val intent = Intent().apply {
-                action = Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM
-            }
-            startActivity(intent)
-        }
-
-        Log.d("Location Alarm", "alarmPermissions: $hasPermission")
-
-        if (hasPermission) {
-            setAlarm()
-
-//            Thread {
-//            }.start()
-        }
-    }
-
-
-    private fun setAlarm() {
-        val intent = Intent(applicationContext, AlarmReceiver::class.java)
-
-
-        pendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            PendingIntent.getBroadcast(applicationContext, 0, intent, PendingIntent.FLAG_IMMUTABLE)
-        } else {
-            PendingIntent.getBroadcast(applicationContext, 0, intent, 0)
-        }
-
-        alarmManager!!.setRepeating(
-            AlarmManager.RTC_WAKEUP,
-            System.currentTimeMillis(),
-            10000,
-            pendingIntent
-        )
-
-    }
 
 
 }
