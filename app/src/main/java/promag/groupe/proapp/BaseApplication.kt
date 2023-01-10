@@ -37,6 +37,9 @@ class BaseApplication : Application(), NetworkMonitor.Listener {
     lateinit var commercialApi: CommercialAPI
     lateinit var tasksAPI: TasksAPI
     lateinit var networkMonitor: NetworkMonitor
+
+
+
     var latestActivity: BaseActivity? = null
 
     var mSocket: Socket? = null
@@ -59,6 +62,8 @@ class BaseApplication : Application(), NetworkMonitor.Listener {
         super.onCreate()
         //globals
         userPreferences = CacheHelper.customPreference(applicationContext, USER_PREFERENCE)
+
+
         quotesApi = ProcomService.getInstance().create(ProcomAPI::class.java)
         commercialApi = ProcomService.getInstance().create(CommercialAPI::class.java)
         tasksAPI = ProcomService.getInstance().create(TasksAPI::class.java)
