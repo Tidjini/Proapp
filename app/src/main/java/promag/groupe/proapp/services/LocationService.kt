@@ -13,11 +13,11 @@ import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import com.google.android.gms.location.*
+import promag.groupe.proapp.NOTIFICATION_LOCATION_CHANNEL_ID
 import promag.groupe.proapp.R
 
 
 class LocationService : Service() {
-
 
 
     override fun onCreate() {
@@ -33,30 +33,21 @@ class LocationService : Service() {
 
     }
 
-    fun startMyForegroundService() {
+    private fun startMyForegroundService() {
 
         val builder: NotificationCompat.Builder =
-            NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
+            NotificationCompat.Builder(this, NOTIFICATION_LOCATION_CHANNEL_ID)
                 .setOngoing(false)
                 .setSmallIcon(R.drawable.logo)
-        val notificationManager: NotificationManager =
-            getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notificationChannel = NotificationChannel(
-                NOTIFICATION_CHANNEL_ID,
-                NOTIFICATION_CHANNEL_ID, NotificationManager.IMPORTANCE_LOW
-            )
-            notificationChannel.description = NOTIFICATION_CHANNEL_ID
-            notificationChannel.setSound(null, null)
-            notificationManager.createNotificationChannel(notificationChannel)
-        }
+
 
         val notification = builder.setOngoing(true)
             .setContentTitle("Groupe Amry Location Service")
             .setPriority(NotificationManager.IMPORTANCE_MIN)
             .setCategory(Notification.CATEGORY_SERVICE)
-            .build()
-        startForeground(2, notification)
+
+
+        startForeground(2, notification.build())
     }
 
 
