@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import promag.groupe.proapp.permissions.*
@@ -16,28 +17,26 @@ open abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mApplication = applicationContext as BaseApplication
+
+
     }
 
 
     override fun onResume() {
+        mApplication.latestActivity = this
         super.onResume()
+
 
         val overlayGranted = Overlay.checkOverlayPermission(this)
         if (!overlayGranted) {
             Overlay.startOverlaySettings(this, getResultOfOverlaySettings)
             return
         }
-
-
         val gpsActivated = Gps.checkGpsState(mApplication)
         if (!gpsActivated) {
             Gps.requestGpsPermission(mApplication, this)
             return
         }
-
-
-
-
 
         //check location permissions
         val locationGranted = Location.checkPermissionLocation(this)
@@ -46,29 +45,23 @@ open abstract class BaseActivity : AppCompatActivity() {
             return
         }
 
-        var networkAvailable = Network.checkNetworkState(mApplication)
-        if (!networkAvailable) {
 
-            AppAlertDialog.showAlertDialog(
-                this,
-                "Connexion",
-                "Votre apareil est hors connexion. Activer votre WIFI ou vos Donnés Mobile.",
-            ) { dialog ->
-                networkAvailable = Network.checkNetworkState(mApplication)
-                if (!networkAvailable) {
-                    dialog.show()
-                    return@showAlertDialog
-                }
-                onRequirementsChecked()
-            }
-
-            return
-
-        }
 
         onRequirementsChecked()
 
     }
+
+//    open fun onNetworkAvailable() {
+//        //todo later
+//    }
+//
+//    open fun onNetworkUnavailable() {
+//        AppAlertDialog.showAlertDialog(
+//            this,
+//            "Connexion",
+//            "Problem de connexion sur votre téléphone (Vérifier votre WIFI et/ou vos données mobiles)",
+//        )
+//    }
 
 
     override fun onRequestPermissionsResult(
@@ -123,6 +116,19 @@ open abstract class BaseActivity : AppCompatActivity() {
     abstract fun onGpsActivated()
     abstract fun onGpsDeactivated()
     abstract fun onRequirementsChecked()
+
+    open fun onNetworkAvailable() {
+        Log.d(TAG, "onNetworkAvailable: ")
+    }
+
+    open fun onNetworkUnavailable() {
+        AppAlertDialog.showAlertDialog(
+            this,
+            "Vérification Connexion",
+            "Voulez vous confirmer la connection avec : ?",
+        )
+    }
+
 
 
 }

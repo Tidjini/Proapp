@@ -17,16 +17,18 @@ import promag.groupe.proapp.comercial.views.PaymentCollectionView
 import promag.groupe.proapp.global.messenger.messages.MessagesActivity
 import promag.groupe.proapp.models.Message
 import promag.groupe.proapp.models.User
+import promag.groupe.proapp.permissions.NetworkMonitor
 import promag.groupe.proapp.services.procom.CommercialAPI
 import promag.groupe.proapp.services.procom.ProcomAPI
 import promag.groupe.proapp.services.procom.ProcomService
 import promag.groupe.proapp.services.procom.TasksAPI
 import promag.groupe.proapp.tasks.views.TaskCollectionView
 import promag.groupe.proapp.utils.CacheHelper
+import promag.groupe.proapp.views.AppAlertDialog
 import java.net.URISyntaxException
 import kotlin.properties.Delegates
 
-class BaseApplication : Application() {
+class BaseApplication : Application(), NetworkMonitor.Listener {
 
     //globals
     lateinit var user: User
@@ -34,6 +36,8 @@ class BaseApplication : Application() {
     lateinit var quotesApi: ProcomAPI
     lateinit var commercialApi: CommercialAPI
     lateinit var tasksAPI: TasksAPI
+    lateinit var networkMonitor: NetworkMonitor
+    var latestActivity: BaseActivity? = null
 
     var mSocket: Socket? = null
     var observed = false
@@ -49,6 +53,8 @@ class BaseApplication : Application() {
         newestArticleObservers.forEach { it(newValue) }
     }
 
+
+
     override fun onCreate() {
         super.onCreate()
         //globals
@@ -57,6 +63,7 @@ class BaseApplication : Application() {
         commercialApi = ProcomService.getInstance().create(CommercialAPI::class.java)
         tasksAPI = ProcomService.getInstance().create(TasksAPI::class.java)
 
+        networkMonitor = NetworkMonitor(this)
         setLocationNotificationChannel()
 //        launchLocationService()
     }
@@ -289,6 +296,14 @@ class BaseApplication : Application() {
 
         }
 
+    }
+
+    override fun onNetworkAvailable() {
+        latestActivity?.onNetworkAvailable()
+    }
+
+    override fun onNetworkUnavailable() {
+        latestActivity?.onNetworkUnavailable()
     }
 
 

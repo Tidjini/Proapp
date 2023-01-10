@@ -204,4 +204,7 @@ class Connexion : BaseActivity() {
     override fun onRequirementsChecked() {
         loginPlaceholderAnimateIn()
     }
+
+
+
 }

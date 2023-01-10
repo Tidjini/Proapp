@@ -2,11 +2,59 @@ package promag.groupe.proapp.permissions
 
 import android.content.Context
 import android.net.ConnectivityManager
+import android.net.ConnectivityManager.NetworkCallback
+import android.net.Network
 import android.net.NetworkCapabilities
+import android.net.NetworkRequest
 import android.os.Build
 import promag.groupe.proapp.BaseApplication
 
-class Network {
+
+class NetworkMonitor : NetworkCallback {
+
+
+    private var networkRequest: NetworkRequest
+    val listener: Listener
+
+    constructor(application: BaseApplication) {
+        listener = application
+        networkRequest = NetworkRequest.Builder()
+            .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
+            .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+            .addTransportType(NetworkCapabilities.TRANSPORT_ETHERNET)
+            .build()
+        enable(application)
+    }
+
+    private fun enable(context: Context) {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        connectivityManager.registerNetworkCallback(networkRequest, this)
+    }
+
+
+    override fun onUnavailable() {
+        super.onUnavailable()
+        listener.onNetworkUnavailable()
+    }
+
+    override fun onLost(network: Network) {
+        super.onLost(network)
+        listener.onNetworkUnavailable()
+    }
+
+
+    override fun onAvailable(network: Network) {
+        super.onAvailable(network)
+        listener.onNetworkAvailable()
+    }
+
+
+    interface Listener {
+        fun onNetworkAvailable()
+        fun onNetworkUnavailable()
+    }
+
 
     companion object {
         fun checkNetworkState(application: BaseApplication): Boolean {
@@ -39,6 +87,7 @@ class Network {
 
             return result
         }
+
 
     }
 }
