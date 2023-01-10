@@ -116,13 +116,15 @@ open abstract class BaseActivity : AppCompatActivity() {
     }
 
     open fun onNetworkUnavailable() {
+        var available = NetworkMonitor.checkNetworkState(mApplication)
+        if (available) return
         networkDialog = AppAlertDialog.showAlertDialog(
             this,
             "Connexion",
             "Problem de connexion veillez vérifier votre WIFI ou vos données mobile"
         ) { builder, _ ->
 
-            val available = NetworkMonitor.checkNetworkState(mApplication)
+            available = NetworkMonitor.checkNetworkState(mApplication)
             if (!available) networkDialog = builder.show()
         }
     }
