@@ -7,7 +7,6 @@ import android.os.Looper
 import android.util.Log
 import promag.groupe.proapp.models.User
 import promag.groupe.proapp.utils.CacheHelper.userToken
-import promag.groupe.proapp.utils.Helpers
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -23,7 +22,6 @@ class LauncherActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        verifyGpsState()
     }
 
     override fun onLocationPermissionGranted(
@@ -40,33 +38,12 @@ class LauncherActivity : BaseActivity() {
         Log.d(TAG, "Overlay Settings are Granted")
     }
 
-
-    private fun verifyGpsState() {
-//        gpsNotReadyYet()
-
-        if (Helpers.checkGpsState(application as BaseApplication, this)) {
-//            afterGpsIsOn()
-            main()
-
-        }
+    override fun onGpsActivated() {
+        Log.d(TAG, "GPS is Activated")
     }
 
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        when (requestCode) {
-            LOCATION_SETTINGS_REQUEST_CODE -> when (resultCode) {
-                RESULT_OK -> {
-                    Log.d("location_service", "LOCATION_SETTINGS_REQUEST_CODE RESULT_OK $RESULT_OK")
-                }
-                RESULT_CANCELED -> {
-                    Log.d(
-                        "location_service",
-                        "LOCATION_SETTINGS_REQUEST_CODE RESULT_CANCELED $RESULT_CANCELED"
-                    )
-                }
-            }
-        }
+    override fun onGpsDeactivated() {
+        Log.d(TAG, "GPS is Deactivated")
     }
 
 

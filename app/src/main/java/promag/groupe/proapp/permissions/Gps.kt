@@ -17,7 +17,7 @@ import com.google.android.gms.location.LocationSettingsStatusCodes
 import promag.groupe.proapp.BaseApplication
 
 
-const val LOCATION_SETTINGS_REQUEST_CODE = 3000
+const val GPS_SETTINGS_REQUEST_CODE = 3000
 
 class Gps {
 
@@ -63,7 +63,7 @@ class Gps {
                     LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> try {
                         status.startResolutionForResult(
                             activity,
-                            LOCATION_SETTINGS_REQUEST_CODE
+                            GPS_SETTINGS_REQUEST_CODE
                         )
                     } catch (_: IntentSender.SendIntentException) {
                     }
