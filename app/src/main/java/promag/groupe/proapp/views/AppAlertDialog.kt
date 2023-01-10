@@ -1,10 +1,11 @@
 package promag.groupe.proapp.views
 
+import android.R
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.DialogInterface
 import android.view.View
 import promag.groupe.proapp.IFunc
-import android.R
 
 
 object AppAlertDialog {
@@ -16,6 +17,20 @@ object AppAlertDialog {
             AlertDialog.BUTTON_NEUTRAL, "Ok"
         ) { dialog, _ -> dialog.dismiss() }
         alertDialog.show()
+    }
+
+    fun showAlertDialog(
+        activity: Activity?,
+        title: String?,
+        message: String?,
+        okFunction: (dialog: AlertDialog.Builder) -> Unit
+    ) {
+        val alertDialog: AlertDialog.Builder = AlertDialog.Builder(activity)
+        alertDialog.setTitle(title)
+        alertDialog.setMessage(message)
+        alertDialog.setPositiveButton(R.string.yes) { _, _ -> okFunction(alertDialog) }
+        alertDialog.show()
+
     }
 
     fun showYesNoDialog(

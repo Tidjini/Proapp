@@ -7,6 +7,7 @@ import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import promag.groupe.proapp.permissions.*
+import promag.groupe.proapp.views.AppAlertDialog
 
 open abstract class BaseActivity : AppCompatActivity() {
 
@@ -35,6 +36,9 @@ open abstract class BaseActivity : AppCompatActivity() {
         }
 
 
+
+
+
         //check location permissions
         val locationGranted = Location.checkPermissionLocation(this)
         if (!locationGranted) {
@@ -42,9 +46,30 @@ open abstract class BaseActivity : AppCompatActivity() {
             return
         }
 
+        var networkAvailable = Network.checkNetworkState(mApplication)
+        if (!networkAvailable) {
+
+            AppAlertDialog.showAlertDialog(
+                this,
+                "Connexion",
+                "Votre apareil est hors connexion. Activer votre WIFI ou vos Donnés Mobile.",
+            ) { dialog ->
+                networkAvailable = Network.checkNetworkState(mApplication)
+                if (!networkAvailable) {
+                    dialog.show()
+                    return@showAlertDialog
+                }
+                onRequirementsChecked()
+            }
+
+            return
+
+        }
+
         onRequirementsChecked()
 
     }
+
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
