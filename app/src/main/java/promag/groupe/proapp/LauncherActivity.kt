@@ -19,12 +19,11 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class LauncherActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsResultCallback {
+class LauncherActivity : BaseActivity(){
     private lateinit var app: BaseApplication
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        app = applicationContext as BaseApplication
         setContentView(R.layout.activity_launcher)
     }
     var perms = arrayOf("android.permission.ACCESS_FINE_LOCATION", "android.permission.ACCESS_COARSE_LOCATION")
@@ -55,6 +54,9 @@ class LauncherActivity : AppCompatActivity(), ActivityCompat.OnRequestPermission
 
     }
 
+    override fun onLocationPermissionGranted() {
+        TODO("Not yet implemented")
+    }
 
 
     private fun verifyGpsState() {
@@ -78,21 +80,7 @@ class LauncherActivity : AppCompatActivity(), ActivityCompat.OnRequestPermission
         }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            200 -> {
-                val fineLocation = grantResults[0] === PackageManager.PERMISSION_GRANTED
-                val coarseLocation = grantResults[1] === PackageManager.PERMISSION_GRANTED
 
-                Log.d("location_service", "ACCESS_FINE_LOCATION $fineLocation ACCESS_COARSE_LOCATION $coarseLocation")
-            }
-        }
-    }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
