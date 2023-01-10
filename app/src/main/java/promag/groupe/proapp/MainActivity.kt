@@ -34,6 +34,8 @@ class MainActivity : BaseActivity() {
     }
 
 
+
+
     fun onInfraStockClicked(view: View) {
 
         val intent = Intent(this, LivraisonActivity::class.java)
@@ -121,5 +123,28 @@ class MainActivity : BaseActivity() {
 //    - Simple, NO UI designing
 //    - Notifications  for Task
 //    - Notifications  for stock changes admins
+
+    override fun onLocationPermissionGranted(
+        fineLocationPermissionGranted: Boolean,
+        coarseLocationPermissionGranted: Boolean
+    ) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onOverlaySettingGranted() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onGpsActivated() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onGpsDeactivated() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onRequirementsChecked() {
+        TODO("Not yet implemented")
+    }
 
 }

@@ -57,10 +57,8 @@ class Connexion : BaseActivity() {
     }
 
 
-    override fun onResume() {
-        super.onResume()
-        loginPlaceholderAnimateIn()
-    }
+
+
 
 
     val handler = Handler(Looper.getMainLooper())
@@ -184,5 +182,28 @@ class Connexion : BaseActivity() {
             { authentication(username, password) },
             null
         )
+    }
+
+    override fun onLocationPermissionGranted(
+        fineLocationPermissionGranted: Boolean,
+        coarseLocationPermissionGranted: Boolean
+    ) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onOverlaySettingGranted() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onGpsActivated() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onGpsDeactivated() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onRequirementsChecked() {
+        loginPlaceholderAnimateIn()
     }
 }
