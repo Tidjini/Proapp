@@ -8,10 +8,8 @@ import android.os.Build
 import androidx.core.app.ActivityCompat
 
 
-//const val ACCESS_FINE_LOCATON = "android.permission.ACCESS_FINE_LOCATION"
-//const val ACCESS_COARSE_LOCATON = "android.permission.ACCESS_COARSE_LOCATION"
+
 const val LOCATION_PERMISSION_REQUEST_CODE = 1000
-const val LOCATION_SETTINGS_REQUEST_CODE = 1001
 
 class Location {
 

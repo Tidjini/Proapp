@@ -1,16 +1,10 @@
 package promag.groupe.proapp
 
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.provider.Settings
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import promag.groupe.proapp.models.User
 import promag.groupe.proapp.utils.CacheHelper.userToken
 import promag.groupe.proapp.utils.Helpers
@@ -20,8 +14,7 @@ import retrofit2.Response
 
 const val TAG = "Launcher Activity"
 
-class LauncherActivity : BaseActivity(){
-    private lateinit var app: BaseApplication
+class LauncherActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,25 +23,21 @@ class LauncherActivity : BaseActivity(){
 
     override fun onResume() {
         super.onResume()
-        val overlayPermission = Helpers.checkOverlayPermission(this)
-        if(!overlayPermission){
-            startSetOverlaySettings()
-            return
-        }
-
-
-
-
-        if (Helpers.checkOverlayPermission(this)) {
-            verifyGpsState()
-        } else {
-        }
-
-
+        verifyGpsState()
     }
 
-    override fun onLocationPermissionGranted(fineLocationGranted: Boolean, coarseLocationGranted: Boolean) {
-        Log.d(TAG, "onLocationPermissionGranted: fine Location : $fineLocationGranted | coarse location : $coarseLocationGranted" )
+    override fun onLocationPermissionGranted(
+        fineLocationPermissionGranted: Boolean,
+        coarseLocationPermissionGranted: Boolean
+    ) {
+        Log.d(
+            TAG,
+            "onLocationPermissionGranted: fine Location : $fineLocationPermissionGranted | coarse location : $coarseLocationPermissionGranted"
+        )
+    }
+
+    override fun onOverlaySettingGranted() {
+        Log.d(TAG, "Overlay Settings are Granted")
     }
 
 
@@ -62,17 +51,6 @@ class LauncherActivity : BaseActivity(){
         }
     }
 
-    private fun startSetOverlaySettings() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val intent = Intent(
-                Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse(
-                    "package:$packageName"
-                )
-            )
-            startActivityForResult(intent, OVERLAY_PERMISSION)
-        }
-    }
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -82,12 +60,14 @@ class LauncherActivity : BaseActivity(){
                     Log.d("location_service", "LOCATION_SETTINGS_REQUEST_CODE RESULT_OK $RESULT_OK")
                 }
                 RESULT_CANCELED -> {
-                    Log.d("location_service", "LOCATION_SETTINGS_REQUEST_CODE RESULT_CANCELED $RESULT_CANCELED")
+                    Log.d(
+                        "location_service",
+                        "LOCATION_SETTINGS_REQUEST_CODE RESULT_CANCELED $RESULT_CANCELED"
+                    )
                 }
             }
         }
     }
-
 
 
     private fun main() {
@@ -104,12 +84,13 @@ class LauncherActivity : BaseActivity(){
     //authenticate with User Token
     private fun authToken() {
 
-        if (app.userPreferences.userToken.isNullOrEmpty()) {
+        if (mApplication.userPreferences.userToken.isNullOrEmpty()) {
             gotoConnexion()
             return
         }
 
-        val result = app.quotesApi.authToken("token ${app.userPreferences.userToken}")
+        val result =
+            mApplication.quotesApi.authToken("token ${mApplication.userPreferences.userToken}")
         if (result == null) {
             gotoConnexion()
             return
@@ -122,8 +103,8 @@ class LauncherActivity : BaseActivity(){
                 }
                 val user: User = response.body() ?: return
 
-                app.user = user
-                app.userPreferences.userToken = user.token
+                mApplication.user = user
+                mApplication.userPreferences.userToken = user.token
 //                app.socketConnection()
                 gotoMain()
             }
