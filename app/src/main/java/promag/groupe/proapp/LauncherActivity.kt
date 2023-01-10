@@ -27,7 +27,6 @@ class LauncherActivity : BaseActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_launcher)
     }
-    var perms = arrayOf("android.permission.ACCESS_FINE_LOCATION", "android.permission.ACCESS_COARSE_LOCATION")
 
     override fun onResume() {
         super.onResume()
