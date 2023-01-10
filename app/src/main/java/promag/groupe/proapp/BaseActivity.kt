@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import promag.groupe.proapp.permissions.LOCATION_PERMISSION_REQUEST_CODE
 import promag.groupe.proapp.permissions.Location
+import promag.groupe.proapp.permissions.Overlay
 
 open abstract class BaseActivity : AppCompatActivity() {
 
@@ -21,9 +23,15 @@ open abstract class BaseActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
+        val overlayGranted = Overlay.checkOverlayPermission(this)
+        if(!overlayGranted){
+            Overlay.startOverlaySettings(this, getResultOfOverlaySettings)
+        }
+
+
         //check location permissions
-        val granted = Location.checkPermissionLocation(this)
-        if (!granted){
+        val locationGranted = Location.checkPermissionLocation(this)
+        if (!locationGranted){
             Location.requestPermissionLocation(this)
             return
         }
@@ -48,15 +56,19 @@ open abstract class BaseActivity : AppCompatActivity() {
 
     }
 
-    val getResult =
+
+    private val getResultOfOverlaySettings =
         registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()) {
             if(it.resultCode == Activity.RESULT_OK){
-                val value = it.data?.getStringExtra("input")
+                onOverlaySettingGranted()
             }
         }
 
+
     abstract fun onLocationPermissionGranted(fineLocationPermissionGranted: Boolean, coarseLocationPermissionGranted: Boolean)
+    abstract fun onOverlaySettingGranted()
+
 
 
 
