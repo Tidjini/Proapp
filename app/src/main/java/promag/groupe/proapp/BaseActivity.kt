@@ -12,4 +12,8 @@ open class BaseActivity : AppCompatActivity() {
         mApplication = applicationContext as BaseApplication
     }
 
+
+
+
+
 }
