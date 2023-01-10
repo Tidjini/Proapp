@@ -1,14 +1,12 @@
 package promag.groupe.proapp
 
 import android.app.*
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
-import android.provider.Settings
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
@@ -19,7 +17,6 @@ import promag.groupe.proapp.comercial.views.PaymentCollectionView
 import promag.groupe.proapp.global.messenger.messages.MessagesActivity
 import promag.groupe.proapp.models.Message
 import promag.groupe.proapp.models.User
-import promag.groupe.proapp.services.AlarmReceiver
 import promag.groupe.proapp.services.LocationService
 import promag.groupe.proapp.services.procom.CommercialAPI
 import promag.groupe.proapp.services.procom.ProcomAPI
@@ -62,8 +59,7 @@ class BaseApplication : Application() {
         tasksAPI = ProcomService.getInstance().create(TasksAPI::class.java)
 
         setLocationNotificationChannel()
-//        alarmPermissions()
-//        launchLocationService()
+        launchLocationService()
     }
 
 
@@ -85,7 +81,7 @@ class BaseApplication : Application() {
 
 
     var mServiceLocationIntent: Intent? = null
-    fun launchLocationService() {
+    private fun launchLocationService() {
 
         try {
             mServiceLocationIntent = Intent(this, LocationService::class.java)
@@ -322,8 +318,6 @@ class BaseApplication : Application() {
         }
 
     }
-
-
 
 
 }
