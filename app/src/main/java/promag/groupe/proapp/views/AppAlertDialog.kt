@@ -23,13 +23,15 @@ object AppAlertDialog {
         activity: Activity?,
         title: String?,
         message: String?,
-        okFunction: (dialog: AlertDialog.Builder) -> Unit
-    ) {
+        okFunction: (builder: AlertDialog.Builder, dialog: DialogInterface) -> Unit
+    ) : DialogInterface{
         val alertDialog: AlertDialog.Builder = AlertDialog.Builder(activity)
         alertDialog.setTitle(title)
         alertDialog.setMessage(message)
-        alertDialog.setPositiveButton(R.string.yes) { _, _ -> okFunction(alertDialog) }
-        alertDialog.show()
+        alertDialog.setCancelable(false)
+        alertDialog.setPositiveButton(R.string.yes) { dialog, _ -> okFunction(alertDialog, dialog) }
+
+        return alertDialog.show()
 
     }
 

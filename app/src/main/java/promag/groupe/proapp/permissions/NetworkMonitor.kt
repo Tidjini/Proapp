@@ -14,7 +14,7 @@ class NetworkMonitor : NetworkCallback {
 
 
     private var networkRequest: NetworkRequest
-    val listener: Listener
+    private val listener: Listener
 
     constructor(application: BaseApplication) {
         listener = application

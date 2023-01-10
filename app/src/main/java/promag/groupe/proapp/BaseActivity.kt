@@ -1,6 +1,8 @@
 package promag.groupe.proapp
 
 import android.app.Activity
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -46,21 +48,28 @@ open abstract class BaseActivity : AppCompatActivity() {
         }
 
 
-
+//        checkNetworkState()
         onRequirementsChecked()
 
     }
 
-//    open fun onNetworkAvailable() {
-//        //todo later
-//    }
+//    fun checkNetworkState() {
+//        var available = NetworkMonitor.checkNetworkState(mApplication)
+//        if (!available) {
+//            AppAlertDialog.showAlertDialog(
+//                this,
+//                "Vérification Connexion",
+//                "Voulez vous confirmer la connection avec : ?"
+//            ) { dialog ->
+//                available = NetworkMonitor.checkNetworkState(mApplication)
+//                if (!available)
+//                    dialog.show()
+//                else {
+//                    onRequirementsChecked()
+//                }
 //
-//    open fun onNetworkUnavailable() {
-//        AppAlertDialog.showAlertDialog(
-//            this,
-//            "Connexion",
-//            "Problem de connexion sur votre téléphone (Vérifier votre WIFI et/ou vos données mobiles)",
-//        )
+//            }
+//        }
 //    }
 
 
@@ -117,18 +126,28 @@ open abstract class BaseActivity : AppCompatActivity() {
     abstract fun onGpsDeactivated()
     abstract fun onRequirementsChecked()
 
+
+    var networkDialogBuilder: AlertDialog.Builder? = null
+    var networkDialog: DialogInterface? = null
     open fun onNetworkAvailable() {
         Log.d(TAG, "onNetworkAvailable: ")
+        networkDialog?.dismiss()
+        networkDialog?.cancel()
+
     }
 
     open fun onNetworkUnavailable() {
-        AppAlertDialog.showAlertDialog(
+        networkDialog = AppAlertDialog.showAlertDialog(
             this,
             "Vérification Connexion",
-            "Voulez vous confirmer la connection avec : ?",
-        )
+            "Voulez vous confirmer la connection avec : ?"
+        ) { builder, dialog ->
+//            networkDialog = dialog
+//            networkDialogBuilder = builder
+            val available = NetworkMonitor.checkNetworkState(mApplication)
+            if (!available) networkDialog = builder.show()
+        }
     }
-
 
 
 }
