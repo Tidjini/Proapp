@@ -14,20 +14,17 @@ import promag.groupe.proapp.views.AppAlertDialog
 open abstract class BaseActivity : AppCompatActivity() {
 
     lateinit var mApplication: BaseApplication
+    var networkDialog: DialogInterface? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mApplication = applicationContext as BaseApplication
-
-
     }
 
 
     override fun onResume() {
         mApplication.latestActivity = this
         super.onResume()
-
-
         val overlayGranted = Overlay.checkOverlayPermission(this)
         if (!overlayGranted) {
             Overlay.startOverlaySettings(this, getResultOfOverlaySettings)
@@ -45,7 +42,6 @@ open abstract class BaseActivity : AppCompatActivity() {
             Location.requestPermissionLocation(this)
             return
         }
-
 
         onNetworkUnavailable()
         onRequirementsChecked()
@@ -101,13 +97,9 @@ open abstract class BaseActivity : AppCompatActivity() {
         coarseLocationPermissionGranted: Boolean
     )
 
-    abstract fun onOverlaySettingGranted()
-    abstract fun onGpsActivated()
-    abstract fun onGpsDeactivated()
-    abstract fun onRequirementsChecked()
 
 
-    var networkDialog: DialogInterface? = null
+
     open fun onNetworkAvailable() {
         Log.d(TAG, "onNetworkAvailable: ")
         networkDialog?.dismiss()
@@ -121,13 +113,18 @@ open abstract class BaseActivity : AppCompatActivity() {
         networkDialog = AppAlertDialog.showAlertDialog(
             this,
             "Connexion",
-            "Problem de connexion veillez vérifier votre WIFI ou vos données mobile"
+            "Problème de connexion veuillez vérifier votre WIFI ou vos données mobile"
         ) { builder, _ ->
 
             available = NetworkMonitor.checkNetworkState(mApplication)
             if (!available) networkDialog = builder.show()
         }
     }
+
+    abstract fun onOverlaySettingGranted()
+    abstract fun onGpsActivated()
+    abstract fun onGpsDeactivated()
+    abstract fun onRequirementsChecked()
 
 
 }

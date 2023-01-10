@@ -6,7 +6,6 @@ import androidx.activity.ComponentActivity
 import promag.groupe.proapp.models.User
 
 
-@Suppress("DEPRECATION")
 open class BaseComponentActivity : ComponentActivity() {
     lateinit var mApplication: BaseApplication
     lateinit var user: User
