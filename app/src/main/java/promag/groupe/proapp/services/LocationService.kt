@@ -18,7 +18,6 @@ import promag.groupe.proapp.R
 
 class LocationService : Service() {
 
-    private val NOTIFICATION_CHANNEL_ID = "my_notification_location"
 
 
     override fun onCreate() {

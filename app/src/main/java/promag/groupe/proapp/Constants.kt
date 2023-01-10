@@ -10,6 +10,7 @@ const val TIER_EXTRA = "TIER"
 const val PAYMENT_EXTRA = "PAYMENT"
 const val TASK_EXTRA = "TASK"
 
+const val NOTIFICATION_LOCATION_CHANNEL_ID = "NOTIFICATION_LOCATION_CHANNEL_ID"
 
 class Environment{
 

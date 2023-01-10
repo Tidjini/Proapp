@@ -61,8 +61,26 @@ class BaseApplication : Application() {
         commercialApi = ProcomService.getInstance().create(CommercialAPI::class.java)
         tasksAPI = ProcomService.getInstance().create(TasksAPI::class.java)
 
+        setLocationNotificationChannel()
 //        alarmPermissions()
-        launchLocationService()
+//        launchLocationService()
+    }
+
+
+    private fun setLocationNotificationChannel() {
+        val notificationManager: NotificationManager =
+            getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                NOTIFICATION_LOCATION_CHANNEL_ID,
+                NOTIFICATION_LOCATION_CHANNEL_ID, NotificationManager.IMPORTANCE_LOW
+            )
+
+            channel.description = NOTIFICATION_LOCATION_CHANNEL_ID
+            channel.setSound(null, null)
+
+            notificationManager.createNotificationChannel(channel)
+        }
     }
 
 
@@ -80,6 +98,7 @@ class BaseApplication : Application() {
         } catch (e: Exception) {
         }
     }
+
     private fun isMyServiceRunning(serviceClass: Class<*>): Boolean {
         val manager = getSystemService(ACTIVITY_SERVICE) as ActivityManager
         for (service in manager.getRunningServices(Int.MAX_VALUE)) {
