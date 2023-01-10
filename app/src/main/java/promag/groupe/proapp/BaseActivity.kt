@@ -54,8 +54,8 @@ open abstract class BaseActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             LOCATION_PERMISSION_REQUEST_CODE -> {
-                val fineLocationPermission = grantResults[0] === PackageManager.PERMISSION_GRANTED
-                val coarseLocationPermission = grantResults[1] === PackageManager.PERMISSION_GRANTED
+                val fineLocationPermission = grantResults[0] == PackageManager.PERMISSION_GRANTED
+                val coarseLocationPermission = grantResults[1] == PackageManager.PERMISSION_GRANTED
 
                 onLocationPermissionGranted(fineLocationPermission, coarseLocationPermission)
             }
@@ -97,7 +97,6 @@ open abstract class BaseActivity : AppCompatActivity() {
     abstract fun onOverlaySettingGranted()
     abstract fun onGpsActivated()
     abstract fun onGpsDeactivated()
-
     abstract fun onRequirementsChecked()
 
 

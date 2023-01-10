@@ -162,6 +162,8 @@ class LocationService : Service() {
 
     }
 
+
+
     private fun updatePosition(userToken: String, userId: Int, location: Location) {
         val position = UserLocalisation(
             user = userId,
